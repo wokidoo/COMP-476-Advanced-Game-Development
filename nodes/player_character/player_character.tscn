@@ -123,6 +123,29 @@ shape = SubResource("SphereShape3D_hs54n")
 unique_name_in_owner = true
 one_shot = true
 
+[node name="InstructionsContainer" type="MarginContainer" parent="." unique_id=10611394]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 75.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="InstructionsLabel" type="RichTextLabel" parent="InstructionsContainer" unique_id=130877597]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+bbcode_enabled = true
+text = "[b]Walk:[/b] W,A,S,D 
+[b]Jump:[/b] Space
+[b]Sprint:[/b] Shift (hold)
+"
+fit_content = true
+
 [connection signal="entered" from="StateMachine/GroundedState" to="." method="_on_grounded_state_entered"]
 [connection signal="exited" from="StateMachine/GroundedState" to="." method="_on_grounded_state_exited"]
 [connection signal="input" from="StateMachine/GroundedState" to="." method="_on_grounded_state_input"]
