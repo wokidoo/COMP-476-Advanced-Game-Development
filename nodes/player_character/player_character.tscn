@@ -1,0 +1,142 @@
+[gd_scene load_steps=10 format=3 uid="uid://hcg2derrs5s8"]
+
+[ext_resource type="Script" uid="uid://bn6evds4qsgc4" path="res://nodes/player_character/player_character.gd" id="1_qlps6"]
+[ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="2_5l2xy"]
+[ext_resource type="Shader" uid="uid://bgjer4ly5f8rs" path="res://materials/grid_debug.gdshader" id="2_hs54n"]
+[ext_resource type="Script" uid="uid://b42om5mouo7ee" path="res://addons/Gostate/scripts/state.gd" id="3_bvxdu"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2i27r"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ehlbk"]
+render_priority = 0
+shader = ExtResource("2_hs54n")
+shader_parameter/subdivisions = 4.0
+shader_parameter/grid_width = 0.02
+shader_parameter/background_color = Color(0.23960045, 0.8183025, 0.6919348, 1)
+shader_parameter/background_color_two = Color(0.28127414, 0.5199068, 0.49382317, 1)
+shader_parameter/grid_color = Color(0.5, 0.5, 0.5, 1)
+shader_parameter/dashed_scale_x = 0.02
+shader_parameter/dashed_scale_y = 0.02
+shader_parameter/dashed_count_x = 1.0
+shader_parameter/dashed_count_y = 1.0
+shader_parameter/point_width = 0.021
+shader_parameter/point_color = Color(0, 0, 0, 1)
+shader_parameter/point_scale_x = 0.05
+shader_parameter/point_scale_y = 0.05
+shader_parameter/inside_width = 0.01
+shader_parameter/inside_subdivisions = 6.0
+shader_parameter/inside_color = Color(0.4, 0.4, 0.4, 1)
+shader_parameter/in_dashed_scale_x = 0.3
+shader_parameter/in_dashed_scale_y = 0.3
+shader_parameter/in_dashed_count_x = 6.0
+shader_parameter/in_dashed_count_y = 6.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5l2xy"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_5l2xy"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hs54n"]
+
+[node name="PlayerCharacter" type="CharacterBody3D" node_paths=PackedStringArray("camera", "state_machine")]
+floor_constant_speed = true
+script = ExtResource("1_qlps6")
+camera = NodePath("CameraPivot/CameraSpringArm/Camera3D")
+state_machine = NodePath("StateMachine")
+camera_follow_speed = 15.0
+camera_distance = 4.0
+walk_speed = 5.0
+walk_acceleration = 10.0
+walk_deceleration = 15.0
+sprint_speed = 12.0
+sprint_acceleration = 2.0
+jump_gravity = 20.0
+fall_gravity = 30.0
+
+[node name="PlayerCollider" type="CollisionShape3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_2i27r")
+
+[node name="BodyMeshInstance3D" type="MeshInstance3D" parent="PlayerCollider"]
+material_override = SubResource("ShaderMaterial_ehlbk")
+mesh = SubResource("CapsuleMesh_5l2xy")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45670342, -1.0724702)
+mesh = SubResource("SphereMesh_5l2xy")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_5l2xy")
+initial_state = NodePath("GroundedState")
+metadata/_custom_type_script = "uid://bx384iuwj3u8u"
+
+[node name="GroundedState" type="Node" parent="StateMachine" node_paths=PackedStringArray("transitions")]
+script = ExtResource("3_bvxdu")
+transitions = {
+&"falling": NodePath("../FallingState"),
+&"jump": NodePath("../JumpState"),
+&"sprinting": NodePath("../SprintState")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="SprintState" type="Node" parent="StateMachine" node_paths=PackedStringArray("transitions")]
+script = ExtResource("3_bvxdu")
+transitions = {
+&"falling": NodePath("../FallingState"),
+&"jump": NodePath("../JumpState"),
+&"walking": NodePath("../GroundedState")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="JumpState" type="Node" parent="StateMachine" node_paths=PackedStringArray("transitions")]
+script = ExtResource("3_bvxdu")
+transitions = {
+&"falling": NodePath("../FallingState"),
+&"sprinting": NodePath("../SprintState"),
+&"walking": NodePath("../GroundedState")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="FallingState" type="Node" parent="StateMachine" node_paths=PackedStringArray("transitions")]
+script = ExtResource("3_bvxdu")
+transitions = {
+&"sprinting": NodePath("../SprintState"),
+&"walking": NodePath("../GroundedState")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="CameraPivot" type="Marker3D" parent="."]
+unique_name_in_owner = true
+top_level = true
+
+[node name="CameraSpringArm" type="SpringArm3D" parent="CameraPivot"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("SphereShape3D_hs54n")
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/CameraSpringArm"]
+
+[node name="JumpBufferTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true
+
+[connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]
+[connection signal="entered" from="StateMachine/GroundedState" to="." method="_on_grounded_state_entered"]
+[connection signal="exited" from="StateMachine/GroundedState" to="." method="_on_grounded_state_exited"]
+[connection signal="input" from="StateMachine/GroundedState" to="." method="_on_grounded_state_input"]
+[connection signal="physics_process" from="StateMachine/GroundedState" to="." method="_on_grounded_state_physics_process"]
+[connection signal="entered" from="StateMachine/SprintState" to="." method="_on_sprint_state_entered"]
+[connection signal="exited" from="StateMachine/SprintState" to="." method="_on_sprint_state_exited"]
+[connection signal="input" from="StateMachine/SprintState" to="." method="_on_sprint_state_input"]
+[connection signal="physics_process" from="StateMachine/SprintState" to="." method="_on_sprint_state_physics_process"]
+[connection signal="entered" from="StateMachine/JumpState" to="." method="_on_jump_state_entered"]
+[connection signal="exited" from="StateMachine/JumpState" to="." method="_on_jump_state_exited"]
+[connection signal="input" from="StateMachine/JumpState" to="." method="_on_jump_state_input"]
+[connection signal="physics_process" from="StateMachine/JumpState" to="." method="_on_jump_state_physics_process"]
+[connection signal="entered" from="StateMachine/FallingState" to="." method="_on_falling_state_entered"]
+[connection signal="exited" from="StateMachine/FallingState" to="." method="_on_falling_state_exited"]
+[connection signal="input" from="StateMachine/FallingState" to="." method="_on_falling_state_input"]
+[connection signal="physics_process" from="StateMachine/FallingState" to="." method="_on_falling_state_physics_process"]
