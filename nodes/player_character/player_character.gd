@@ -1,8 +1,5 @@
 extends CharacterBody3D
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
-
 @export var camera: Camera3D
 @export var state_machine:StateMachine
 
@@ -294,7 +291,3 @@ func _on_falling_state_physics_process(delta: float) -> void:
 		state_machine.execute_event("walking")
 
 #endregion
-
-func _on_state_machine_state_transition(from: State, to: State) -> void:
-	await get_tree().process_frame
-	print(state_machine.current_state.name)

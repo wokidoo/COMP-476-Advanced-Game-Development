@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://hcg2derrs5s8"]
+[gd_scene format=3 uid="uid://hcg2derrs5s8"]
 
 [ext_resource type="Script" uid="uid://bn6evds4qsgc4" path="res://nodes/player_character/player_character.gd" id="1_qlps6"]
 [ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="2_5l2xy"]
@@ -39,7 +39,7 @@ height = 0.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hs54n"]
 
-[node name="PlayerCharacter" type="CharacterBody3D" node_paths=PackedStringArray("camera", "state_machine")]
+[node name="PlayerCharacter" type="CharacterBody3D" unique_id=1161731980 node_paths=PackedStringArray("camera", "state_machine")]
 floor_constant_speed = true
 script = ExtResource("1_qlps6")
 camera = NodePath("CameraPivot/CameraSpringArm/Camera3D")
@@ -54,26 +54,26 @@ sprint_acceleration = 2.0
 jump_gravity = 20.0
 fall_gravity = 30.0
 
-[node name="PlayerCollider" type="CollisionShape3D" parent="."]
+[node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=1717507666]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_2i27r")
 
-[node name="BodyMeshInstance3D" type="MeshInstance3D" parent="PlayerCollider"]
+[node name="BodyMeshInstance3D" type="MeshInstance3D" parent="PlayerCollider" unique_id=1157442348]
 material_override = SubResource("ShaderMaterial_ehlbk")
 mesh = SubResource("CapsuleMesh_5l2xy")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCollider"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCollider" unique_id=1692454159]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45670342, -1.0724702)
 mesh = SubResource("SphereMesh_5l2xy")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="StateMachine" type="Node" parent="." unique_id=105280299 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_5l2xy")
 initial_state = NodePath("GroundedState")
 metadata/_custom_type_script = "uid://bx384iuwj3u8u"
 
-[node name="GroundedState" type="Node" parent="StateMachine" node_paths=PackedStringArray("transitions")]
+[node name="GroundedState" type="Node" parent="StateMachine" unique_id=837258184 node_paths=PackedStringArray("transitions")]
 script = ExtResource("3_bvxdu")
 transitions = {
 &"falling": NodePath("../FallingState"),
@@ -82,7 +82,7 @@ transitions = {
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
-[node name="SprintState" type="Node" parent="StateMachine" node_paths=PackedStringArray("transitions")]
+[node name="SprintState" type="Node" parent="StateMachine" unique_id=1980962346 node_paths=PackedStringArray("transitions")]
 script = ExtResource("3_bvxdu")
 transitions = {
 &"falling": NodePath("../FallingState"),
@@ -91,7 +91,7 @@ transitions = {
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
-[node name="JumpState" type="Node" parent="StateMachine" node_paths=PackedStringArray("transitions")]
+[node name="JumpState" type="Node" parent="StateMachine" unique_id=1417499918 node_paths=PackedStringArray("transitions")]
 script = ExtResource("3_bvxdu")
 transitions = {
 &"falling": NodePath("../FallingState"),
@@ -100,7 +100,7 @@ transitions = {
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
-[node name="FallingState" type="Node" parent="StateMachine" node_paths=PackedStringArray("transitions")]
+[node name="FallingState" type="Node" parent="StateMachine" unique_id=2104792821 node_paths=PackedStringArray("transitions")]
 script = ExtResource("3_bvxdu")
 transitions = {
 &"sprinting": NodePath("../SprintState"),
@@ -108,22 +108,21 @@ transitions = {
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
-[node name="CameraPivot" type="Marker3D" parent="."]
+[node name="CameraPivot" type="Marker3D" parent="." unique_id=1239646285]
 unique_name_in_owner = true
 top_level = true
 
-[node name="CameraSpringArm" type="SpringArm3D" parent="CameraPivot"]
+[node name="CameraSpringArm" type="SpringArm3D" parent="CameraPivot" unique_id=432008451]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("SphereShape3D_hs54n")
 
-[node name="Camera3D" type="Camera3D" parent="CameraPivot/CameraSpringArm"]
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/CameraSpringArm" unique_id=1525454726]
 
-[node name="JumpBufferTimer" type="Timer" parent="."]
+[node name="JumpBufferTimer" type="Timer" parent="." unique_id=47575190]
 unique_name_in_owner = true
 one_shot = true
 
-[connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]
 [connection signal="entered" from="StateMachine/GroundedState" to="." method="_on_grounded_state_entered"]
 [connection signal="exited" from="StateMachine/GroundedState" to="." method="_on_grounded_state_exited"]
 [connection signal="input" from="StateMachine/GroundedState" to="." method="_on_grounded_state_input"]
