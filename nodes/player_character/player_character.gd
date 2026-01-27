@@ -96,7 +96,7 @@ func rotate_camera(event:InputEvent):
 
 ## Move the player collider towards the movement direction.
 ## Speed of interpolation based on velocity,
-func rotate_collider_towards_movement(direction:Vector3,delta:float,interpolation_factor:float= 0.5):
+func _rotate_body_towards_movement(direction:Vector3,delta:float,interpolation_factor:float= 0.5):
 	# No-op if velocity is 0
 	if velocity.is_zero_approx():
 		return
@@ -170,7 +170,7 @@ func _on_grounded_state_physics_process(delta: float) -> void:
 	elif not move_direction.is_zero_approx(): # Regular walking
 		target_horiz_velocity = walk_speed * move_direction
 		final_horiz_velocity = velocity.lerp(target_horiz_velocity,walk_acceleration * delta)
-		rotate_collider_towards_movement(move_direction,delta)
+		_rotate_body_towards_movement(move_direction,delta)
 	else: # Decelerate if no walking input
 		final_horiz_velocity = velocity.lerp(target_horiz_velocity,walk_deceleration * delta)
 
@@ -185,7 +185,8 @@ func _on_grounded_state_physics_process(delta: float) -> void:
 #region SPRINT_STATE
 
 func _on_sprint_state_entered() -> void:
-	velocity.y = 0.0
+	pass
+	#velocity.y = 0.0
 
 func _on_sprint_state_exited() -> void:
 	pass
@@ -204,7 +205,7 @@ func _on_sprint_state_physics_process(delta: float) -> void:
 
 	if not move_direction.is_zero_approx(): # If user inputs a walking direction
 		final_horiz_velocity = velocity.lerp(target_horiz_velocity,sprint_acceleration * delta)
-		rotate_collider_towards_movement(move_direction,delta)
+		_rotate_body_towards_movement(move_direction,delta)
 	else: # Decelerate if no walking input detected
 		target_horiz_velocity = Vector3.ZERO
 		final_horiz_velocity = velocity.lerp(target_horiz_velocity,walk_deceleration * delta)
@@ -245,11 +246,11 @@ func _on_jump_state_physics_process(delta: float) -> void:
 	if move_direction and current_horiz_velocity.length() > air_speed:
 		target_horiz_velocity = air_speed * move_direction
 		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,air_deceleration * delta)
-		rotate_collider_towards_movement(velocity.slide(Vector3.UP).normalized(),delta)
+		_rotate_body_towards_movement(velocity.slide(Vector3.UP).normalized(),delta)
 	elif move_direction:
 		target_horiz_velocity = air_speed * move_direction
 		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,air_acceleration * delta)
-		rotate_collider_towards_movement(velocity.slide(Vector3.UP).normalized(),delta)
+		_rotate_body_towards_movement(velocity.slide(Vector3.UP).normalized(),delta)
 	else:
 		target_horiz_velocity = current_horiz_velocity
 		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,air_deceleration * delta)
@@ -287,11 +288,11 @@ func _on_falling_state_physics_process(delta: float) -> void:
 	if move_direction and current_horiz_velocity.length() > air_speed:
 		target_horiz_velocity = air_speed * move_direction
 		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,air_deceleration * delta)
-		rotate_collider_towards_movement(current_horiz_velocity.slide(Vector3.UP).normalized(),delta)
+		_rotate_body_towards_movement(current_horiz_velocity.slide(Vector3.UP).normalized(),delta)
 	elif move_direction:
 		target_horiz_velocity = air_speed * move_direction
 		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,air_acceleration * delta)
-		rotate_collider_towards_movement(velocity.slide(Vector3.UP).normalized(),delta)
+		_rotate_body_towards_movement(velocity.slide(Vector3.UP).normalized(),delta)
 	else:
 		target_horiz_velocity = current_horiz_velocity
 		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,air_deceleration * delta)
@@ -314,5 +315,4 @@ func _on_noplay_state_exited() -> void:
 
 func _on_noplay_state_input(event: InputEvent) -> void:
 	pass
-
 #endregion
