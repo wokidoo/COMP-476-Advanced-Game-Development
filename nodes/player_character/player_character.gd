@@ -42,6 +42,8 @@ extends CharacterBody3D
 ## Updated every physics frame.
 var move_direction:Vector3 = Vector3.ZERO
 
+var previous_state:State = null
+
 func _ready():
 	camera_spring_arm.spring_length = camera_distance
 
@@ -58,7 +60,18 @@ func _physics_process(_delta: float) -> void:
 	move_direction = relative_dir.normalized()
 	# Makes sure the camera is always following the body
 	camera_pivot.global_position = camera_pivot.global_position.lerp(global_position,_delta*camera_follow_speed)
-	
+
+func _notification(what: int) -> void:
+	# Send player to Noplay state if scene pauses.
+	if what == NOTIFICATION_PAUSED:
+		state_machine.execute_event("noplay")
+	# Send player to previous state if scene unpauses.
+	elif what == NOTIFICATION_UNPAUSED:
+		state_machine.execute_event(previous_state.name)
+
+func _on_state_machine_state_transition(from: State, to: State) -> void:
+	previous_state = from
+
 #region HELPER_FUNCTIONS
 ## Rotate the camera using the given input event. 
 ## Does nothing if the event isnt an [InputEventMouseMotion] or [InputEventJoypadMotion]
@@ -289,5 +302,17 @@ func _on_falling_state_physics_process(delta: float) -> void:
 
 	if is_on_floor():
 		state_machine.execute_event("walking")
+
+#endregion
+
+#region NOPLAY_STATE
+func _on_noplay_state_entered() -> void:
+	release_mouse()
+
+func _on_noplay_state_exited() -> void:
+	capture_mouse()
+
+func _on_noplay_state_input(event: InputEvent) -> void:
+	pass
 
 #endregion

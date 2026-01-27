@@ -78,6 +78,7 @@ script = ExtResource("3_bvxdu")
 transitions = {
 &"falling": NodePath("../FallingState"),
 &"jump": NodePath("../JumpState"),
+&"noplay": NodePath("../NoplayState"),
 &"sprinting": NodePath("../SprintState")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
@@ -87,6 +88,7 @@ script = ExtResource("3_bvxdu")
 transitions = {
 &"falling": NodePath("../FallingState"),
 &"jump": NodePath("../JumpState"),
+&"noplay": NodePath("../NoplayState"),
 &"walking": NodePath("../GroundedState")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
@@ -95,6 +97,7 @@ metadata/_custom_type_script = "uid://b42om5mouo7ee"
 script = ExtResource("3_bvxdu")
 transitions = {
 &"falling": NodePath("../FallingState"),
+&"noplay": NodePath("../NoplayState"),
 &"sprinting": NodePath("../SprintState"),
 &"walking": NodePath("../GroundedState")
 }
@@ -103,8 +106,19 @@ metadata/_custom_type_script = "uid://b42om5mouo7ee"
 [node name="FallingState" type="Node" parent="StateMachine" unique_id=2104792821 node_paths=PackedStringArray("transitions")]
 script = ExtResource("3_bvxdu")
 transitions = {
+&"noplay": NodePath("../NoplayState"),
 &"sprinting": NodePath("../SprintState"),
 &"walking": NodePath("../GroundedState")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="NoplayState" type="Node" parent="StateMachine" unique_id=1218211838 node_paths=PackedStringArray("transitions")]
+script = ExtResource("3_bvxdu")
+transitions = {
+&"FallingState": NodePath("../FallingState"),
+&"GroundedState": NodePath("../GroundedState"),
+&"JumpState": NodePath("../FallingState"),
+&"SprintState": NodePath("../SprintState")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
@@ -146,6 +160,7 @@ text = "[b]Walk:[/b] W,A,S,D
 "
 fit_content = true
 
+[connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]
 [connection signal="entered" from="StateMachine/GroundedState" to="." method="_on_grounded_state_entered"]
 [connection signal="exited" from="StateMachine/GroundedState" to="." method="_on_grounded_state_exited"]
 [connection signal="input" from="StateMachine/GroundedState" to="." method="_on_grounded_state_input"]
@@ -162,3 +177,6 @@ fit_content = true
 [connection signal="exited" from="StateMachine/FallingState" to="." method="_on_falling_state_exited"]
 [connection signal="input" from="StateMachine/FallingState" to="." method="_on_falling_state_input"]
 [connection signal="physics_process" from="StateMachine/FallingState" to="." method="_on_falling_state_physics_process"]
+[connection signal="entered" from="StateMachine/NoplayState" to="." method="_on_noplay_state_entered"]
+[connection signal="exited" from="StateMachine/NoplayState" to="." method="_on_noplay_state_exited"]
+[connection signal="input" from="StateMachine/NoplayState" to="." method="_on_noplay_state_input"]
