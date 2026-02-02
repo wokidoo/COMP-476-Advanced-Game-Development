@@ -40,6 +40,7 @@ height = 0.2
 [sub_resource type="SphereShape3D" id="SphereShape3D_hs54n"]
 
 [node name="PlayerCharacter" type="CharacterBody3D" unique_id=1161731980 node_paths=PackedStringArray("camera", "state_machine")]
+collision_layer = 2
 floor_constant_speed = true
 script = ExtResource("1_qlps6")
 camera = NodePath("CameraPivot/CameraSpringArm/Camera3D")
@@ -136,29 +137,6 @@ shape = SubResource("SphereShape3D_hs54n")
 [node name="JumpBufferTimer" type="Timer" parent="." unique_id=47575190]
 unique_name_in_owner = true
 one_shot = true
-
-[node name="InstructionsContainer" type="MarginContainer" parent="." unique_id=10611394]
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 75.0
-grow_horizontal = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="InstructionsLabel" type="RichTextLabel" parent="InstructionsContainer" unique_id=130877597]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 6
-bbcode_enabled = true
-text = "[b]Walk:[/b] W,A,S,D 
-[b]Jump:[/b] Space
-[b]Sprint:[/b] Shift (hold)
-"
-fit_content = true
 
 [connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]
 [connection signal="entered" from="StateMachine/GroundedState" to="." method="_on_grounded_state_entered"]
