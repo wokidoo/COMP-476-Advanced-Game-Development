@@ -116,7 +116,7 @@ metadata/_custom_type_script = "uid://cogm8adwtk0eb"
 
 [sub_resource type="Resource" id="Resource_8vbbv"]
 script = ExtResource("6_6f5w8")
-radius = 3.0
+radius = 5.0
 weight = 5.0
 metadata/_custom_type_script = "uid://dw637gqtux18w"
 
@@ -127,7 +127,7 @@ metadata/_custom_type_script = "uid://bh1drdhms68jc"
 
 [sub_resource type="Resource" id="Resource_6f5w8"]
 script = ExtResource("6_6f5w8")
-radius = 5.0
+radius = 3.0
 weight = 15.0
 metadata/_custom_type_script = "uid://dw637gqtux18w"
 
@@ -217,7 +217,7 @@ use_collision = true
 size = Vector3(200, 40, 200)
 
 [node name="Crater" type="CSGSphere3D" parent="Structures/Floor" unique_id=802927042]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.863483, 30.092302, 20.000944)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.863483, 31.092302, 20.000944)
 operation = 2
 radius = 13.0
 
@@ -273,7 +273,7 @@ text = "[b]Walk:[/b] W,A,S,D
 fit_content = true
 
 [node name="AIAgent" type="CharacterBody3D" parent="." unique_id=1975677802 node_paths=PackedStringArray("movement_behaviours")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.381767, 1.7153931)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 48.036846, 1.7153931)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("3_b3yjl")
@@ -283,6 +283,9 @@ SubResource("Resource_8vbbv"): NodePath("../PlayerCharacter"),
 SubResource("Resource_b3t5h"): NodePath("../PlayerCharacter"),
 SubResource("Resource_6f5w8"): NodePath("../Structures/Tower")
 }
+gravity = 15.0
+base_player_stayaway_force = 10.0
+base_agent_stayaway_force = 50.0
 metadata/_custom_type_script = "uid://ccvw0aiur5xi5"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AIAgent" unique_id=1364888096]
@@ -293,5 +296,59 @@ material_override = SubResource("ShaderMaterial_6f5w8")
 mesh = SubResource("CapsuleMesh_8vbbv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="AIAgent/MeshInstance3D" unique_id=999854535]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4796095, -0.93754053)
+mesh = SubResource("SphereMesh_b3yjl")
+
+[node name="AIAgent2" type="CharacterBody3D" parent="." unique_id=380286276 node_paths=PackedStringArray("movement_behaviours")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2304, 48.036846, 1.7153931)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("3_b3yjl")
+movement_behaviours = {
+SubResource("Resource_5r5lx"): NodePath("../PlayerCharacter"),
+SubResource("Resource_8vbbv"): NodePath("../PlayerCharacter"),
+SubResource("Resource_b3t5h"): NodePath("../PlayerCharacter"),
+SubResource("Resource_6f5w8"): NodePath("../Structures/Tower")
+}
+gravity = 15.0
+base_player_stayaway_force = 10.0
+base_agent_stayaway_force = 50.0
+metadata/_custom_type_script = "uid://ccvw0aiur5xi5"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AIAgent2" unique_id=2004249946]
+shape = SubResource("CapsuleShape3D_3q56x")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AIAgent2" unique_id=645911339]
+material_override = SubResource("ShaderMaterial_6f5w8")
+mesh = SubResource("CapsuleMesh_8vbbv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AIAgent2/MeshInstance3D" unique_id=2001456952]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4796095, -0.93754053)
+mesh = SubResource("SphereMesh_b3yjl")
+
+[node name="AIAgent3" type="CharacterBody3D" parent="." unique_id=1584136994 node_paths=PackedStringArray("movement_behaviours")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9200497, 48.036846, 1.7153931)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("3_b3yjl")
+movement_behaviours = {
+SubResource("Resource_5r5lx"): NodePath("../PlayerCharacter"),
+SubResource("Resource_8vbbv"): NodePath("../PlayerCharacter"),
+SubResource("Resource_b3t5h"): NodePath("../PlayerCharacter"),
+SubResource("Resource_6f5w8"): NodePath("../Structures/Tower")
+}
+gravity = 15.0
+base_player_stayaway_force = 10.0
+base_agent_stayaway_force = 50.0
+metadata/_custom_type_script = "uid://ccvw0aiur5xi5"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AIAgent3" unique_id=1993493845]
+shape = SubResource("CapsuleShape3D_3q56x")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AIAgent3" unique_id=257591791]
+material_override = SubResource("ShaderMaterial_6f5w8")
+mesh = SubResource("CapsuleMesh_8vbbv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AIAgent3/MeshInstance3D" unique_id=1125921494]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4796095, -0.93754053)
 mesh = SubResource("SphereMesh_b3yjl")

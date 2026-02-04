@@ -40,6 +40,7 @@ height = 0.2
 [sub_resource type="SphereShape3D" id="SphereShape3D_hs54n"]
 
 [node name="PlayerCharacter" type="CharacterBody3D" unique_id=1161731980 node_paths=PackedStringArray("camera", "state_machine")]
+process_physics_priority = 1
 collision_layer = 2
 floor_constant_speed = true
 script = ExtResource("1_qlps6")

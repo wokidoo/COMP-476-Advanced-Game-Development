@@ -3,6 +3,9 @@ extends CharacterBody3D
 @export var camera: Camera3D
 @export var state_machine:StateMachine
 
+## Amount of force applied against colliding AIAgents
+@export var push_force:float = 100.0
+
 @export_group("Camera Settings")
 @export var camera_follow_speed:float = 20.0
 @export var camera_distance:float = 3.0:
@@ -60,6 +63,25 @@ func _physics_process(_delta: float) -> void:
 	move_direction = relative_dir.normalized()
 	# Makes sure the camera is always following the body
 	camera_pivot.global_position = camera_pivot.global_position.lerp(global_position,_delta*camera_follow_speed)
+	_process_collisions(_delta)
+	
+func _process_collisions(delta:float):
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		# Check if the object is a CharacterBody3D
+		if collider is CharacterBody3D:
+			# Calculate direction and apply impulse
+			var direction:Vector3 = -collision.get_normal()
+			var force:= direction*push_force*move_direction.length()*delta
+			# Apply the force at the point of collision
+			collider.velocity += force
+		elif collider is PhysicsBody3D:
+			# Calculate direction and apply impulse
+			var direction:Vector3 = -collision.get_normal()
+			var force:= direction*push_force*move_direction.length()*delta
+			# Apply the force at the point of collision
+			collider.move_and_collide(force)
 
 func _notification(what: int) -> void:
 	# Send player to Noplay state if scene pauses.

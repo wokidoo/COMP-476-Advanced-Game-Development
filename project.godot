@@ -56,10 +56,17 @@ jump={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="DEFAULT"
+3d_physics/layer_2="PHYSICS_BODIES"
+
 [physics]
 
+3d/run_on_separate_thread=true
 3d/physics_engine="Jolt Physics"
-jolt_physics_3d/simulation/velocity_steps=15
+jolt_physics_3d/simulation/velocity_steps=30
+jolt_physics_3d/simulation/position_steps=4
 common/physics_interpolation=true
 
 [rendering]
