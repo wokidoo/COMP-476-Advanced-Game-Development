@@ -1,10 +1,15 @@
 [gd_scene format=3 uid="uid://b2wslsdw7pcik"]
 
 [ext_resource type="PackedScene" uid="uid://hcg2derrs5s8" path="res://nodes/player_character/player_character.tscn" id="1_7epem"]
+[ext_resource type="CompositorEffect" uid="uid://bfomuj3umgfsj" path="res://post_processing_compositor/compositor_effects/pixelate_compositor_effect.tres" id="1_as4lt"]
+[ext_resource type="CompositorEffect" uid="uid://jx2ng6tynvee" path="res://post_processing_compositor/compositor_effects/dither_compositor_effect.tres" id="2_fhsbr"]
 [ext_resource type="Shader" uid="uid://cae2xm5taem6" path="res://materials/triplanar.gdshader" id="3_3q56x"]
 [ext_resource type="Script" uid="uid://ccvw0aiur5xi5" path="res://AI/AI_agent.gd" id="3_b3yjl"]
+[ext_resource type="CompositorEffect" uid="uid://kyytsf1mdk4w" path="res://post_processing_compositor/compositor_effects/edge_detection_compositor_effect.tres" id="3_u54jn"]
 [ext_resource type="Script" uid="uid://cogm8adwtk0eb" path="res://AI/movement_strategies/look_at_strategy.gd" id="4_5r5lx"]
+[ext_resource type="CompositorEffect" uid="uid://b3vjjxwtr8a5d" path="res://post_processing_compositor/compositor_effects/film_grain_compositor_effect.tres" id="4_au7hc"]
 [ext_resource type="Shader" uid="uid://bgjer4ly5f8rs" path="res://materials/grid_debug.gdshader" id="4_b3yjl"]
+[ext_resource type="CompositorEffect" uid="uid://mfojdyb6rqbu" path="res://post_processing_compositor/compositor_effects/vignette_compositor_effect.tres" id="5_siv4a"]
 [ext_resource type="Script" uid="uid://dw637gqtux18w" path="res://AI/movement_strategies/stay_away_strategy.gd" id="6_6f5w8"]
 [ext_resource type="Script" uid="uid://bh1drdhms68jc" path="res://AI/movement_strategies/follow_target_strategy.gd" id="6_8vbbv"]
 
@@ -18,15 +23,29 @@ func _input(event: InputEvent) -> void:
 		get_tree().paused = not  get_tree().paused
 "
 
+[sub_resource type="Gradient" id="Gradient_as4lt"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.684492)
+colors = PackedColorArray(0.21176471, 0.21176471, 0.12156863, 1, 0.9019608, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fhsbr"]
+gradient = SubResource("Gradient_as4lt")
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7epem"]
 
 [sub_resource type="Sky" id="Sky_3q56x"]
 sky_material = SubResource("ProceduralSkyMaterial_7epem")
 
-[sub_resource type="Environment" id="Environment_b3yjl"]
+[sub_resource type="Environment" id="Environment_as4lt"]
 background_mode = 2
 sky = SubResource("Sky_3q56x")
 tonemap_mode = 3
+adjustment_enabled = true
+adjustment_saturation = 0.0
+adjustment_color_correction = SubResource("GradientTexture1D_fhsbr")
+
+[sub_resource type="Compositor" id="Compositor_avju2"]
+compositor_effects = Array[CompositorEffect]([ExtResource("1_as4lt"), ExtResource("2_fhsbr"), ExtResource("3_u54jn"), ExtResource("4_au7hc"), ExtResource("5_siv4a")])
 
 [sub_resource type="Gradient" id="Gradient_7epem"]
 interpolation_mode = 1
@@ -174,7 +193,8 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=469984220]
-environment = SubResource("Environment_b3yjl")
+environment = SubResource("Environment_as4lt")
+compositor = SubResource("Compositor_avju2")
 
 [node name="PlayerCharacter" parent="." unique_id=388989471 instance=ExtResource("1_7epem")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.5156355)

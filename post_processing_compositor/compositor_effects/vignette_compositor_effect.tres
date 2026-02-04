@@ -1,0 +1,27 @@
+[gd_resource type="CompositorEffect" script_class="PostProcessShader" format=3 uid="uid://mfojdyb6rqbu"]
+
+[ext_resource type="Script" uid="uid://0dpcvcr45bog" path="res://post_processing_compositor/post_process_shader.gd" id="1_62wqq"]
+[ext_resource type="Script" uid="uid://kdyeh5ru7mwf" path="res://post_processing_compositor/shader_slider.gd" id="2_l01gk"]
+
+[sub_resource type="Resource" id="Resource_xdq4w"]
+resource_name = "vignette_intensity"
+script = ExtResource("2_l01gk")
+label = "vignette_intensity"
+value = 1.0
+metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
+
+[resource]
+resource_local_to_scene = false
+resource_name = ""
+enabled = false
+effect_callback_type = 4
+needs_motion_vectors = true
+needs_normal_roughness = true
+script = ExtResource("1_62wqq")
+sliders = Array[ExtResource("2_l01gk")]([SubResource("Resource_xdq4w")])
+shader_code = "float vignette_intensity = params.user_slider_0;
+float dist = distance(SCREEN_UV, vec2(0.5)); 
+dist *= vignette_intensity;
+vec3 vignette = vec3(0.0); 
+color.rgb = mix(vignette,color.rgb,1.0-vignette_intensity*dist);"
+metadata/_custom_type_script = "uid://0dpcvcr45bog"

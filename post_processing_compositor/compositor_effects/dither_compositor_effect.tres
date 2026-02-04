@@ -1,0 +1,50 @@
+[gd_resource type="CompositorEffect" script_class="PostProcessShader" format=3 uid="uid://jx2ng6tynvee"]
+
+[ext_resource type="Script" uid="uid://0dpcvcr45bog" path="res://post_processing_compositor/post_process_shader.gd" id="1_ylbh0"]
+[ext_resource type="Script" uid="uid://kdyeh5ru7mwf" path="res://post_processing_compositor/shader_slider.gd" id="2_tiyuc"]
+
+[sub_resource type="Resource" id="Resource_fon5q"]
+resource_name = "color_levels"
+script = ExtResource("2_tiyuc")
+label = "color_levels"
+value = 4.0
+metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
+
+[sub_resource type="Resource" id="Resource_a1bpd"]
+resource_name = "dither_intensity"
+script = ExtResource("2_tiyuc")
+label = "dither_intensity"
+value = 1.0
+metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
+
+[resource]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = true
+needs_normal_roughness = true
+script = ExtResource("1_ylbh0")
+sliders = Array[ExtResource("2_tiyuc")]([SubResource("Resource_fon5q"), SubResource("Resource_a1bpd")])
+shader_code = "// 1) Settings from sliders:
+// Slider 0: number of quantization steps (per channel)
+float levels = max(params.user_slider_0, 2.0);
+
+// Slider 1: dither strength [0..1]
+float dither_strength = clamp(params.user_slider_1, 0.0, 1.0);
+
+// 2) Original color
+vec3 c = color.rgb;
+
+// 3) Threshold from Bayer matrix (0..1) based on pixel coordinate
+float threshold = bayer4(PIXEL_COORD);
+
+// 4) Apply ordered dithering to the quantization
+// Without dither: floor(c * levels) / levels
+// With Bayer dither: floor(c * levels + threshold) / levels
+vec3 quantized = floor(c * levels + threshold) / levels;
+
+// 5) Blend between original and dithered
+color.rgb = mix(c, quantized, dither_strength);
+"
+metadata/_custom_type_script = "uid://0dpcvcr45bog"

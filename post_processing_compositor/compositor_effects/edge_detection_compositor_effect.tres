@@ -1,0 +1,97 @@
+[gd_resource type="CompositorEffect" script_class="PostProcessShader" format=3 uid="uid://kyytsf1mdk4w"]
+
+[ext_resource type="Script" uid="uid://0dpcvcr45bog" path="res://post_processing_compositor/post_process_shader.gd" id="1_m4vld"]
+[ext_resource type="Script" uid="uid://kdyeh5ru7mwf" path="res://post_processing_compositor/shader_slider.gd" id="2_ts6g7"]
+
+[sub_resource type="Resource" id="Resource_idogc"]
+resource_name = "depth_edge_weight"
+script = ExtResource("2_ts6g7")
+label = "depth_edge_weight"
+value = 0.001
+metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
+
+[sub_resource type="Resource" id="Resource_ee7hx"]
+resource_name = "normal_edge_weight"
+script = ExtResource("2_ts6g7")
+label = "normal_edge_weight"
+value = 0.1
+metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
+
+[sub_resource type="Resource" id="Resource_cihfp"]
+resource_name = "edge_falloff"
+script = ExtResource("2_ts6g7")
+label = "edge_falloff"
+metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
+
+[sub_resource type="Resource" id="Resource_pkjho"]
+resource_name = "line_opacity"
+script = ExtResource("2_ts6g7")
+label = "line_opacity"
+value = 1.0
+metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
+
+[sub_resource type="Resource" id="Resource_m4vld"]
+resource_name = "edge_thickness"
+script = ExtResource("2_ts6g7")
+label = "edge_thickness"
+metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
+
+[resource]
+resource_local_to_scene = false
+resource_name = ""
+enabled = false
+effect_callback_type = 4
+needs_motion_vectors = true
+needs_normal_roughness = true
+script = ExtResource("1_m4vld")
+sliders = Array[ExtResource("2_ts6g7")]([SubResource("Resource_idogc"), SubResource("Resource_ee7hx"), SubResource("Resource_cihfp"), SubResource("Resource_pkjho"), SubResource("Resource_m4vld")])
+shader_code = "//  user_slider_0 = depth_threshold   (e.g. 0.01) 
+//  user_slider_1 = normal_threshold  (e.g. 0.3)
+//  user_slider_2 = edge_falloff      (e.g. 0.02)
+//  user_slider_3 = line_opacity      (0..1)
+//  user_slider_4 = line_thickness    (0..1, thin to thick)
+
+float depth_threshold  = max(params.user_slider_0, 1e-6);
+float normal_threshold = max(params.user_slider_1, 1e-6);
+float edge_falloff     = max(params.user_slider_2, 1e-6);
+float line_opacity     = clamp(params.user_slider_3, 0.0, 1.0);
+float line_thickness   = clamp(params.user_slider_4, 0.0, 1.0);
+
+// Pixel size in UV space
+vec2 px = VIEWPORT_INV_SIZE;
+
+// UV clamp bounds
+vec2 uv_min = vec2(0.0);
+vec2 uv_max = vec2(1.0) - px;
+
+float base_edge = compute_edge(SCREEN_UV, px, uv_min, uv_max,
+                               depth_threshold, normal_threshold, edge_falloff);
+
+float thick_edge = base_edge;
+
+// Convert thickness to 0..2 pixel offsets (matches your old radius=2)
+float t = line_thickness * 2.0;
+
+// 4-tap cross (very cheap, decent)
+vec2 o = px * t;
+
+thick_edge = max(thick_edge, compute_edge(clamp(SCREEN_UV + vec2( o.x, 0.0), uv_min, uv_max), px, uv_min, uv_max,
+                                         depth_threshold, normal_threshold, edge_falloff));
+thick_edge = max(thick_edge, compute_edge(clamp(SCREEN_UV + vec2(-o.x, 0.0), uv_min, uv_max), px, uv_min, uv_max,
+                                         depth_threshold, normal_threshold, edge_falloff));
+thick_edge = max(thick_edge, compute_edge(clamp(SCREEN_UV + vec2(0.0,  o.y), uv_min, uv_max), px, uv_min, uv_max,
+                                         depth_threshold, normal_threshold, edge_falloff));
+thick_edge = max(thick_edge, compute_edge(clamp(SCREEN_UV + vec2(0.0, -o.y), uv_min, uv_max), px, uv_min, uv_max,
+                                         depth_threshold, normal_threshold, edge_falloff));
+
+// Optional: add diagonals (8 taps total) for nicer thickness
+// vec2 od = o; thick_edge = max(thick_edge, compute_edge(clamp(SCREEN_UV + vec2( od.x,  od.y), uv_min, uv_max), ...));
+// thick_edge = max(thick_edge, compute_edge(clamp(SCREEN_UV + vec2(-od.x,  od.y), uv_min, uv_max), ...));
+// thick_edge = max(thick_edge, compute_edge(clamp(SCREEN_UV + vec2( od.x, -od.y), uv_min, uv_max), ...));
+// thick_edge = max(thick_edge, compute_edge(clamp(SCREEN_UV + vec2(-od.x, -od.y), uv_min, uv_max), ...));
+
+float edge_mask = mix(base_edge, thick_edge, line_thickness);
+
+vec3 edge_color = vec3(1.0);
+color.rgb = mix(color.rgb, edge_color, edge_mask * line_opacity);"
+metadata/_custom_type_script = "uid://0dpcvcr45bog"

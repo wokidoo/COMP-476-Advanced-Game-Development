@@ -1,0 +1,36 @@
+[gd_resource type="CompositorEffect" script_class="PostProcessShader" format=3 uid="uid://b3vjjxwtr8a5d"]
+
+[ext_resource type="Script" uid="uid://0dpcvcr45bog" path="res://post_processing_compositor/post_process_shader.gd" id="1_g1au5"]
+[ext_resource type="Script" uid="uid://kdyeh5ru7mwf" path="res://post_processing_compositor/shader_slider.gd" id="2_0je2p"]
+
+[sub_resource type="Resource" id="Resource_4wxyx"]
+resource_name = "grain_intensity"
+script = ExtResource("2_0je2p")
+label = "grain_intensity"
+value = 0.02
+metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_d5i08"]
+noise_type = 0
+frequency = 0.145
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4wxyx"]
+noise = SubResource("FastNoiseLite_d5i08")
+
+[resource]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = true
+needs_normal_roughness = true
+script = ExtResource("1_g1au5")
+tex_a = SubResource("NoiseTexture2D_4wxyx")
+sliders = Array[ExtResource("2_0je2p")]([SubResource("Resource_4wxyx")])
+shader_code = "vec4 grain_a = texture(tex_a_sampler, SCREEN_UV * vec2(TIME*0.99));
+vec4 grain_b = texture(tex_a_sampler,SCREEN_UV * vec2(-TIME));
+vec4 grain = mix(grain_a,grain_b,0.5);  
+grain = grain*2.0-1.0; 
+color.rgb += grain.rgb*params.user_slider_0;
+color.rgb = clamp(color,0.0,1.0).rgb; "
+metadata/_custom_type_script = "uid://0dpcvcr45bog"
