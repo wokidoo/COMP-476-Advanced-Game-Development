@@ -4,7 +4,7 @@ class_name SteeringComponent
 var _rotation_sum:Vector3 = Vector3.ZERO
 var _movement_sum:Vector3 = Vector3.ZERO
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	reset()
 
 func reset()->void:
@@ -17,6 +17,12 @@ func add_direction(dir:Vector3,weight:float)->void:
 
 func add_movement(dir:Vector3,weight:float)->void:
 	_movement_sum += dir*weight
+
+func override_direction(dir:Vector3)->void:
+	_rotation_sum = dir
+
+func override_movement(dir:Vector3)->void:
+	_movement_sum = dir
 
 func get_direction()->Vector3:
 	return _rotation_sum

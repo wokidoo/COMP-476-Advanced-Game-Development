@@ -3,10 +3,7 @@
 [ext_resource type="Script" uid="uid://ccvw0aiur5xi5" path="res://scripts/AI/AI_agent.gd" id="1_eu1jj"]
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="2_dtquj"]
 [ext_resource type="Script" uid="uid://brdmuactkv7sg" path="res://scripts/components/steering_component.gd" id="2_humdk"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_humdk"]
-margin = 0.1
-radius = 1.25
+[ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jcmuf"]
 
@@ -17,13 +14,12 @@ radius = 0.1
 height = 0.2
 
 [node name="AIAgent" type="CharacterBody3D" unique_id=17692775]
-collision_layer = 5
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 velocity = Vector3(0, -2699.1943, 0)
 floor_constant_speed = true
 script = ExtResource("1_eu1jj")
-avoidance_weight = 0.5
+avoidance_weight = 0.3
 metadata/_custom_type_script = "uid://ccvw0aiur5xi5"
 
 [node name="SteeringComponent" type="Node3D" parent="." unique_id=616948691]
@@ -31,17 +27,20 @@ unique_name_in_owner = true
 script = ExtResource("2_humdk")
 metadata/_custom_type_script = "uid://brdmuactkv7sg"
 
+[node name="AvoiderComponent" type="Node3D" parent="." unique_id=1405397863 node_paths=PackedStringArray("steering_component")]
+unique_name_in_owner = true
+script = ExtResource("4_tt2bh")
+ray_length = 2.0
+ray_angle = 30.0
+avoidance_weight = 2.0
+steering_component = NodePath("../SteeringComponent")
+avoidance_mask = 4
+metadata/_custom_type_script = "uid://dykry5e1tr1mi"
+
 [node name="HealthComponent" type="Node" parent="." unique_id=999017945]
 unique_name_in_owner = true
 script = ExtResource("2_dtquj")
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
-
-[node name="ShapeCast3D" type="ShapeCast3D" parent="." unique_id=1677469740]
-unique_name_in_owner = true
-shape = SubResource("SphereShape3D_humdk")
-target_position = Vector3(0, 0.5, 0)
-margin = 0.1
-collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1213396453]
 shape = SubResource("CapsuleShape3D_jcmuf")

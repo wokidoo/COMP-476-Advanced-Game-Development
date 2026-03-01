@@ -7,7 +7,7 @@
 resource_name = "color_levels"
 script = ExtResource("2_tiyuc")
 label = "color_levels"
-value = 4.0
+value = 3.0
 metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
 
 [sub_resource type="Resource" id="Resource_a1bpd"]
@@ -20,7 +20,7 @@ metadata/_custom_type_script = "uid://kdyeh5ru7mwf"
 [resource]
 resource_local_to_scene = false
 resource_name = ""
-enabled = false
+enabled = true
 effect_callback_type = 4
 needs_motion_vectors = true
 needs_normal_roughness = true

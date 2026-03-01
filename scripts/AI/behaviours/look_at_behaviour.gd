@@ -26,26 +26,26 @@ func _init() -> void:
 			LOOK_AT_MODE.SCALE_FAR:
 				_look_strat = _look_at_far
 
-func apply_behaviour(steering:SteeringComponent,target:Node3D,delta:float):
-	_look_strat.call(steering,target,delta)
+func apply_behaviour(_steering:SteeringComponent,_target:Node3D,_delta:float):
+	_look_strat.call(_steering,_target,_delta)
 
-func _look_at_constant(steering:SteeringComponent,target:Node3D,delta:float):
-	if target:
-		var dir := (target.global_position-steering.global_position).normalized()
-		steering.add_direction(dir,weight)
+func _look_at_constant(_steering:SteeringComponent,_target:Node3D,_delta:float):
+	if _target:
+		var dir := (_target.global_position-_steering.global_position).normalized()
+		_steering.add_direction(dir,weight)
 		
-func _look_at_far(steering:SteeringComponent,target:Node3D,delta:float):
-	if target:
-		var dir := (target.global_position-steering.global_position).normalized()
-		var targ_to_agent:= (steering.global_position - target.global_position)
+func _look_at_far(_steering:SteeringComponent,_target:Node3D,_delta:float):
+	if _target:
+		var dir := (_target.global_position-_steering.global_position).normalized()
+		var targ_to_agent:= (_steering.global_position - _target.global_position)
 		var dist:= targ_to_agent.length()
 		var f:float = 1-clampf(radius/dist,0.0,1.0)
-		steering.add_direction(dir,weight*f)
+		_steering.add_direction(dir,weight*f)
 
-func _look_at_near(steering:SteeringComponent,target:Node3D,delta:float):
-	if target:
-		var dir := (target.global_position-steering.global_position).normalized()
-		var targ_to_agent:= (steering.global_position - target.global_position)
+func _look_at_near(_steering:SteeringComponent,_target:Node3D,_delta:float):
+	if _target:
+		var dir := (_target.global_position-_steering.global_position).normalized()
+		var targ_to_agent:= (_steering.global_position - _target.global_position)
 		var dist:= targ_to_agent.length()
 		var f:float = 1-clampf(dist/radius,0.0,1.0)
-		steering.add_direction(dir,weight*f)
+		_steering.add_direction(dir,weight*f)

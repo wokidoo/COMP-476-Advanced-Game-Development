@@ -144,7 +144,6 @@ one_shot = true
 
 [node name="HealthComponent" type="Node" parent="." unique_id=981849851]
 script = ExtResource("5_ehlbk")
-health = 10.0
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
 
 [connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]

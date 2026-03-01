@@ -47,7 +47,7 @@ func _rotate_body_towards_movement(direction:Vector3,delta:float,interpolation_f
 	# No-op if velocity is 0
 	if velocity.is_zero_approx():
 		return
-	var mov_basis:= Basis(global_basis.looking_at(direction,Vector3.UP))
+	var mov_basis:= Basis.looking_at(direction,Vector3.UP)
 	self.global_basis = player_collider.global_basis.slerp(mov_basis,delta*velocity.length()*interpolation_factor)
 
 func get_local_body_forward_vector() -> Vector3:
@@ -246,6 +246,6 @@ func _on_noplay_state_entered() -> void:
 func _on_noplay_state_exited() -> void:
 	capture_mouse()
 
-func _on_noplay_state_input(event: InputEvent) -> void:
+func _on_noplay_state_input(_event: InputEvent) -> void:
 	pass
 #endregion

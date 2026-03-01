@@ -1,10 +1,8 @@
 [gd_scene format=3 uid="uid://b2wslsdw7pcik"]
 
 [ext_resource type="PackedScene" uid="uid://hcg2derrs5s8" path="res://nodes/player_character.tscn" id="1_7epem"]
-[ext_resource type="CompositorEffect" uid="uid://bfomuj3umgfsj" path="res://post_processing_compositor/compositor_effects/pixelate_compositor_effect.tres" id="1_as4lt"]
 [ext_resource type="CompositorEffect" uid="uid://jx2ng6tynvee" path="res://post_processing_compositor/compositor_effects/dither_compositor_effect.tres" id="2_fhsbr"]
 [ext_resource type="Shader" uid="uid://cae2xm5taem6" path="res://materials/triplanar.gdshader" id="3_3q56x"]
-[ext_resource type="CompositorEffect" uid="uid://kyytsf1mdk4w" path="res://post_processing_compositor/compositor_effects/edge_detection_compositor_effect.tres" id="3_u54jn"]
 [ext_resource type="CompositorEffect" uid="uid://b3vjjxwtr8a5d" path="res://post_processing_compositor/compositor_effects/film_grain_compositor_effect.tres" id="4_au7hc"]
 [ext_resource type="CompositorEffect" uid="uid://mfojdyb6rqbu" path="res://post_processing_compositor/compositor_effects/vignette_compositor_effect.tres" id="5_siv4a"]
 [ext_resource type="Script" uid="uid://cwb3r3oscjkmo" path="res://scripts/AI/AI_squad.gd" id="8_o70wo"]
@@ -44,70 +42,50 @@ sky_material = SubResource("ProceduralSkyMaterial_7epem")
 [sub_resource type="Environment" id="Environment_as4lt"]
 background_mode = 2
 sky = SubResource("Sky_3q56x")
-tonemap_mode = 3
+tonemap_mode = 4
 adjustment_saturation = 0.0
 adjustment_color_correction = SubResource("GradientTexture1D_fhsbr")
 
 [sub_resource type="Compositor" id="Compositor_avju2"]
-compositor_effects = Array[CompositorEffect]([ExtResource("1_as4lt"), ExtResource("2_fhsbr"), ExtResource("3_u54jn"), ExtResource("4_au7hc"), ExtResource("5_siv4a")])
+compositor_effects = Array[CompositorEffect]([ExtResource("4_au7hc"), ExtResource("2_fhsbr"), ExtResource("5_siv4a")])
 
-[sub_resource type="Gradient" id="Gradient_7epem"]
+[sub_resource type="Gradient" id="Gradient_r10i8"]
 interpolation_mode = 1
-colors = PackedColorArray(1, 0.33333337, 0, 1, 0.080783345, 0.080783345, 0.0807833, 1)
+colors = PackedColorArray(1.4439225e-06, 0.71117544, 0.48286015, 1, 0.23753911, 0.23753914, 0.23753911, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_3q56x"]
-gradient = SubResource("Gradient_7epem")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tk8g1"]
+gradient = SubResource("Gradient_r10i8")
 fill = 2
 fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_8iuhj"]
+interpolation_mode = 1
+colors = PackedColorArray(1.0413129, 0.59101063, 0, 1, 0.23753911, 0.23753914, 0.23753911, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_21int"]
+gradient = SubResource("Gradient_8iuhj")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_nvxfb"]
+interpolation_mode = 1
+colors = PackedColorArray(1, 0.2964553, 0.5369374, 1, 0.23753911, 0.23753914, 0.23753911, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hhdwb"]
+gradient = SubResource("Gradient_nvxfb")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b3yjl"]
 render_priority = 0
 shader = ExtResource("3_3q56x")
-shader_parameter/triplanar_scale = Vector3(1, 1, 1)
-shader_parameter/triplanar_offset = Vector3(0, 0, 0)
-shader_parameter/x_texture = SubResource("GradientTexture2D_3q56x")
-shader_parameter/y_texture = SubResource("GradientTexture2D_3q56x")
-shader_parameter/z_texture = SubResource("GradientTexture2D_3q56x")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dvheo"]
-render_priority = 0
-shader = ExtResource("3_3q56x")
-shader_parameter/triplanar_scale = Vector3(1, 1, 1)
-shader_parameter/triplanar_offset = Vector3(0, 0, 0)
-shader_parameter/x_texture = SubResource("GradientTexture2D_3q56x")
-shader_parameter/y_texture = SubResource("GradientTexture2D_3q56x")
-shader_parameter/z_texture = SubResource("GradientTexture2D_3q56x")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7epem"]
-render_priority = 0
-shader = ExtResource("3_3q56x")
-shader_parameter/triplanar_scale = Vector3(1, 1, 1)
-shader_parameter/triplanar_offset = Vector3(0, 0, 0)
-shader_parameter/x_texture = SubResource("GradientTexture2D_3q56x")
-shader_parameter/y_texture = SubResource("GradientTexture2D_3q56x")
-shader_parameter/z_texture = SubResource("GradientTexture2D_3q56x")
-
-[sub_resource type="Gradient" id="Gradient_b3yjl"]
-interpolation_mode = 1
-colors = PackedColorArray(0.06053035, 0.06053035, 0.060530342, 1, 0.14044744, 0.14044747, 0.14044738, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_5r5lx"]
-gradient = SubResource("Gradient_b3yjl")
-fill = 2
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0, 1)
-metadata/_snap_enabled = true
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5r5lx"]
-render_priority = 0
-shader = ExtResource("3_3q56x")
-shader_parameter/triplanar_scale = Vector3(1, 1, 1)
-shader_parameter/triplanar_offset = Vector3(0, 0, 0)
-shader_parameter/x_texture = SubResource("GradientTexture2D_5r5lx")
-shader_parameter/y_texture = SubResource("GradientTexture2D_5r5lx")
-shader_parameter/z_texture = SubResource("GradientTexture2D_5r5lx")
+shader_parameter/transition_strength = 8.0
+shader_parameter/texture_x = SubResource("GradientTexture2D_tk8g1")
+shader_parameter/texture_y = SubResource("GradientTexture2D_21int")
+shader_parameter/texture_z = SubResource("GradientTexture2D_hhdwb")
 
 [sub_resource type="GDScript" id="GDScript_3q56x"]
 resource_name = "pause_menu"
@@ -132,24 +110,31 @@ func _notification(what: int) -> void:
 		visible = true
 "
 
-[sub_resource type="Resource" id="Resource_8iuhj"]
+[sub_resource type="Resource" id="Resource_pbjje"]
 script = ExtResource("11_pbjje")
-mode = 2
 metadata/_custom_type_script = "uid://b5siemtk3ecxe"
 
-[sub_resource type="Resource" id="Resource_hhdwb"]
-script = ExtResource("11_pbjje")
-weight = 0.1
-metadata/_custom_type_script = "uid://b5siemtk3ecxe"
-
-[sub_resource type="Resource" id="Resource_o70wo"]
+[sub_resource type="Resource" id="Resource_21int"]
 script = ExtResource("12_8iuhj")
 weight = 0.1
 metadata/_custom_type_script = "uid://c6pxqjuoxdnvv"
 
-[sub_resource type="Resource" id="Resource_pbjje"]
+[sub_resource type="Resource" id="Resource_r10i8"]
 script = ExtResource("13_o70wo")
 metadata/_custom_type_script = "uid://boc1uvgo8ekdj"
+
+[sub_resource type="Resource" id="Resource_o70wo"]
+script = ExtResource("11_pbjje")
+mode = 2
+radius = 4.0
+weight = 0.0
+metadata/_custom_type_script = "uid://b5siemtk3ecxe"
+
+[sub_resource type="Resource" id="Resource_8iuhj"]
+script = ExtResource("11_pbjje")
+mode = 1
+weight = -3.0
+metadata/_custom_type_script = "uid://b5siemtk3ecxe"
 
 [node name="DemoScene" type="Node3D" unique_id=1134558745]
 
@@ -158,8 +143,9 @@ process_mode = 3
 script = SubResource("GDScript_7epem")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=894579989]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -0.7071068, 0.7071067, 0, -0.7071067, -0.7071068, 0, 0, 0)
 shadow_enabled = true
+shadow_normal_bias = 0.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=469984220]
 environment = SubResource("Environment_as4lt")
@@ -183,8 +169,9 @@ size = Vector3(6, 1, 6)
 
 [node name="Ramp2" type="CSGBox3D" parent="Structures" unique_id=1491824181]
 transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.99999994, 18, 1.5, 0)
-material_override = SubResource("ShaderMaterial_dvheo")
+material_override = SubResource("ShaderMaterial_b3yjl")
 use_collision = true
+collision_layer = 5
 size = Vector3(10, 3, 6)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Structures/Ramp2" unique_id=275246111]
@@ -193,7 +180,7 @@ size = Vector3(6, 1, 6)
 
 [node name="Tower" type="CSGBox3D" parent="Structures" unique_id=523674386]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 7)
-material_override = SubResource("ShaderMaterial_7epem")
+material_override = SubResource("ShaderMaterial_b3yjl")
 use_collision = true
 collision_layer = 5
 
@@ -203,9 +190,16 @@ size = Vector3(4, 5, 4)
 
 [node name="Floor" type="CSGBox3D" parent="Structures" unique_id=532376048]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 0)
-material_override = SubResource("ShaderMaterial_5r5lx")
+material_override = SubResource("ShaderMaterial_b3yjl")
 use_collision = true
 size = Vector3(200, 40, 200)
+
+[node name="Ball" type="CSGSphere3D" parent="Structures" unique_id=989441350]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9421597, 0, 21.808403)
+use_collision = true
+radius = 3.0
+radial_segments = 24
+material = SubResource("ShaderMaterial_b3yjl")
 
 [node name="PauseMenu" type="Control" parent="." unique_id=640842078]
 process_mode = 2
@@ -258,28 +252,26 @@ text = "[b]Walk:[/b] W,A,S,D
 "
 fit_content = true
 
-[node name="AISquad" type="Node" parent="." unique_id=716845743 node_paths=PackedStringArray("agents")]
+[node name="AISquad" type="Node" parent="." unique_id=716845743 node_paths=PackedStringArray("target", "agents")]
 script = ExtResource("8_o70wo")
-agents = [NodePath("../AiAgent"), NodePath("../AiAgent2"), NodePath("../AiAgent3"), NodePath("../AiAgent4")]
-flock_behaviours = Array[ExtResource("10_o70wo")]([SubResource("Resource_8iuhj")])
+enabled = true
+target = NodePath("../PlayerCharacter")
+agents = [NodePath("../AIAgent"), NodePath("../AIAgent2"), NodePath("../AIAgent3"), NodePath("../AIAgent4"), NodePath("../AIAgent5")]
+behaviours = Array[ExtResource("10_o70wo")]([SubResource("Resource_pbjje"), SubResource("Resource_21int"), SubResource("Resource_r10i8")])
+flock_behaviours = Array[ExtResource("10_o70wo")]([SubResource("Resource_o70wo"), SubResource("Resource_8iuhj")])
 metadata/_custom_type_script = "uid://cwb3r3oscjkmo"
 
-[node name="AiAgent" parent="." unique_id=17692775 node_paths=PackedStringArray("target") instance=ExtResource("8_oflti")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.91465235, 9.018309, 0.25145054)
-target = NodePath("../PlayerCharacter")
-behaviours = Array[ExtResource("10_o70wo")]([SubResource("Resource_hhdwb"), SubResource("Resource_o70wo"), SubResource("Resource_pbjje")])
+[node name="AIAgent" parent="." unique_id=17692775 instance=ExtResource("8_oflti")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.526552, 10.172798, -8.525829)
 
-[node name="AiAgent2" parent="." unique_id=762117622 node_paths=PackedStringArray("target") instance=ExtResource("8_oflti")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.451115, 9.018309, 6.226318)
-target = NodePath("../PlayerCharacter")
-behaviours = Array[ExtResource("10_o70wo")]([SubResource("Resource_hhdwb"), SubResource("Resource_o70wo"), SubResource("Resource_pbjje")])
+[node name="AIAgent2" parent="." unique_id=1257571196 instance=ExtResource("8_oflti")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.017147, 10.172799, 3.7483435)
 
-[node name="AiAgent3" parent="." unique_id=1972296993 node_paths=PackedStringArray("target") instance=ExtResource("8_oflti")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.098837, 9.01831, -4.171119)
-target = NodePath("../PlayerCharacter")
-behaviours = Array[ExtResource("10_o70wo")]([SubResource("Resource_hhdwb"), SubResource("Resource_o70wo"), SubResource("Resource_pbjje")])
+[node name="AIAgent3" parent="." unique_id=1870666057 instance=ExtResource("8_oflti")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.77416, 10.172798, -12.894842)
 
-[node name="AiAgent4" parent="." unique_id=218867526 node_paths=PackedStringArray("target") instance=ExtResource("8_oflti")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.04978, 9.018309, -11.542008)
-target = NodePath("../PlayerCharacter")
-behaviours = Array[ExtResource("10_o70wo")]([SubResource("Resource_hhdwb"), SubResource("Resource_o70wo"), SubResource("Resource_pbjje")])
+[node name="AIAgent4" parent="." unique_id=1316486693 instance=ExtResource("8_oflti")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.554457, 10.172798, -6.9570007)
+
+[node name="AIAgent5" parent="." unique_id=1307815357 instance=ExtResource("8_oflti")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.026407, 10.172798, 0.37721634)

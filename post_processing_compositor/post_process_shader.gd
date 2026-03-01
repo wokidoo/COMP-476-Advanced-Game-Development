@@ -260,9 +260,9 @@ func _render_callback(p_effect_callback_type: int, p_render_data) -> void:
 	if size.x == 0 and size.y == 0:
 		return
 
-	var x_groups := int((size.x - 1) / 8) + 1
-	var y_groups := int((size.y - 1) / 8) + 1
-	var z_groups := 1
+	var x_groups := int((size.x - 1) / 8.0) + 1.0
+	var y_groups := int((size.y - 1) / 8.0) + 1.0
+	var z_groups := 1.0
 
 	# Push constants: raster_size.xy, time, pad0, 8 slider floats
 	var push_constant := PackedFloat32Array()

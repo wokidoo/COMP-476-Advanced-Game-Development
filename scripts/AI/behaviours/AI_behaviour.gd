@@ -1,9 +1,8 @@
 @abstract
-@tool
 extends Resource
 class_name AIBehaviour
 
 @export var weight:float = 1.0
 
-func apply_behaviour(steering:SteeringComponent,target:Node3D,delta:float):
+func apply_behaviour(_steering:SteeringComponent,_target:Node3D,_delta:float):
 	pass
