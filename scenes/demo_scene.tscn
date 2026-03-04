@@ -100,17 +100,6 @@ func _notification(what: int) -> void:
 		visible = true
 "
 
-[sub_resource type="GDScript" id="GDScript_b3yjl"]
-resource_name = "instructions_menu"
-script/source = "extends MarginContainer
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_PAUSED:
-		visible = false
-	elif what == NOTIFICATION_UNPAUSED:
-		visible = true
-"
-
 [sub_resource type="Resource" id="Resource_pbjje"]
 script = ExtResource("11_pbjje")
 metadata/_custom_type_script = "uid://b5siemtk3ecxe"
@@ -136,6 +125,17 @@ script = ExtResource("11_pbjje")
 mode = 1
 weight = -3.0
 metadata/_custom_type_script = "uid://b5siemtk3ecxe"
+
+[sub_resource type="GDScript" id="GDScript_b3yjl"]
+resource_name = "instructions_menu"
+script/source = "extends MarginContainer
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PAUSED:
+		visible = false
+	elif what == NOTIFICATION_UNPAUSED:
+		visible = true
+"
 
 [node name="DemoScene" type="Node3D" unique_id=1134558745]
 
@@ -229,30 +229,6 @@ theme_override_font_sizes/font_size = 48
 text = "Paused"
 horizontal_alignment = 1
 
-[node name="InstructionsContainer" type="MarginContainer" parent="." unique_id=2050711432]
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 75.0
-grow_horizontal = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-script = SubResource("GDScript_b3yjl")
-
-[node name="InstructionsLabel" type="RichTextLabel" parent="InstructionsContainer" unique_id=1412153888]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 6
-bbcode_enabled = true
-text = "[b]Walk:[/b] W,A,S,D 
-[b]Jump:[/b] Space
-[b]Sprint:[/b] Shift (hold)
-"
-fit_content = true
-
 [node name="AISquad" type="Node" parent="." unique_id=716845743 node_paths=PackedStringArray("target", "agents")]
 script = ExtResource("8_o70wo")
 enabled = true
@@ -278,3 +254,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.554457, 10.172798, -6.957
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.026407, 10.172798, 0.37721634)
 
 [node name="UserInterface" parent="." unique_id=1567975266 instance=ExtResource("12_hhdwb")]
+
+[node name="InstructionsContainer" type="MarginContainer" parent="UserInterface" unique_id=2050711432]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 89.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = SubResource("GDScript_b3yjl")
+
+[node name="InstructionsLabel" type="RichTextLabel" parent="UserInterface/InstructionsContainer" unique_id=1412153888]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+bbcode_enabled = true
+text = "[b]Walk:[/b] W,A,S,D 
+[b]Jump:[/b] Space
+[b]Sprint:[/b] Shift (hold)
+"
+fit_content = true

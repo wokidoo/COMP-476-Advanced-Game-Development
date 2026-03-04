@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dl4krm6yn8yd7" path="res://ui_test/player_resources.gd" id="1_hlq4j"]
 [ext_resource type="Texture2D" uid="uid://ygy8dmrt0fdy" path="res://ui_test/finch.png" id="2_etu2y"]
+[ext_resource type="PackedScene" uid="uid://7ya36e4xkn1a" path="res://ui_test/health_container.tscn" id="2_xaiut"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7dvk"]
 bg_color = Color(0.5227242, 0.5227243, 0.5227241, 1)
@@ -16,17 +17,6 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 expand_margin_left = 5.0
 anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_juc2q"]
-bg_color = Color(0.42142603, 0, 0.043515824, 1)
-border_blend = true
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0jl8t"]
-bg_color = Color(1, 0.3802732, 0.2424492, 0.4509804)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_up53h"]
 bg_color = Color(2.2260473e-07, 0.2589117, 0.12299725, 1)
@@ -91,25 +81,8 @@ layout_mode = 2
 theme_override_constants/separation = -4
 alignment = 2
 
-[node name="HealthContainer" type="Panel" parent="PlayerResources/BarsContainer/BarsSubContainer" unique_id=1142448377]
-custom_minimum_size = Vector2(50, 60)
+[node name="HealthContainer" parent="PlayerResources/BarsContainer/BarsSubContainer" unique_id=1997248170 instance=ExtResource("2_xaiut")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_i7dvk")
-
-[node name="HealthBar" type="ProgressBar" parent="PlayerResources/BarsContainer/BarsSubContainer/HealthContainer" unique_id=731539418]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -25.0
-offset_right = 295.0
-offset_bottom = 25.0
-grow_vertical = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_juc2q")
-theme_override_styles/fill = SubResource("StyleBoxFlat_0jl8t")
-value = 80.0
-show_percentage = false
 
 [node name="StaminaContainer" type="HBoxContainer" parent="PlayerResources/BarsContainer/BarsSubContainer" unique_id=733546380]
 layout_mode = 2

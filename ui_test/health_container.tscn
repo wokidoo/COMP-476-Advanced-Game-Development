@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://7ya36e4xkn1a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7dvk"]
+bg_color = Color(0.5227242, 0.5227243, 0.5227241, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_juc2q"]
+bg_color = Color(0.42142603, 0, 0.043515824, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0jl8t"]
+bg_color = Color(1, 0.3802732, 0.2424492, 0.4509804)
+
+[node name="HealthContainer" type="Panel" unique_id=1997248170]
+custom_minimum_size = Vector2(50, 60)
+offset_right = 299.0
+offset_bottom = 60.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7dvk")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1108525328]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_right = 295.0
+offset_bottom = 25.0
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_juc2q")
+theme_override_styles/fill = SubResource("StyleBoxFlat_0jl8t")
+value = 80.0
+show_percentage = false
