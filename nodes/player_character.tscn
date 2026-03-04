@@ -41,6 +41,55 @@ shader_parameter/in_dashed_count_y = 6.0
 radius = 0.1
 height = 0.2
 
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_5x08c"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_60spa"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5x08c"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1c71w"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_efhua"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_750ug"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pw1jq"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_rc07s"]
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_0q5j8"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2aww7"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_l8cal"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_6u63h"]
+graph_offset = Vector2(-448.40717, -28.448853)
+nodes/output/position = Vector2(608, 160)
+nodes/Hurt/node = SubResource("AnimationNodeAnimation_750ug")
+nodes/Hurt/position = Vector2(-544, 368)
+nodes/Parry_OneShot/node = SubResource("AnimationNodeOneShot_l8cal")
+nodes/Parry_OneShot/position = Vector2(416, 144)
+nodes/Movement_BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_0q5j8")
+nodes/Movement_BlendSpace2D/position = Vector2(-832, 80)
+nodes/LightSlash_OneShot/node = SubResource("AnimationNodeOneShot_rc07s")
+nodes/LightSlash_OneShot/position = Vector2(-80, 144)
+nodes/LightSlash/node = SubResource("AnimationNodeAnimation_pw1jq")
+nodes/LightSlash/position = Vector2(-320, 432)
+nodes/HeavySlash/node = SubResource("AnimationNodeAnimation_1c71w")
+nodes/HeavySlash/position = Vector2(-80, 448)
+nodes/Blocking/node = SubResource("AnimationNodeAnimation_5x08c")
+nodes/Blocking/position = Vector2(-752, 320)
+nodes/HeavySlash_OneShot/node = SubResource("AnimationNodeOneShot_efhua")
+nodes/HeavySlash_OneShot/position = Vector2(160, 144)
+nodes/Blend2/node = SubResource("AnimationNodeBlend2_60spa")
+nodes/Blend2/position = Vector2(-544, 80)
+nodes/Parry/node = SubResource("AnimationNodeAnimation_2aww7")
+nodes/Parry/position = Vector2(160, 448)
+"nodes/Blend2 2/node" = SubResource("AnimationNodeBlend2_5x08c")
+"nodes/Blend2 2/position" = Vector2(-320, 144)
+node_connections = [&"output", 0, &"Parry_OneShot", &"Parry_OneShot", 0, &"HeavySlash_OneShot", &"Parry_OneShot", 1, &"Parry", &"LightSlash_OneShot", 0, &"Blend2 2", &"LightSlash_OneShot", 1, &"LightSlash", &"HeavySlash_OneShot", 0, &"LightSlash_OneShot", &"HeavySlash_OneShot", 1, &"HeavySlash", &"Blend2", 0, &"Movement_BlendSpace2D", &"Blend2", 1, &"Blocking", &"Blend2 2", 0, &"Blend2", &"Blend2 2", 1, &"Hurt"]
+
 [node name="PlayerCharacter" type="CharacterBody3D" unique_id=1161731980 node_paths=PackedStringArray("camera_controller", "state_machine")]
 collision_layer = 2
 collision_mask = 3
@@ -145,6 +194,24 @@ one_shot = true
 [node name="HealthComponent" type="Node" parent="." unique_id=981849851]
 script = ExtResource("5_ehlbk")
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1038606099]
+tree_root = SubResource("AnimationNodeBlendTree_6u63h")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Parry_OneShot/active = false
+parameters/Parry_OneShot/internal_active = false
+parameters/Parry_OneShot/request = 0
+parameters/Movement_BlendSpace2D/blend_position = Vector2(0, 0)
+parameters/LightSlash_OneShot/active = false
+parameters/LightSlash_OneShot/internal_active = false
+parameters/LightSlash_OneShot/request = 0
+parameters/HeavySlash_OneShot/active = false
+parameters/HeavySlash_OneShot/internal_active = false
+parameters/HeavySlash_OneShot/request = 0
+parameters/Blend2/blend_amount = 0.0
+"parameters/Blend2 2/blend_amount" = 0.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=854156319]
 
 [connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]
 [connection signal="entered" from="StateMachine/GroundedState" to="." method="_on_grounded_state_entered"]
