@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="2_dtquj"]
 [ext_resource type="Script" uid="uid://brdmuactkv7sg" path="res://scripts/components/steering_component.gd" id="2_humdk"]
 [ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
+[ext_resource type="PackedScene" uid="uid://7ya36e4xkn1a" path="res://ui_test/health_container.tscn" id="6_y06na"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jcmuf"]
 
@@ -12,6 +13,9 @@
 [sub_resource type="SphereMesh" id="SphereMesh_y06na"]
 radius = 0.1
 height = 0.2
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_flffr"]
+viewport_path = NodePath("SubViewport")
 
 [node name="AIAgent" type="CharacterBody3D" unique_id=17692775]
 axis_lock_angular_x = true
@@ -51,3 +55,14 @@ mesh = SubResource("CapsuleMesh_fibwc")
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=527489115]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("SphereMesh_y06na")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1086328026]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.2986801, 0)
+texture = SubResource("ViewportTexture_flffr")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1627169895]
+size = Vector2i(305, 60)
+
+[node name="HealthContainer" parent="SubViewport" unique_id=1997248170 instance=ExtResource("6_y06na")]
+offset_left = 5.0
+offset_right = 304.0
