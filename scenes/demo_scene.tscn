@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://cmh6706pagrpf" path="res://scripts/AI/behaviours/AI_behaviour.gd" id="10_o70wo"]
 [ext_resource type="Script" uid="uid://b5siemtk3ecxe" path="res://scripts/AI/behaviours/look_at_behaviour.gd" id="11_pbjje"]
 [ext_resource type="Script" uid="uid://c6pxqjuoxdnvv" path="res://scripts/AI/behaviours/move_forward_behaviour.gd" id="12_8iuhj"]
+[ext_resource type="PackedScene" uid="uid://yx0mraktnb0f" path="res://ui_test/user_interface.tscn" id="12_hhdwb"]
 [ext_resource type="Script" uid="uid://boc1uvgo8ekdj" path="res://scripts/AI/behaviours/stay_away_behaviour.gd" id="13_o70wo"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
@@ -275,3 +276,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.554457, 10.172798, -6.957
 
 [node name="AIAgent5" parent="." unique_id=1307815357 instance=ExtResource("8_oflti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.026407, 10.172798, 0.37721634)
+
+[node name="UserInterface" parent="." unique_id=1567975266 instance=ExtResource("12_hhdwb")]

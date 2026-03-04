@@ -1,0 +1,167 @@
+[gd_scene format=3 uid="uid://yx0mraktnb0f"]
+
+[ext_resource type="Script" uid="uid://dl4krm6yn8yd7" path="res://ui_test/player_resources.gd" id="1_hlq4j"]
+[ext_resource type="Texture2D" uid="uid://ygy8dmrt0fdy" path="res://ui_test/finch.png" id="2_etu2y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7dvk"]
+bg_color = Color(0.5227242, 0.5227243, 0.5227241, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_juc2q"]
+bg_color = Color(0.42142603, 0, 0.043515824, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0jl8t"]
+bg_color = Color(1, 0.3802732, 0.2424492, 0.4509804)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_up53h"]
+bg_color = Color(2.2260473e-07, 0.2589117, 0.12299725, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r3lf1"]
+bg_color = Color(7.749051e-06, 0.7396181, 0.20377168, 0.4509804)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hsgek"]
+bg_color = Color(0.5227242, 0.5227243, 0.5227241, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_blend = true
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+expand_margin_left = 5.0
+
+[node name="UserInterface" type="Control" unique_id=1567975266]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="PlayerResources" type="Control" parent="." unique_id=775084820]
+layout_mode = 1
+anchor_left = 0.01
+anchor_top = 0.6867284
+anchor_right = 0.5
+anchor_bottom = 0.99
+offset_right = -0.32000732
+offset_bottom = -0.17602539
+script = ExtResource("1_hlq4j")
+metadata/_edit_use_anchors_ = true
+
+[node name="BarsContainer" type="MarginContainer" parent="PlayerResources" unique_id=970665329]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.28314343
+anchor_top = 0.3235883
+anchor_right = 0.28314343
+anchor_bottom = 0.3235883
+offset_top = 0.083969116
+offset_right = 300.0
+offset_bottom = 103.76402
+theme_override_constants/margin_bottom = 15
+metadata/_edit_use_anchors_ = true
+
+[node name="BarsSubContainer" type="VBoxContainer" parent="PlayerResources/BarsContainer" unique_id=1559819722]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/separation = -4
+alignment = 2
+
+[node name="HealthContainer" type="Panel" parent="PlayerResources/BarsContainer/BarsSubContainer" unique_id=1142448377]
+custom_minimum_size = Vector2(50, 60)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7dvk")
+
+[node name="HealthBar" type="ProgressBar" parent="PlayerResources/BarsContainer/BarsSubContainer/HealthContainer" unique_id=731539418]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_right = 295.0
+offset_bottom = 25.0
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_juc2q")
+theme_override_styles/fill = SubResource("StyleBoxFlat_0jl8t")
+value = 80.0
+show_percentage = false
+
+[node name="StaminaContainer" type="HBoxContainer" parent="PlayerResources/BarsContainer/BarsSubContainer" unique_id=733546380]
+layout_mode = 2
+
+[node name="StaminaSubcontainer" type="Panel" parent="PlayerResources/BarsContainer/BarsSubContainer/StaminaContainer" unique_id=2130891033]
+custom_minimum_size = Vector2(255, 30)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7dvk")
+
+[node name="StaminaBar" type="ProgressBar" parent="PlayerResources/BarsContainer/BarsSubContainer/StaminaContainer/StaminaSubcontainer" unique_id=1663861124]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -10.0
+offset_right = 250.0
+offset_bottom = 10.0
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_up53h")
+theme_override_styles/fill = SubResource("StyleBoxFlat_r3lf1")
+value = 50.0
+show_percentage = false
+
+[node name="CherAmiIconContainer" type="Panel" parent="PlayerResources" unique_id=161565052]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 0.34
+anchor_bottom = 1.0
+offset_left = -5.6415997
+offset_right = -5.429764
+offset_bottom = 0.17781067
+theme_override_styles/panel = SubResource("StyleBoxFlat_hsgek")
+metadata/_edit_use_anchors_ = true
+
+[node name="CherAmiIcon" type="TextureRect" parent="PlayerResources/CherAmiIconContainer" unique_id=1094082639]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -79.35391
+offset_top = -80.1593
+offset_right = 74.93827
+offset_bottom = 83.132866
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_etu2y")
+expand_mode = 5
+
+[node name="Timer" type="Timer" parent="PlayerResources" unique_id=1578551352]
+wait_time = 0.78
+autostart = true
