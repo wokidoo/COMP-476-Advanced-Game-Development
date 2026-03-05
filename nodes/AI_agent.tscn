@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="2_dtquj"]
 [ext_resource type="Script" uid="uid://brdmuactkv7sg" path="res://scripts/components/steering_component.gd" id="2_humdk"]
 [ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
+[ext_resource type="Script" uid="uid://ciut8gqte38k3" path="res://user_interface/health_container.gd" id="6_oerex"]
 [ext_resource type="PackedScene" uid="uid://7ya36e4xkn1a" path="res://user_interface/health_container.tscn" id="6_y06na"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jcmuf"]
@@ -16,6 +17,10 @@ height = 0.2
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_flffr"]
 viewport_path = NodePath("SubViewport")
+
+[sub_resource type="GDScript" id="GDScript_oerex"]
+script/source = "extends SubViewport
+"
 
 [node name="AIAgent" type="CharacterBody3D" unique_id=17692775]
 axis_lock_angular_x = true
@@ -61,8 +66,15 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.2986801, 0)
 texture = SubResource("ViewportTexture_flffr")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1627169895]
+transparent_bg = true
 size = Vector2i(305, 60)
+script = SubResource("GDScript_oerex")
 
 [node name="HealthContainer" parent="SubViewport" unique_id=1997248170 instance=ExtResource("6_y06na")]
+visible = false
 offset_left = 5.0
 offset_right = 304.0
+script = ExtResource("6_oerex")
+
+[connection signal="health_changed" from="HealthComponent" to="SubViewport/HealthContainer" method="_healthChanged"]
+[connection signal="max_health_changed" from="HealthComponent" to="SubViewport/HealthContainer" method="_maxHealthChanged"]

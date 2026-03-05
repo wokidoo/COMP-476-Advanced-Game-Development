@@ -52,7 +52,6 @@ text = "Paused"
 horizontal_alignment = 1
 
 [node name="FirstPageVBox" type="VBoxContainer" parent="Background/PauseMenuVBox" unique_id=420897203]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 
@@ -67,6 +66,7 @@ theme_override_font_sizes/font_size = 20
 text = "Quit"
 
 [node name="SettingsPageVBox" type="VBoxContainer" parent="Background/PauseMenuVBox" unique_id=2103813523]
+visible = false
 layout_mode = 2
 
 [node name="VolumeHBox" type="HBoxContainer" parent="Background/PauseMenuVBox/SettingsPageVBox" unique_id=1227660239]

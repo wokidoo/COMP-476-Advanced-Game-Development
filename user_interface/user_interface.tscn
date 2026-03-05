@@ -104,7 +104,8 @@ offset_bottom = 10.0
 grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_up53h")
 theme_override_styles/fill = SubResource("StyleBoxFlat_r3lf1")
-value = 50.0
+max_value = 10.0
+value = 10.0
 show_percentage = false
 
 [node name="CherAmiIconContainer" type="Panel" parent="PlayerResources" unique_id=161565052]

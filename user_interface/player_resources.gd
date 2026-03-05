@@ -1,13 +1,11 @@
 extends Control
 
-var health
-var stamina 
+@export var health = 10.0
+@export var stamina = 10.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$Timer.connect("timeout", _reset)
-	health = $BarsContainer/BarsSubContainer/HealthContainer/HealthBar.value
-	stamina = $BarsContainer/BarsSubContainer/StaminaContainer/StaminaSubcontainer/StaminaBar.value
 	pass 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -16,14 +14,14 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("damage_player_debug"):
 		_vibrate()
 		$CherAmiIconContainer/CherAmiIcon.texture = load("res://user_interface/distraction.png")
-		health -= 5
+		health -= 0.5
 		$Timer.start(1)
 	
 	#stamina simulator
 	if Input.is_action_pressed("sprint"):
-		stamina -= 0.05
-	else:
-		stamina += 0.05
+		stamina -= 0.01
+	elif stamina < 10.0:
+		stamina += 0.01
 	
 	#update visual components
 	$BarsContainer/BarsSubContainer/HealthContainer/HealthBar.value = health

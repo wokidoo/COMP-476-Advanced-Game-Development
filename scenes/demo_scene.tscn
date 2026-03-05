@@ -218,6 +218,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.026407, 10.172798, 0.3772
 [node name="UserInterface" parent="." unique_id=1567975266 instance=ExtResource("12_hhdwb")]
 
 [node name="PauseMenu" parent="UserInterface" unique_id=1685693337 instance=ExtResource("13_pbjje")]
+visible = false
 layout_mode = 1
 
 [node name="InstructionsContainer" type="MarginContainer" parent="UserInterface" unique_id=2050711432]
@@ -242,5 +243,7 @@ bbcode_enabled = true
 text = "[b]Walk:[/b] W,A,S,D 
 [b]Jump:[/b] Space
 [b]Sprint:[/b] Shift (hold)
+[b]Damage Player:[/b] E
+[b]Damage Enemies:[/b] Enter
 "
 fit_content = true

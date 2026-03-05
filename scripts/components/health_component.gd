@@ -28,3 +28,8 @@ func _set_max_health(value:float):
 	max_health = maxf(value,0.0)
 	health = clampf(health,0.0,max_health)
 	max_health_changed.emit(old_max,max_health)
+
+#this is for testing purposes
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("ui_accept"):
+		_set_health(health - 0.5)
