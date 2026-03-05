@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://b5p1r7adjlcb2"]
 
+[ext_resource type="Script" uid="uid://de76dwhkhvie3" path="res://user_interface/pause_menu_v_box.gd" id="1_rhd5n"]
+
 [sub_resource type="GDScript" id="GDScript_3q56x"]
 resource_name = "pause_menu"
 script/source = "extends Control
@@ -44,6 +46,7 @@ offset_bottom = 125.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 30
+script = ExtResource("1_rhd5n")
 
 [node name="PausedLabel" type="Label" parent="Background/PauseMenuVBox" unique_id=1579766717]
 layout_mode = 2
@@ -52,6 +55,7 @@ text = "Paused"
 horizontal_alignment = 1
 
 [node name="FirstPageVBox" type="VBoxContainer" parent="Background/PauseMenuVBox" unique_id=420897203]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 
@@ -66,8 +70,8 @@ theme_override_font_sizes/font_size = 20
 text = "Quit"
 
 [node name="SettingsPageVBox" type="VBoxContainer" parent="Background/PauseMenuVBox" unique_id=2103813523]
-visible = false
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="VolumeHBox" type="HBoxContainer" parent="Background/PauseMenuVBox/SettingsPageVBox" unique_id=1227660239]
 layout_mode = 2
@@ -81,23 +85,14 @@ text = "Volume"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-value = 75.0
+value = 50.0
 
-[node name="FovHBox" type="HBoxContainer" parent="Background/PauseMenuVBox/SettingsPageVBox" unique_id=1001004190]
+[node name="BackButton" type="Button" parent="Background/PauseMenuVBox/SettingsPageVBox" unique_id=24369185]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="FovLabel" type="Label" parent="Background/PauseMenuVBox/SettingsPageVBox/FovHBox" unique_id=949538883]
-layout_mode = 2
-text = "Field of View"
-
-[node name="FovHSlider" type="HSlider" parent="Background/PauseMenuVBox/SettingsPageVBox/FovHBox" unique_id=1142868860]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-min_value = 45.0
-max_value = 120.0
-value = 75.0
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "Back"
 
 [node name="UpgradeMenuVBox" type="VBoxContainer" parent="Background" unique_id=193557493]
 visible = false
@@ -141,3 +136,8 @@ text = "Health"
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Speed"
+
+[connection signal="pressed" from="Background/PauseMenuVBox/FirstPageVBox/SettingsButton" to="Background/PauseMenuVBox" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="Background/PauseMenuVBox/FirstPageVBox/QuitButton" to="Background/PauseMenuVBox" method="_on_quit_button_pressed"]
+[connection signal="value_changed" from="Background/PauseMenuVBox/SettingsPageVBox/VolumeHBox/VolumeHSlider" to="Background/PauseMenuVBox" method="_on_volume_h_slider_value_changed"]
+[connection signal="tree_entered" from="Background/PauseMenuVBox/SettingsPageVBox/BackButton" to="Background/PauseMenuVBox" method="_on_back_button_tree_entered"]
