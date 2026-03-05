@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="2_dtquj"]
 [ext_resource type="Script" uid="uid://brdmuactkv7sg" path="res://scripts/components/steering_component.gd" id="2_humdk"]
 [ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
-[ext_resource type="PackedScene" uid="uid://7ya36e4xkn1a" path="res://ui_test/health_container.tscn" id="6_y06na"]
+[ext_resource type="PackedScene" uid="uid://7ya36e4xkn1a" path="res://user_interface/health_container.tscn" id="6_y06na"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jcmuf"]
 

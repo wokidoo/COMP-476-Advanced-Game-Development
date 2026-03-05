@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://yx0mraktnb0f"]
 
-[ext_resource type="Script" uid="uid://dl4krm6yn8yd7" path="res://ui_test/player_resources.gd" id="1_hlq4j"]
-[ext_resource type="Texture2D" uid="uid://ygy8dmrt0fdy" path="res://ui_test/finch.png" id="2_etu2y"]
-[ext_resource type="PackedScene" uid="uid://7ya36e4xkn1a" path="res://ui_test/health_container.tscn" id="2_xaiut"]
+[ext_resource type="Script" uid="uid://dl4krm6yn8yd7" path="res://user_interface/player_resources.gd" id="1_hlq4j"]
+[ext_resource type="Texture2D" uid="uid://ygy8dmrt0fdy" path="res://user_interface/finch.png" id="2_etu2y"]
+[ext_resource type="PackedScene" uid="uid://7ya36e4xkn1a" path="res://user_interface/health_container.tscn" id="2_xaiut"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7dvk"]
 bg_color = Color(0.5227242, 0.5227243, 0.5227241, 1)

@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://b5p1r7adjlcb2"]
+
+[sub_resource type="GDScript" id="GDScript_3q56x"]
+resource_name = "pause_menu"
+script/source = "extends Control
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PAUSED:
+		visible = false
+	elif what == NOTIFICATION_UNPAUSED:
+		visible = true
+"
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fjv3s"]
+
+[node name="Paused" type="Control" unique_id=1685693337]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_3q56x")
+
+[node name="Background" type="Panel" parent="." unique_id=2119287059]
+material = SubResource("CanvasItemMaterial_fjv3s")
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="PauseMenuVBox" type="VBoxContainer" parent="Background" unique_id=1540647683]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -375.0
+offset_top = -125.0
+offset_right = 375.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="PausedLabel" type="Label" parent="Background/PauseMenuVBox" unique_id=1579766717]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="FirstPageVBox" type="VBoxContainer" parent="Background/PauseMenuVBox" unique_id=420897203]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SettingsButton" type="Button" parent="Background/PauseMenuVBox/FirstPageVBox" unique_id=1228748712]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="Background/PauseMenuVBox/FirstPageVBox" unique_id=1751728822]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Quit"
+
+[node name="SettingsPageVBox" type="VBoxContainer" parent="Background/PauseMenuVBox" unique_id=2103813523]
+layout_mode = 2
+
+[node name="VolumeHBox" type="HBoxContainer" parent="Background/PauseMenuVBox/SettingsPageVBox" unique_id=1227660239]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VolumeLabel" type="Label" parent="Background/PauseMenuVBox/SettingsPageVBox/VolumeHBox" unique_id=632387155]
+layout_mode = 2
+text = "Volume"
+
+[node name="VolumeHSlider" type="HSlider" parent="Background/PauseMenuVBox/SettingsPageVBox/VolumeHBox" unique_id=617429742]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 75.0
+
+[node name="FovHBox" type="HBoxContainer" parent="Background/PauseMenuVBox/SettingsPageVBox" unique_id=1001004190]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="FovLabel" type="Label" parent="Background/PauseMenuVBox/SettingsPageVBox/FovHBox" unique_id=949538883]
+layout_mode = 2
+text = "Field of View"
+
+[node name="FovHSlider" type="HSlider" parent="Background/PauseMenuVBox/SettingsPageVBox/FovHBox" unique_id=1142868860]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 45.0
+max_value = 120.0
+value = 75.0
+
+[node name="UpgradeMenuVBox" type="VBoxContainer" parent="Background" unique_id=193557493]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -375.0
+offset_top = -125.0
+offset_right = 375.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="UpgradeLabel" type="Label" parent="Background/UpgradeMenuVBox" unique_id=1970947404]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Upgrade"
+horizontal_alignment = 1
+
+[node name="UpgradeButtonsHBox" type="HBoxContainer" parent="Background/UpgradeMenuVBox" unique_id=31733444]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 50
+
+[node name="DamageButton" type="Button" parent="Background/UpgradeMenuVBox/UpgradeButtonsHBox" unique_id=1800746213]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Damage"
+
+[node name="HealthButton" type="Button" parent="Background/UpgradeMenuVBox/UpgradeButtonsHBox" unique_id=1106716324]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Health"
+
+[node name="SpeedButton" type="Button" parent="Background/UpgradeMenuVBox/UpgradeButtonsHBox" unique_id=2082256558]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Speed"

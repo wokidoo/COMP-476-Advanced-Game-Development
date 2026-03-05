@@ -10,8 +10,9 @@
 [ext_resource type="Script" uid="uid://cmh6706pagrpf" path="res://scripts/AI/behaviours/AI_behaviour.gd" id="10_o70wo"]
 [ext_resource type="Script" uid="uid://b5siemtk3ecxe" path="res://scripts/AI/behaviours/look_at_behaviour.gd" id="11_pbjje"]
 [ext_resource type="Script" uid="uid://c6pxqjuoxdnvv" path="res://scripts/AI/behaviours/move_forward_behaviour.gd" id="12_8iuhj"]
-[ext_resource type="PackedScene" uid="uid://yx0mraktnb0f" path="res://ui_test/user_interface.tscn" id="12_hhdwb"]
+[ext_resource type="PackedScene" uid="uid://yx0mraktnb0f" path="res://user_interface/user_interface.tscn" id="12_hhdwb"]
 [ext_resource type="Script" uid="uid://boc1uvgo8ekdj" path="res://scripts/AI/behaviours/stay_away_behaviour.gd" id="13_o70wo"]
+[ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="13_pbjje"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
 resource_name = "pauser_input_node"
@@ -87,18 +88,6 @@ shader_parameter/transition_strength = 8.0
 shader_parameter/texture_x = SubResource("GradientTexture2D_tk8g1")
 shader_parameter/texture_y = SubResource("GradientTexture2D_21int")
 shader_parameter/texture_z = SubResource("GradientTexture2D_hhdwb")
-
-[sub_resource type="GDScript" id="GDScript_3q56x"]
-resource_name = "pause_menu"
-script/source = "extends Control
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_PAUSED:
-		visible = false
-	elif what == NOTIFICATION_UNPAUSED:
-		visible = true
-"
 
 [sub_resource type="Resource" id="Resource_pbjje"]
 script = ExtResource("11_pbjje")
@@ -202,33 +191,6 @@ radius = 3.0
 radial_segments = 24
 material = SubResource("ShaderMaterial_b3yjl")
 
-[node name="PauseMenu" type="Control" parent="." unique_id=640842078]
-process_mode = 2
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
-script = SubResource("GDScript_3q56x")
-
-[node name="PanelContainer" type="PanelContainer" parent="PauseMenu" unique_id=268816588]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="PauseMenu/PanelContainer" unique_id=751245391]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Paused"
-horizontal_alignment = 1
-
 [node name="AISquad" type="Node" parent="." unique_id=716845743 node_paths=PackedStringArray("target", "agents")]
 script = ExtResource("8_o70wo")
 enabled = true
@@ -254,6 +216,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.554457, 10.172798, -6.957
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.026407, 10.172798, 0.37721634)
 
 [node name="UserInterface" parent="." unique_id=1567975266 instance=ExtResource("12_hhdwb")]
+
+[node name="PauseMenu" parent="UserInterface" unique_id=1685693337 instance=ExtResource("13_pbjje")]
+layout_mode = 1
 
 [node name="InstructionsContainer" type="MarginContainer" parent="UserInterface" unique_id=2050711432]
 layout_mode = 1

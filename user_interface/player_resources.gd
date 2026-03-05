@@ -15,7 +15,7 @@ func _process(delta: float) -> void:
 	# damage simulator
 	if Input.is_action_just_pressed("damage_player_debug"):
 		_vibrate()
-		$CherAmiIconContainer/CherAmiIcon.texture = load("res://ui_test/distraction.png")
+		$CherAmiIconContainer/CherAmiIcon.texture = load("res://user_interface/distraction.png")
 		health -= 5
 		$Timer.start(1)
 	
@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 	pass
 
 func _reset() -> void:
-	$CherAmiIconContainer/CherAmiIcon.texture = load("res://ui_test/finch.png")
+	$CherAmiIconContainer/CherAmiIcon.texture = load("res://user_interface/finch.png")
 	set_offset(0,0)
 	set_offset(1,0)
 	set_offset(2,0)

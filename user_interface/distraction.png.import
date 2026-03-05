@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ygy8dmrt0fdy"
-path="res://.godot/imported/finch.png-067009f2c749bd03987354bc1532864c.ctex"
+uid="uid://crlovki8eh0pk"
+path="res://.godot/imported/distraction.png-8f45130b01cc2d3bd3cd1dc49a62fef7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ui_test/finch.png"
-dest_files=["res://.godot/imported/finch.png-067009f2c749bd03987354bc1532864c.ctex"]
+source_file="res://user_interface/distraction.png"
+dest_files=["res://.godot/imported/distraction.png-8f45130b01cc2d3bd3cd1dc49a62fef7.ctex"]
 
 [params]
 
