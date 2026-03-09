@@ -8,18 +8,24 @@ class_name AIAgent
 
 @export var avoidance_weight:float = 1.0
 
-@export var target:Node3D
+@export var target:Node3D:
+	set(value):
+		target = value
+		target_changed.emit(target)
 @export var behaviours:Array[AIBehaviour]
 
 @onready var health_component: HealthComponent = %HealthComponent
 @onready var steering_component: SteeringComponent = %SteeringComponent
 @onready var avoider_component: AvoiderComponent = %AvoiderComponent
+@onready var state_machine:StateMachine = %StateMachine
+
+signal target_changed(target:Node3D)
 
 func _ready() -> void:
 	self.floor_constant_speed = true
 
 func _physics_process(delta: float) -> void:
-	if Engine.get_physics_frames()%5==0:
+	if Engine.get_physics_frames() % 5 == 0:
 		transform = transform.orthonormalized()
 	_apply_behaviours(delta)
 	_apply_steering(steering_component,delta)

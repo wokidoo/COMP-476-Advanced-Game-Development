@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b2wslsdw7pcik"]
 
 [ext_resource type="PackedScene" uid="uid://hcg2derrs5s8" path="res://nodes/player_character.tscn" id="1_7epem"]
+[ext_resource type="CompositorEffect" uid="uid://kyytsf1mdk4w" path="res://post_processing_compositor/compositor_effects/edge_detection_compositor_effect.tres" id="1_hhdwb"]
 [ext_resource type="CompositorEffect" uid="uid://jx2ng6tynvee" path="res://post_processing_compositor/compositor_effects/dither_compositor_effect.tres" id="2_fhsbr"]
 [ext_resource type="Shader" uid="uid://cae2xm5taem6" path="res://materials/triplanar.gdshader" id="3_3q56x"]
 [ext_resource type="CompositorEffect" uid="uid://b3vjjxwtr8a5d" path="res://post_processing_compositor/compositor_effects/film_grain_compositor_effect.tres" id="4_au7hc"]
@@ -28,7 +29,7 @@ func _input(event: InputEvent) -> void:
 
 [sub_resource type="Gradient" id="Gradient_as4lt"]
 interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.684492)
+offsets = PackedFloat32Array(0, 0.45901638)
 colors = PackedColorArray(0.21176471, 0.21176471, 0.12156863, 1, 0.9019608, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_fhsbr"]
@@ -42,12 +43,11 @@ sky_material = SubResource("ProceduralSkyMaterial_7epem")
 [sub_resource type="Environment" id="Environment_as4lt"]
 background_mode = 2
 sky = SubResource("Sky_3q56x")
-tonemap_mode = 4
 adjustment_saturation = 0.0
 adjustment_color_correction = SubResource("GradientTexture1D_fhsbr")
 
 [sub_resource type="Compositor" id="Compositor_avju2"]
-compositor_effects = Array[CompositorEffect]([ExtResource("4_au7hc"), ExtResource("2_fhsbr"), ExtResource("5_siv4a")])
+compositor_effects = Array[CompositorEffect]([ExtResource("1_hhdwb"), ExtResource("5_siv4a"), ExtResource("4_au7hc"), ExtResource("2_fhsbr")])
 
 [sub_resource type="Gradient" id="Gradient_r10i8"]
 interpolation_mode = 1

@@ -3,9 +3,186 @@
 [ext_resource type="Script" uid="uid://bn6evds4qsgc4" path="res://scripts/player/player_character.gd" id="1_qlps6"]
 [ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="2_5l2xy"]
 [ext_resource type="Shader" uid="uid://bgjer4ly5f8rs" path="res://materials/grid_debug.gdshader" id="2_hs54n"]
-[ext_resource type="Script" uid="uid://b42om5mouo7ee" path="res://addons/Gostate/scripts/state.gd" id="3_bvxdu"]
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="5_ehlbk"]
 [ext_resource type="Script" uid="uid://bsu43s1gtwkhy" path="res://scripts/components/camera_controller_3d.gd" id="6_qcnnv"]
+
+[sub_resource type="GDScript" id="GDScript_60spa"]
+resource_name = "Grounded"
+script/source = "extends State
+
+@export var player:Player3D
+
+func state_enter() -> void:
+	# Guarentees buffer timer to be initialized before using it
+	if not player.is_node_ready():
+		await player.ready
+	player.capture_mouse()
+	player.velocity.y = 0.0
+	# If jump is buffered, immediately start a new jump
+	if player.is_jump_buffered():
+		state_machine.execute_event(\"jump\")
+	elif Input.is_action_pressed(\"sprint\"):
+		state_machine.execute_event(\"sprinting\")
+	
+func state_exit() -> void:
+	pass
+	
+func state_input(event: InputEvent) -> void:
+	if event.is_action_pressed(\"sprint\"):
+		state_machine.execute_event(\"sprinting\")
+	if event.is_action_pressed(\"jump\"):
+		state_machine.execute_event(\"jump\")
+	
+func state_physics_process(delta: float) -> void:
+	var current_h_velocity: Vector3 = player.velocity
+	current_h_velocity.y = 0.0
+	var target_h_velocity: Vector3 = Vector3.ZERO
+	var final_h_velocity: Vector3
+	
+	if current_h_velocity.length() > player.walk_speed:
+		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.sprint_deceleration * delta)
+	elif not player.input_direction.is_zero_approx():
+		target_h_velocity = player.walk_speed * player.input_direction
+		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.walk_acceleration * delta)
+	else:
+		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.walk_deceleration * delta)
+
+	player.velocity.x = final_h_velocity.x
+	player.velocity.z = final_h_velocity.z
+	
+	player.move_and_slide()
+	if not player.is_on_floor():
+		state_machine.execute_event(\"falling\")
+"
+
+[sub_resource type="GDScript" id="GDScript_1c71w"]
+resource_name = "Sprinting"
+script/source = "extends State
+
+@export var player:Player3D
+
+func state_enter() -> void:
+	pass
+
+func state_exit() -> void:
+	pass
+
+func state_input(event: InputEvent) -> void:
+	if event.is_action_released(\"sprint\"):
+		state_machine.execute_event(\"walking\")
+	if event.is_action_pressed(\"jump\"):
+		state_machine.execute_event(\"jump\")
+
+func state_physics_process(delta: float) -> void:
+	var current_h_velocity: Vector3 = player.velocity
+	current_h_velocity.y = 0.0
+	var target_h_velocity: Vector3 = player.sprint_speed * player.input_direction
+	var final_h_velocity: Vector3 = Vector3.ZERO
+
+	if is_zero_approx(player.input_direction.length_squared()):
+		target_h_velocity = Vector3.ZERO
+		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.walk_deceleration * delta)
+	else:
+		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.sprint_acceleration * delta)
+	
+	player.velocity.x = final_h_velocity.x
+	player.velocity.z = final_h_velocity.z
+	player.move_and_slide()
+	
+	if not player.is_on_floor():
+		state_machine.execute_event(\"falling\")
+	if not Input.is_action_pressed(\"sprint\"):
+		state_machine.execute_event(\"walking\")
+"
+
+[sub_resource type="GDScript" id="GDScript_efhua"]
+resource_name = "Jumping"
+script/source = "extends State
+
+@export var player:Player3D
+
+func state_enter() -> void:
+	player.velocity.y += player.jump_force
+
+func state_exit() -> void:
+	pass # Replace with function body.
+
+func state_input(event: InputEvent) -> void:
+	if event.is_action_released(\"sprint\"):
+		state_machine.execute_event(\"grounded\")
+	elif event.is_action_pressed(\"jump\"):
+		player.buffer_jump()
+
+func state_physics_process(delta: float) -> void:
+	var current_horiz_velocity: Vector3 = player.velocity
+	current_horiz_velocity.y = 0.0
+
+	var target_horiz_velocity: Vector3
+	var final_horiz_velocity: Vector3 = Vector3.ZERO
+
+	player.velocity.y -= (player.jump_gravity * delta)
+	if player.input_direction and current_horiz_velocity.length() > player.air_speed:
+		target_horiz_velocity = player.air_speed * player.input_direction
+		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_deceleration * delta)
+	elif player.input_direction:
+		target_horiz_velocity = player.air_speed * player.input_direction
+		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_acceleration * delta)
+	else:
+		target_horiz_velocity = current_horiz_velocity
+		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_deceleration * delta)
+	
+	player.velocity.x = final_horiz_velocity.x
+	player.velocity.z = final_horiz_velocity.z
+	player.move_and_slide()
+	
+	if player.is_on_floor():
+		state_machine.execute_event(\"walking\")
+	if player.velocity.y < 0.0 or is_zero_approx(player.velocity.y):
+		state_machine.execute_event(\"falling\")
+	
+"
+
+[sub_resource type="GDScript" id="GDScript_5x08c"]
+resource_name = "Falling"
+script/source = "extends State
+
+@export var player:Player3D
+
+func state_enter() -> void:
+	pass # Replace with function body.
+
+func state_exit() -> void:
+	pass # Replace with function body.
+
+func state_input(event: InputEvent) -> void:
+	if event.is_action_pressed(\"jump\"):
+		player.buffer_jump()
+
+func state_physics_process(delta: float) -> void:
+	var current_horiz_velocity: Vector3 = player.velocity
+	current_horiz_velocity.y = 0.0
+
+	var target_horiz_velocity: Vector3
+	var final_horiz_velocity: Vector3 = Vector3.ZERO
+
+	player.velocity.y -= (player.fall_gravity * delta)
+	if player.input_direction and current_horiz_velocity.length() > player.air_speed:
+		target_horiz_velocity = player.air_speed * player.input_direction
+		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_deceleration * delta)
+	elif player.input_direction:
+		target_horiz_velocity = player.air_speed * player.input_direction
+		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_acceleration * delta)
+	else:
+		target_horiz_velocity = current_horiz_velocity
+		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_deceleration * delta)
+	
+	player.velocity.x = final_horiz_velocity.x
+	player.velocity.z = final_horiz_velocity.z
+	player.move_and_slide()
+
+	if player.is_on_floor():
+		state_machine.execute_event(\"walking\")
+"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hs54n"]
 
@@ -41,22 +218,66 @@ shader_parameter/in_dashed_count_y = 6.0
 radius = 0.1
 height = 0.2
 
-[node name="PlayerCharacter" type="CharacterBody3D" unique_id=1161731980 node_paths=PackedStringArray("camera_controller", "state_machine")]
+[node name="PlayerCharacter" type="CharacterBody3D" unique_id=1161731980]
 collision_layer = 2
 collision_mask = 3
 floor_constant_speed = true
 script = ExtResource("1_qlps6")
-camera_controller = NodePath("CameraController3D")
-state_machine = NodePath("StateMachine")
 walk_speed = 5.0
 walk_acceleration = 10.0
-walk_deceleration = 15.0
+walk_deceleration = 7.0
 sprint_speed = 12.0
 sprint_acceleration = 2.0
 jump_gravity = 20.0
 fall_gravity = 30.0
 
+[node name="StateMachine" type="Node" parent="." unique_id=105280299 node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("2_5l2xy")
+initial_state = NodePath("Grounded")
+metadata/_custom_type_script = "uid://bx384iuwj3u8u"
+
+[node name="Grounded" type="Node" parent="StateMachine" unique_id=837258184 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_60spa")
+player = NodePath("../..")
+transitions = {
+&"falling": NodePath("../Falling"),
+&"jump": NodePath("../Jumping"),
+&"sprinting": NodePath("../Sprinting")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Sprinting" type="Node" parent="StateMachine" unique_id=1980962346 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_1c71w")
+player = NodePath("../..")
+transitions = {
+&"falling": NodePath("../Falling"),
+&"jump": NodePath("../Jumping"),
+&"walking": NodePath("../Grounded")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Jumping" type="Node" parent="StateMachine" unique_id=1417499918 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_efhua")
+player = NodePath("../..")
+transitions = {
+&"falling": NodePath("../Falling"),
+&"sprinting": NodePath("../Sprinting"),
+&"walking": NodePath("../Grounded")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Falling" type="Node" parent="StateMachine" unique_id=2104792821 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_5x08c")
+player = NodePath("../..")
+transitions = {
+&"sprinting": NodePath("../Sprinting"),
+&"walking": NodePath("../Grounded")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
 [node name="CameraController3D" type="Node3D" parent="." unique_id=1462189122 node_paths=PackedStringArray("camera", "pitch_anchor")]
+unique_name_in_owner = true
 top_level = true
 script = ExtResource("6_qcnnv")
 camera = NodePath("CameraSpringArm/Camera3D")
@@ -69,6 +290,7 @@ shape = SubResource("SphereShape3D_hs54n")
 spring_length = 4.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraController3D/CameraSpringArm" unique_id=1525454726]
+size = 2.38
 
 [node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=1717507666]
 unique_name_in_owner = true
@@ -83,61 +305,6 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45670342, -1.0724702)
 mesh = SubResource("SphereMesh_5l2xy")
 
-[node name="StateMachine" type="Node" parent="." unique_id=105280299 node_paths=PackedStringArray("initial_state")]
-script = ExtResource("2_5l2xy")
-initial_state = NodePath("GroundedState")
-metadata/_custom_type_script = "uid://bx384iuwj3u8u"
-
-[node name="GroundedState" type="Node" parent="StateMachine" unique_id=837258184 node_paths=PackedStringArray("transitions")]
-script = ExtResource("3_bvxdu")
-transitions = {
-&"falling": NodePath("../FallingState"),
-&"jump": NodePath("../JumpState"),
-&"noplay": NodePath("../NoplayState"),
-&"sprinting": NodePath("../SprintState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
-
-[node name="SprintState" type="Node" parent="StateMachine" unique_id=1980962346 node_paths=PackedStringArray("transitions")]
-script = ExtResource("3_bvxdu")
-transitions = {
-&"falling": NodePath("../FallingState"),
-&"jump": NodePath("../JumpState"),
-&"noplay": NodePath("../NoplayState"),
-&"walking": NodePath("../GroundedState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
-
-[node name="JumpState" type="Node" parent="StateMachine" unique_id=1417499918 node_paths=PackedStringArray("transitions")]
-script = ExtResource("3_bvxdu")
-transitions = {
-&"falling": NodePath("../FallingState"),
-&"noplay": NodePath("../NoplayState"),
-&"sprinting": NodePath("../SprintState"),
-&"walking": NodePath("../GroundedState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
-
-[node name="FallingState" type="Node" parent="StateMachine" unique_id=2104792821 node_paths=PackedStringArray("transitions")]
-script = ExtResource("3_bvxdu")
-transitions = {
-&"noplay": NodePath("../NoplayState"),
-&"sprinting": NodePath("../SprintState"),
-&"walking": NodePath("../GroundedState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
-
-[node name="NoplayState" type="Node" parent="StateMachine" unique_id=1218211838 node_paths=PackedStringArray("transitions")]
-process_mode = 2
-script = ExtResource("3_bvxdu")
-transitions = {
-&"FallingState": NodePath("../FallingState"),
-&"GroundedState": NodePath("../GroundedState"),
-&"JumpState": NodePath("../FallingState"),
-&"SprintState": NodePath("../SprintState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
-
 [node name="JumpBufferTimer" type="Timer" parent="." unique_id=47575190]
 unique_name_in_owner = true
 one_shot = true
@@ -147,22 +314,3 @@ script = ExtResource("5_ehlbk")
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
 
 [connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]
-[connection signal="entered" from="StateMachine/GroundedState" to="." method="_on_grounded_state_entered"]
-[connection signal="exited" from="StateMachine/GroundedState" to="." method="_on_grounded_state_exited"]
-[connection signal="input" from="StateMachine/GroundedState" to="." method="_on_grounded_state_input"]
-[connection signal="physics_process" from="StateMachine/GroundedState" to="." method="_on_grounded_state_physics_process"]
-[connection signal="entered" from="StateMachine/SprintState" to="." method="_on_sprint_state_entered"]
-[connection signal="exited" from="StateMachine/SprintState" to="." method="_on_sprint_state_exited"]
-[connection signal="input" from="StateMachine/SprintState" to="." method="_on_sprint_state_input"]
-[connection signal="physics_process" from="StateMachine/SprintState" to="." method="_on_sprint_state_physics_process"]
-[connection signal="entered" from="StateMachine/JumpState" to="." method="_on_jump_state_entered"]
-[connection signal="exited" from="StateMachine/JumpState" to="." method="_on_jump_state_exited"]
-[connection signal="input" from="StateMachine/JumpState" to="." method="_on_jump_state_input"]
-[connection signal="physics_process" from="StateMachine/JumpState" to="." method="_on_jump_state_physics_process"]
-[connection signal="entered" from="StateMachine/FallingState" to="." method="_on_falling_state_entered"]
-[connection signal="exited" from="StateMachine/FallingState" to="." method="_on_falling_state_exited"]
-[connection signal="input" from="StateMachine/FallingState" to="." method="_on_falling_state_input"]
-[connection signal="physics_process" from="StateMachine/FallingState" to="." method="_on_falling_state_physics_process"]
-[connection signal="entered" from="StateMachine/NoplayState" to="." method="_on_noplay_state_entered"]
-[connection signal="exited" from="StateMachine/NoplayState" to="." method="_on_noplay_state_exited"]
-[connection signal="input" from="StateMachine/NoplayState" to="." method="_on_noplay_state_input"]

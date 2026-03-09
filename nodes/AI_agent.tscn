@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="2_dtquj"]
 [ext_resource type="Script" uid="uid://brdmuactkv7sg" path="res://scripts/components/steering_component.gd" id="2_humdk"]
 [ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
+[ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="5_flffr"]
+[ext_resource type="Script" uid="uid://b42om5mouo7ee" path="res://addons/Gostate/scripts/state.gd" id="6_oerex"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jcmuf"]
 
@@ -51,3 +53,13 @@ mesh = SubResource("CapsuleMesh_fibwc")
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=527489115]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("SphereMesh_y06na")
+
+[node name="StateMachine" type="Node" parent="." unique_id=26237221 node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("5_flffr")
+initial_state = NodePath("Idle")
+metadata/_custom_type_script = "uid://bx384iuwj3u8u"
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1970834143]
+script = ExtResource("6_oerex")
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
