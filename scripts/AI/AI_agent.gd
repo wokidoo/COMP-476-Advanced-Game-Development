@@ -71,8 +71,7 @@ func _rotate_body(dir: Vector3, delta: float) -> void:
 func _apply_gravity(delta:float) -> void:
 	velocity.y -= gravity*delta
 
-func receive_damage(hitbox:Hitbox3D,hurtbox:Hurtbox3D):
-	var dmg:DamageInstnace = hitbox.damage_instance
+func receive_damage(dmg:DamageInstnace,hurtbox:Hurtbox3D):
 	print('NPC hit!\nDamage: %s'%dmg.damage)
 	health_component.health -= dmg.damage
 

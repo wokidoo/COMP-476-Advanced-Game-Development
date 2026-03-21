@@ -1,7 +1,7 @@
 extends Area3D
 class_name Hitbox3D
 
-signal hit(hitbox:Hitbox3D,hurtbox:Hurtbox3D)
+signal hit(damage_instance:DamageInstnace,hurtbox:Hurtbox3D)
 
 var damage_instance:DamageInstnace
 
@@ -16,7 +16,7 @@ func _on_area_entered(area:Area3D):
 	if area is Hitbox3D and not hits.has(area):
 		hits.append(area)
 		area.tree_exiting.connect(_on_hurtbox_freeing.bind(area))
-		hit.emit(self,area)
+		hit.emit(damage_instance,area)
 	
 func _on_area_exited(area:Area3D):
 	if area is Hitbox3D and hits.has(area):

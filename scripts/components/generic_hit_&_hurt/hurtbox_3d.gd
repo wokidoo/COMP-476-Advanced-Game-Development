@@ -1,7 +1,7 @@
 extends Area3D
 class_name Hurtbox3D
 
-signal hit(hitbox:Hitbox3D,hurtbox:Hurtbox3D)
+signal hit(damage_instance:DamageInstnace,hurtbox:Hurtbox3D)
 
 ## Name of the method in parent Node that will resolve the consequences of the hit.
 ## The method is expected to accept two parameters. One [Hitbox3D] and one [Hurtbox3D] in that order.
@@ -18,10 +18,10 @@ func _init() -> void:
 func _ready() -> void:
 	_parent = get_parent()
 
-func trigger_hit(hitbox:Hitbox3D):
+func trigger_hit(dmg_instance:DamageInstnace):
 	if _parent.has_method(damage_callback):
-		_parent.call(damage_callback,hitbox,self)
-		hit.emit(hitbox,self)
+		_parent.call(damage_callback,dmg_instance,self)
+		self.hit.emit(dmg_instance,self)
 
 # Call parent of Hurtbox3D when Hitbox3D enters.
 # Let parent handle processing the hit.
@@ -30,7 +30,7 @@ func _on_area_entered(area:Area3D):
 	if area is Hitbox3D and not hits.has(area):
 		hits.append(area)
 		area.tree_exiting.connect(_on_hitbox_freeing.bind(area))
-		trigger_hit(area)
+		trigger_hit(area.damage_instance)
 	
 func _on_area_exited(area:Area3D):
 	if area is Hitbox3D and hits.has(area):
