@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dysielhx7ldk"]
+
+[ext_resource type="Script" uid="uid://cdxtw4hrlxfbh" path="res://scripts/components/generic_hit_&_hurt/hitbox_3d.gd" id="1_ujs0c"]
+
+[sub_resource type="GDScript" id="GDScript_ujs0c"]
+resource_name = "basic_projectile"
+script/source = "extends Node3D
+
+@onready var hitbox:Hitbox3D = %Hitbox3D
+
+func _ready() -> void:
+	hitbox.damage_instance = DamageInstnace.new(randf_range(1,10),{'hit_count':3})
+
+func _physics_process(delta: float) -> void:
+	position += -self.basis.z*delta
+
+
+func _on_visible_on_screen_notifier_3d_screen_exited() -> void:
+	self.queue_free()
+"
+
+[sub_resource type="SphereMesh" id="SphereMesh_3ylr4"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_iiqi4"]
+
+[node name="BasicProjectile" type="Node3D" unique_id=2096800091]
+script = SubResource("GDScript_ujs0c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=451463265]
+mesh = SubResource("SphereMesh_3ylr4")
+skeleton = NodePath("../Hitbox3D/CollisionShape3D")
+
+[node name="Hitbox3D" type="Area3D" parent="." unique_id=101671747]
+unique_name_in_owner = true
+script = ExtResource("1_ujs0c")
+metadata/_custom_type_script = "uid://cdxtw4hrlxfbh"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox3D" unique_id=1840336570]
+shape = SubResource("SphereShape3D_iiqi4")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="." unique_id=466143532]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]

@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
 [ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="5_flffr"]
 [ext_resource type="Script" uid="uid://b42om5mouo7ee" path="res://addons/Gostate/scripts/state.gd" id="6_oerex"]
+[ext_resource type="Script" uid="uid://crq7vga7bh344" path="res://scripts/components/generic_hit_&_hurt/hurtbox_3d.gd" id="7_y06na"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jcmuf"]
 
@@ -14,6 +15,8 @@
 [sub_resource type="SphereMesh" id="SphereMesh_y06na"]
 radius = 0.1
 height = 0.2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a5mj6"]
 
 [node name="AIAgent" type="CharacterBody3D" unique_id=17692775]
 axis_lock_angular_x = true
@@ -63,3 +66,11 @@ metadata/_custom_type_script = "uid://bx384iuwj3u8u"
 [node name="Idle" type="Node" parent="StateMachine" unique_id=1970834143]
 script = ExtResource("6_oerex")
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Hurtbox3D" type="Area3D" parent="." unique_id=1679062543]
+script = ExtResource("7_y06na")
+damage_callback = &"receive_damage"
+metadata/_custom_type_script = "uid://crq7vga7bh344"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox3D" unique_id=342035709]
+shape = SubResource("CapsuleShape3D_a5mj6")

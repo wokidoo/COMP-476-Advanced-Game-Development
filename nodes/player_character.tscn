@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="2_5l2xy"]
 [ext_resource type="Shader" uid="uid://bgjer4ly5f8rs" path="res://materials/grid_debug.gdshader" id="2_hs54n"]
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="5_ehlbk"]
+[ext_resource type="Script" uid="uid://crq7vga7bh344" path="res://scripts/components/generic_hit_&_hurt/hurtbox_3d.gd" id="6_60spa"]
 [ext_resource type="Script" uid="uid://bsu43s1gtwkhy" path="res://scripts/components/camera_controller_3d.gd" id="6_qcnnv"]
 
 [sub_resource type="GDScript" id="GDScript_60spa"]
@@ -218,6 +219,8 @@ shader_parameter/in_dashed_count_y = 6.0
 radius = 0.1
 height = 0.2
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_60spa"]
+
 [node name="PlayerCharacter" type="CharacterBody3D" unique_id=1161731980]
 collision_layer = 2
 collision_mask = 3
@@ -312,5 +315,14 @@ one_shot = true
 [node name="HealthComponent" type="Node" parent="." unique_id=981849851]
 script = ExtResource("5_ehlbk")
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
+
+[node name="Hurtbox3D" type="Area3D" parent="." unique_id=1128235420]
+input_ray_pickable = false
+script = ExtResource("6_60spa")
+damage_callback = &"receive_damage"
+metadata/_custom_type_script = "uid://crq7vga7bh344"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox3D" unique_id=785969580]
+shape = SubResource("CapsuleShape3D_60spa")
 
 [connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]

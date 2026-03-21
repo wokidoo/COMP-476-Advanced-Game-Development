@@ -19,12 +19,13 @@ func _ready() -> void:
 	set_physics_process(enabled)
 
 func _physics_process(delta: float) -> void:
+	agents = agents.filter(func(item): return is_instance_valid(item))
 	var average_pos:Vector3 = Vector3.ZERO
 	for a:AIAgent in agents:
 		average_pos += a.global_position
+
 	average_pos = average_pos/agents.size()
 	centroid_marker.global_position = average_pos
-	
 	for a:AIAgent in agents:
 		for b:AIBehaviour in behaviours:
 			b.apply_behaviour(a.steering_component,target,delta)

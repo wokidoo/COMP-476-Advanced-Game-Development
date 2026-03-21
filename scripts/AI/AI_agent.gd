@@ -23,6 +23,7 @@ signal target_changed(target:Node3D)
 
 func _ready() -> void:
 	self.floor_constant_speed = true
+	health_component.health_depleted.connect(_on_health_depeleted)
 
 func _physics_process(delta: float) -> void:
 	if Engine.get_physics_frames() % 5 == 0:
@@ -69,3 +70,11 @@ func _rotate_body(dir: Vector3, delta: float) -> void:
 
 func _apply_gravity(delta:float) -> void:
 	velocity.y -= gravity*delta
+
+func receive_damage(hitbox:Hitbox3D,hurtbox:Hurtbox3D):
+	var dmg:DamageInstnace = hitbox.damage_instance
+	print('NPC hit!\nDamage: %s'%dmg.damage)
+	health_component.health -= dmg.damage
+
+func _on_health_depeleted():
+	self.queue_free()

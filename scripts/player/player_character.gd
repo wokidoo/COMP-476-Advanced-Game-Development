@@ -50,6 +50,10 @@ func _rotate_body_towards(direction:Vector3,delta:float,interpolation_factor:flo
 	var mov_basis:= Basis.looking_at(direction,Vector3.UP)
 	self.global_basis = player_collider.global_basis.slerp(mov_basis,delta*velocity.length()*interpolation_factor)
 
+func receive_damage(hitbox:Hitbox3D,hurtbox:Hurtbox3D):
+	var dmg:DamageInstnace = hitbox.damage_instance
+	print('Player hit!\nDamage: %s'%dmg.damage)
+		
 #region HELPER_FUNCTIONS
 ## Capture the mouse at the screen center and make it invisible
 func capture_mouse():
