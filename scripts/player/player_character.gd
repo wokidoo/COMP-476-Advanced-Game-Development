@@ -18,11 +18,16 @@ class_name Player3D
 @export var air_deceleration: float = 0.5 # Air decel
 @export var jump_gravity: float = 18.0 # Gravity strength
 @export var fall_gravity:float = 27.0
+@export_group("Dodge")
+@export var dodge_speed:float = 15.0
+@export var dodge_duration:float = 0.25
+@export var dodge_cooldown:float = 1.25
 
 @onready var camera_controller:CameraController3D = %CameraController3D
 @onready var state_machine:StateMachine = %StateMachine
 @onready var player_collider: CollisionShape3D = %PlayerCollider
 @onready var jump_buffer_timer: Timer = %JumpBufferTimer
+@onready var dodge_cooldown_timer: Timer = %DodgeCooldownTimer
 @onready var health_component: HealthComponent = %HealthComponent
 
 ## Normalized movement direction based on player input.

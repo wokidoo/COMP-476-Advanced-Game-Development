@@ -64,7 +64,7 @@ func _input(event: InputEvent) -> void:
 		if event is InputEventMouseMotion:
 			var screen_normalized_motion = event.relative/get_viewport().get_visible_rect().size
 			if screen_normalized_motion.length() > lock_on_change_deadzone:
-				change_lock_on_target(event.screen_relative)
+				change_lock_on_target(screen_normalized_motion)
 	else:
 		if event is InputEventMouseMotion:
 			_apply_mouse_look(event.screen_relative)

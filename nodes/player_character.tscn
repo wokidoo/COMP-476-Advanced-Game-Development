@@ -22,22 +22,25 @@ func state_enter() -> void:
 	# If jump is buffered, immediately start a new jump
 	if player.is_jump_buffered():
 		state_machine.execute_event(\"jump\")
-	elif Input.is_action_pressed(\"sprint\"):
-		state_machine.execute_event(\"sprinting\")
 	
 func state_exit() -> void:
 	pass
 	
 func state_input(event: InputEvent) -> void:
-	if event.is_action_pressed(\"sprint\"):
+	if event.is_action_pressed(\"dodge\"):
+		if player.dodge_cooldown_timer.is_stopped():
+			state_machine.execute_event(\"dodge\")
+		state_machine.execute_event(\"dodge\")
+	elif event.is_action_pressed(\"sprint\") and Input.is_action_just_pressed('sprint'):
 		state_machine.execute_event(\"sprinting\")
-	if event.is_action_pressed(\"jump\"):
+	elif event.is_action_pressed(\"jump\"):
 		state_machine.execute_event(\"jump\")
 	if event.is_action_pressed('lock_on'):
 		if player.camera_controller.is_locked_on():
 			player.camera_controller.lock_off()
 		else:
 			player.camera_controller.lock_on_nearest_enemy()
+
 	
 func state_physics_process(delta: float) -> void:
 	var current_h_velocity: Vector3 = player.velocity
@@ -82,9 +85,12 @@ func state_exit() -> void:
 func state_input(event: InputEvent) -> void:
 	if event.is_action_released(\"sprint\"):
 		state_machine.execute_event(\"walking\")
-	if event.is_action_pressed(\"jump\"):
+	elif event.is_action_pressed(\"dodge\"):
+		if player.dodge_cooldown_timer.is_stopped():
+			state_machine.execute_event(\"dodge\")
+	elif event.is_action_pressed(\"jump\"):
 		state_machine.execute_event(\"jump\")
-	if event.is_action_pressed('lock_on'):
+	elif event.is_action_pressed('lock_on'):
 		if player.camera_controller.is_locked_on():
 			player.camera_controller.lock_off()
 		else:
@@ -214,6 +220,45 @@ func state_physics_process(delta: float) -> void:
 		state_machine.execute_event(\"walking\")
 "
 
+[sub_resource type="GDScript" id="GDScript_750ug"]
+resource_name = "Dodge"
+script/source = "extends State
+
+@export var player:Player3D
+
+var dodge_velocity:Vector3
+var dodge_time_left:float
+
+func state_enter() -> void:
+	if player.input_direction.is_zero_approx():
+		state_machine.execute_event('walk')
+		return
+	dodge_time_left = player.dodge_duration
+	dodge_velocity = player.input_direction * player.dodge_speed
+
+func state_exit() -> void:
+	player.dodge_cooldown_timer.start(player.dodge_cooldown)
+	
+func state_input(event: InputEvent) -> void:
+	pass
+	
+func state_physics_process(delta: float) -> void:
+	player.velocity.x = dodge_velocity.x
+	player.velocity.z = dodge_velocity.z
+	player.move_and_slide()
+	
+	dodge_velocity = dodge_velocity.lerp(Vector3.ZERO,delta)
+	dodge_time_left -= delta
+	
+	if not player.is_on_floor():
+		state_machine.execute_event(\"falling\")
+	
+	player.rotate_body_towards(player.velocity,delta,player.velocity.length())
+	
+	if player.velocity.is_zero_approx() or dodge_velocity.is_zero_approx() or dodge_time_left <= 0.0:
+		state_machine.execute_event(\"walk\")
+"
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2i27r"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ehlbk"]
@@ -271,6 +316,7 @@ metadata/_custom_type_script = "uid://bx384iuwj3u8u"
 script = SubResource("GDScript_60spa")
 player = NodePath("../..")
 transitions = {
+&"dodge": NodePath("../Dodge"),
 &"falling": NodePath("../Falling"),
 &"jump": NodePath("../Jumping"),
 &"sprinting": NodePath("../Sprinting")
@@ -281,6 +327,7 @@ metadata/_custom_type_script = "uid://b42om5mouo7ee"
 script = SubResource("GDScript_1c71w")
 player = NodePath("../..")
 transitions = {
+&"dodge": NodePath("../Dodge"),
 &"falling": NodePath("../Falling"),
 &"jump": NodePath("../Jumping"),
 &"walking": NodePath("../Grounded")
@@ -306,6 +353,15 @@ transitions = {
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
+[node name="Dodge" type="Node" parent="StateMachine" unique_id=174383529 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_750ug")
+player = NodePath("../..")
+transitions = {
+&"falling": NodePath("../Falling"),
+&"walk": NodePath("../Grounded")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
 [node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=1717507666]
 unique_name_in_owner = true
 shape = SubResource("CapsuleShape3D_2i27r")
@@ -321,6 +377,11 @@ mesh = SubResource("SphereMesh_5l2xy")
 
 [node name="JumpBufferTimer" type="Timer" parent="." unique_id=47575190]
 unique_name_in_owner = true
+one_shot = true
+
+[node name="DodgeCooldownTimer" type="Timer" parent="." unique_id=24468016]
+unique_name_in_owner = true
+process_callback = 0
 one_shot = true
 
 [node name="HealthComponent" type="Node" parent="." unique_id=981849851]
