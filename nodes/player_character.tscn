@@ -30,9 +30,6 @@ func state_input(event: InputEvent) -> void:
 	if event.is_action_pressed(\"dodge\"):
 		if player.dodge_cooldown_timer.is_stopped():
 			state_machine.execute_event(\"dodge\")
-		state_machine.execute_event(\"dodge\")
-	elif event.is_action_pressed(\"sprint\") and Input.is_action_just_pressed('sprint'):
-		state_machine.execute_event(\"sprinting\")
 	elif event.is_action_pressed(\"jump\"):
 		state_machine.execute_event(\"jump\")
 	if event.is_action_pressed('lock_on'):
@@ -43,23 +40,23 @@ func state_input(event: InputEvent) -> void:
 
 	
 func state_physics_process(delta: float) -> void:
-	var current_h_velocity: Vector3 = player.velocity
-	current_h_velocity.y = 0.0
-	var target_h_velocity: Vector3 = Vector3.ZERO
-	var final_h_velocity: Vector3
+	var _velocity:Vector3 = player.velocity
+	var _velocity_mag:float = _velocity.length_squared()
+	var target_velocity: Vector3 = player.input_direction * player.walk_speed
+	var interpolation_factor:float = 0.0
+	var result_velocity: Vector3 = Vector3.ZERO
 	
-	if current_h_velocity.length() > player.walk_speed:
-		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.sprint_deceleration * delta)
-	elif not player.input_direction.is_zero_approx():
-		target_h_velocity = player.walk_speed * player.input_direction
-		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.walk_acceleration * delta)
+	if _velocity_mag > target_velocity.length_squared():
+		interpolation_factor = delta * player.walk_deceleration
+		result_velocity = _velocity.lerp(target_velocity,interpolation_factor)
 	else:
-		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.walk_deceleration * delta)
-
-	player.velocity.x = final_h_velocity.x
-	player.velocity.z = final_h_velocity.z
+		interpolation_factor = delta * player.walk_acceleration
+		result_velocity = _velocity.lerp(target_velocity,interpolation_factor)
 	
+	player.velocity = result_velocity
+	player.velocity.y = 0.0
 	player.move_and_slide()
+	
 	if not player.is_on_floor():
 		state_machine.execute_event(\"falling\")
 	
@@ -77,17 +74,15 @@ script/source = "extends State
 @export var player:Player3D
 
 func state_enter() -> void:
+	
 	pass
 
 func state_exit() -> void:
 	pass
 
 func state_input(event: InputEvent) -> void:
-	if event.is_action_released(\"sprint\"):
-		state_machine.execute_event(\"walking\")
-	elif event.is_action_pressed(\"dodge\"):
-		if player.dodge_cooldown_timer.is_stopped():
-			state_machine.execute_event(\"dodge\")
+	if event.is_action_released(\"dodge\"):
+		state_machine.execute_event(\"walk\")
 	elif event.is_action_pressed(\"jump\"):
 		state_machine.execute_event(\"jump\")
 	elif event.is_action_pressed('lock_on'):
@@ -97,27 +92,20 @@ func state_input(event: InputEvent) -> void:
 			player.camera_controller.lock_on_nearest_enemy()
 
 func state_physics_process(delta: float) -> void:
-	var current_h_velocity: Vector3 = player.velocity
-	current_h_velocity.y = 0.0
-	var target_h_velocity: Vector3 = player.sprint_speed * player.input_direction
-	var final_h_velocity: Vector3 = Vector3.ZERO
-
-	if is_zero_approx(player.input_direction.length_squared()):
-		target_h_velocity = Vector3.ZERO
-		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.walk_deceleration * delta)
-	else:
-		final_h_velocity = current_h_velocity.lerp(target_h_velocity,player.sprint_acceleration * delta)
+	var target_velocity: Vector3 = player.sprint_speed * player.input_direction
+	var result_velocity:Vector3 = player.velocity.lerp(target_velocity,player.sprint_acceleration * delta)
 	
-	player.velocity.x = final_h_velocity.x
-	player.velocity.z = final_h_velocity.z
+	player.velocity = result_velocity
+	player.velocity.y = 0.0
 	player.move_and_slide()
+	
+	player.rotate_body_towards(player.velocity,delta,player.velocity.length())
 	
 	if not player.is_on_floor():
 		state_machine.execute_event(\"falling\")
-	if not Input.is_action_pressed(\"sprint\"):
-		state_machine.execute_event(\"walking\")
+	if is_zero_approx(player.input_direction.length()):
+		state_machine.execute_event('walk')
 		
-	player.rotate_body_towards(player.velocity,delta,player.velocity.length())
 "
 
 [sub_resource type="GDScript" id="GDScript_efhua"]
@@ -133,9 +121,7 @@ func state_exit() -> void:
 	pass # Replace with function body.
 
 func state_input(event: InputEvent) -> void:
-	if event.is_action_released(\"sprint\"):
-		state_machine.execute_event(\"grounded\")
-	elif event.is_action_pressed(\"jump\"):
+	if event.is_action_pressed(\"jump\"):
 		player.buffer_jump()
 	
 	if event.is_action_pressed('lock_on'):
@@ -145,30 +131,25 @@ func state_input(event: InputEvent) -> void:
 			player.camera_controller.lock_on_nearest_enemy()
 
 func state_physics_process(delta: float) -> void:
-	var current_horiz_velocity: Vector3 = player.velocity
-	current_horiz_velocity.y = 0.0
-
-	var target_horiz_velocity: Vector3
-	var final_horiz_velocity: Vector3 = Vector3.ZERO
-
-	player.velocity.y -= (player.jump_gravity * delta)
-	if player.input_direction and current_horiz_velocity.length() > player.air_speed:
-		target_horiz_velocity = player.air_speed * player.input_direction
-		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_deceleration * delta)
-	elif player.input_direction:
-		target_horiz_velocity = player.air_speed * player.input_direction
-		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_acceleration * delta)
-	else:
-		target_horiz_velocity = current_horiz_velocity
-		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_deceleration * delta)
+	var h_velocity = player.velocity
+	h_velocity.y = 0.0
 	
-	player.velocity.x = final_horiz_velocity.x
-	player.velocity.z = final_horiz_velocity.z
+	var target_velocity: Vector3 = player.input_direction * player.air_speed
+	var result_velocity: Vector3 = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
+	
+	if h_velocity.length_squared() > target_velocity.length_squared():
+		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_deceleration)
+	else:
+		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
+	
+	result_velocity.y = player.velocity.y - (player.jump_gravity * delta)
+
+	player.velocity = result_velocity
 	player.move_and_slide()
 	
 	if player.is_on_floor():
 		state_machine.execute_event(\"walking\")
-	if player.velocity.y < 0.0 or is_zero_approx(player.velocity.y):
+	if player.velocity.y <= 0.0:
 		state_machine.execute_event(\"falling\")
 	
 "
@@ -195,27 +176,22 @@ func state_input(event: InputEvent) -> void:
 			player.camera_controller.lock_on_nearest_enemy()
 
 func state_physics_process(delta: float) -> void:
-	var current_horiz_velocity: Vector3 = player.velocity
-	current_horiz_velocity.y = 0.0
-
-	var target_horiz_velocity: Vector3
-	var final_horiz_velocity: Vector3 = Vector3.ZERO
-
-	player.velocity.y -= (player.fall_gravity * delta)
-	if player.input_direction and current_horiz_velocity.length() > player.air_speed:
-		target_horiz_velocity = player.air_speed * player.input_direction
-		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_deceleration * delta)
-	elif player.input_direction:
-		target_horiz_velocity = player.air_speed * player.input_direction
-		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_acceleration * delta)
-	else:
-		target_horiz_velocity = current_horiz_velocity
-		final_horiz_velocity = current_horiz_velocity.lerp(target_horiz_velocity,player.air_deceleration * delta)
+	var h_velocity = player.velocity
+	h_velocity.y = 0.0
 	
-	player.velocity.x = final_horiz_velocity.x
-	player.velocity.z = final_horiz_velocity.z
-	player.move_and_slide()
+	var target_velocity: Vector3 = player.input_direction * player.air_speed
+	var result_velocity: Vector3 = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
+	
+	if h_velocity.length_squared() > target_velocity.length_squared():
+		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_deceleration)
+	else:
+		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
+	
+	result_velocity.y = player.velocity.y - (player.fall_gravity * delta)
 
+	player.velocity = result_velocity
+	player.move_and_slide()
+	
 	if player.is_on_floor():
 		state_machine.execute_event(\"walking\")
 "
@@ -256,7 +232,10 @@ func state_physics_process(delta: float) -> void:
 	player.rotate_body_towards(player.velocity,delta,player.velocity.length())
 	
 	if player.velocity.is_zero_approx() or dodge_velocity.is_zero_approx() or dodge_time_left <= 0.0:
-		state_machine.execute_event(\"walk\")
+		if Input.is_action_pressed('dodge'):
+			state_machine.execute_event(\"sprint\")
+		else:
+			state_machine.execute_event(\"walk\")
 "
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2i27r"]
@@ -298,13 +277,15 @@ collision_layer = 2
 collision_mask = 3
 floor_constant_speed = true
 script = ExtResource("1_qlps6")
-walk_speed = 5.0
+walk_speed = 4.0
 walk_acceleration = 10.0
 walk_deceleration = 7.0
-sprint_speed = 9.0
-sprint_acceleration = 2.0
+sprint_acceleration = 10.0
+air_speed = 2.0
 jump_gravity = 20.0
 fall_gravity = 30.0
+dodge_speed = 12.0
+dodge_cooldown = 0.25
 
 [node name="StateMachine" type="Node" parent="." unique_id=105280299 node_paths=PackedStringArray("initial_state")]
 unique_name_in_owner = true
@@ -318,8 +299,7 @@ player = NodePath("../..")
 transitions = {
 &"dodge": NodePath("../Dodge"),
 &"falling": NodePath("../Falling"),
-&"jump": NodePath("../Jumping"),
-&"sprinting": NodePath("../Sprinting")
+&"jump": NodePath("../Jumping")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
@@ -330,7 +310,7 @@ transitions = {
 &"dodge": NodePath("../Dodge"),
 &"falling": NodePath("../Falling"),
 &"jump": NodePath("../Jumping"),
-&"walking": NodePath("../Grounded")
+&"walk": NodePath("../Grounded")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
@@ -358,6 +338,7 @@ script = SubResource("GDScript_750ug")
 player = NodePath("../..")
 transitions = {
 &"falling": NodePath("../Falling"),
+&"sprint": NodePath("../Sprinting"),
 &"walk": NodePath("../Grounded")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"

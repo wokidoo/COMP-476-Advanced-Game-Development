@@ -9,7 +9,6 @@ class_name Player3D
 @export_group("Sprint")
 @export var sprint_speed: float = 8.0 
 @export var sprint_acceleration: float = 4.0
-@export var sprint_deceleration: float = 3.0
 @export_group("Airborn")
 @export var jump_force:float = 10.0
 @export var jump_buffer: float = 0.1
