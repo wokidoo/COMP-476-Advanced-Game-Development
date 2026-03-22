@@ -18,7 +18,7 @@ height = 0.2
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a5mj6"]
 
-[node name="AIAgent" type="CharacterBody3D" unique_id=17692775]
+[node name="AIAgent" type="CharacterBody3D" unique_id=17692775 groups=["enemy"]]
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 velocity = Vector3(0, -2699.1943, 0)

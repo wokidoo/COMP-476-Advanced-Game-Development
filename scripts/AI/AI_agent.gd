@@ -72,8 +72,11 @@ func _apply_gravity(delta:float) -> void:
 	velocity.y -= gravity*delta
 
 func receive_damage(dmg:DamageInstnace,hurtbox:Hurtbox3D):
-	print('NPC hit!\nDamage: %s'%dmg.damage)
+	print('NPC hit!\nDamage: %s \t Force: %s'%[dmg.damage,dmg.get_meta("force")])
 	health_component.health -= dmg.damage
+	if dmg.has_meta("force"):
+		print(dmg.get_meta("force"))
+		velocity += dmg.get_meta("force")
 
 func _on_health_depeleted():
 	self.queue_free()

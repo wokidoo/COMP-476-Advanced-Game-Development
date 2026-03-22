@@ -23,10 +23,14 @@ class_name Player3D
 @onready var state_machine:StateMachine = %StateMachine
 @onready var player_collider: CollisionShape3D = %PlayerCollider
 @onready var jump_buffer_timer: Timer = %JumpBufferTimer
+@onready var health_component: HealthComponent = %HealthComponent
 
 ## Normalized movement direction based on player input.
 ## Updated every physics frame.
 var input_direction:Vector3 = Vector3.ZERO
+
+func _ready() -> void:
+	health_component.health_depleted.connect(_on_health_depleted)
 
 # Normal physics frame. Runs no matter which state the player is in.
 func _physics_process(_delta: float) -> void:
@@ -36,23 +40,26 @@ func _physics_process(_delta: float) -> void:
 		"move_forward", "move_backward"
 	)
 	# Map input vector to player relative facing direction
-	var relative_dir: Vector3 = camera_controller.camera_relative_directions(input_vec)
+	var relative_dir: Vector3 = camera_controller.get_camera_relative_direction(input_vec)
 	# convert player input direction to Vector3 in order to use with movement calculations 
 	input_direction = relative_dir.normalized()
-	_rotate_body_towards(velocity,_delta)
 
 ## Move the player collider towards the movement direction.
 ## Speed of interpolation based on velocity,
-func _rotate_body_towards(direction:Vector3,delta:float,interpolation_factor:float= 0.5):
+func rotate_body_towards(direction:Vector3,delta:float,interpolation_factor:float= 1.0):
 	direction = direction.slide(up_direction)
-	if is_zero_approx(velocity.length_squared()) or is_zero_approx(direction.length_squared()):
+	if is_zero_approx(direction.length_squared()):
 		return
 	var mov_basis:= Basis.looking_at(direction,Vector3.UP)
-	self.global_basis = player_collider.global_basis.slerp(mov_basis,delta*velocity.length()*interpolation_factor)
+	self.global_basis = player_collider.global_basis.slerp(mov_basis,delta*interpolation_factor)
 
 func receive_damage(dmg:DamageInstnace,hurtbox:Hurtbox3D):
 	print('Player hit!\nDamage: %s'%dmg.damage)
-		
+	health_component.health -= dmg.damage
+
+func _on_health_depleted():
+	self.queue_free()
+
 #region HELPER_FUNCTIONS
 ## Capture the mouse at the screen center and make it invisible
 func capture_mouse():

@@ -49,6 +49,20 @@ adjustment_color_correction = SubResource("GradientTexture1D_fhsbr")
 [sub_resource type="Compositor" id="Compositor_avju2"]
 compositor_effects = Array[CompositorEffect]([ExtResource("1_hhdwb"), ExtResource("5_siv4a"), ExtResource("4_au7hc"), ExtResource("2_fhsbr")])
 
+[sub_resource type="GDScript" id="GDScript_hhdwb"]
+script/source = "extends HitRay3D
+
+func _ready() -> void:
+	damage_instance = DamageInstnace.new(0.0)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action(\"ui_accept\"):
+		var force = -global_basis.z*20.0
+		force += Vector3.UP*3
+		damage_instance.set_meta('force',force)
+		trigger_ray(100.0)
+"
+
 [sub_resource type="Gradient" id="Gradient_r10i8"]
 interpolation_mode = 1
 colors = PackedColorArray(1.4439225e-06, 0.71117544, 0.48286015, 1, 0.23753911, 0.23753914, 0.23753911, 1)
@@ -153,6 +167,10 @@ compositor = SubResource("Compositor_avju2")
 
 [node name="PlayerCharacter" parent="." unique_id=388989471 instance=ExtResource("1_7epem")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.324313, 7.5156355)
+
+[node name="HitRay3D" type="Node3D" parent="PlayerCharacter" unique_id=1166676213]
+script = SubResource("GDScript_hhdwb")
+metadata/_custom_type_script = "uid://dd5tgdggeel8o"
 
 [node name="Structures" type="Node3D" parent="." unique_id=1597235434]
 

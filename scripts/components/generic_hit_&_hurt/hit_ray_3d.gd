@@ -26,7 +26,6 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if trigger_delay_timer.is_stopped():
-		print(length)
 		process_collision()
 		trigger_delay_timer.start(trigger_delay)
 

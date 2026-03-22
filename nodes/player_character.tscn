@@ -33,6 +33,11 @@ func state_input(event: InputEvent) -> void:
 		state_machine.execute_event(\"sprinting\")
 	if event.is_action_pressed(\"jump\"):
 		state_machine.execute_event(\"jump\")
+	if event.is_action_pressed('lock_on'):
+		if player.camera_controller.is_locked_on():
+			player.camera_controller.lock_off()
+		else:
+			player.camera_controller.lock_on_nearest_enemy()
 	
 func state_physics_process(delta: float) -> void:
 	var current_h_velocity: Vector3 = player.velocity
@@ -54,6 +59,12 @@ func state_physics_process(delta: float) -> void:
 	player.move_and_slide()
 	if not player.is_on_floor():
 		state_machine.execute_event(\"falling\")
+	
+	if player.camera_controller.is_locked_on():
+		var dir = (player.camera_controller._lock_on_target.global_position - player.global_position).normalized()
+		player.rotate_body_towards(dir,delta*2.5)
+	else:
+		player.rotate_body_towards(player.velocity,delta,player.velocity.length()*0.5)
 "
 
 [sub_resource type="GDScript" id="GDScript_1c71w"]
@@ -73,6 +84,11 @@ func state_input(event: InputEvent) -> void:
 		state_machine.execute_event(\"walking\")
 	if event.is_action_pressed(\"jump\"):
 		state_machine.execute_event(\"jump\")
+	if event.is_action_pressed('lock_on'):
+		if player.camera_controller.is_locked_on():
+			player.camera_controller.lock_off()
+		else:
+			player.camera_controller.lock_on_nearest_enemy()
 
 func state_physics_process(delta: float) -> void:
 	var current_h_velocity: Vector3 = player.velocity
@@ -94,6 +110,8 @@ func state_physics_process(delta: float) -> void:
 		state_machine.execute_event(\"falling\")
 	if not Input.is_action_pressed(\"sprint\"):
 		state_machine.execute_event(\"walking\")
+		
+	player.rotate_body_towards(player.velocity,delta,player.velocity.length())
 "
 
 [sub_resource type="GDScript" id="GDScript_efhua"]
@@ -113,6 +131,12 @@ func state_input(event: InputEvent) -> void:
 		state_machine.execute_event(\"grounded\")
 	elif event.is_action_pressed(\"jump\"):
 		player.buffer_jump()
+	
+	if event.is_action_pressed('lock_on'):
+		if player.camera_controller.is_locked_on():
+			player.camera_controller.lock_off()
+		else:
+			player.camera_controller.lock_on_nearest_enemy()
 
 func state_physics_process(delta: float) -> void:
 	var current_horiz_velocity: Vector3 = player.velocity
@@ -158,6 +182,11 @@ func state_exit() -> void:
 func state_input(event: InputEvent) -> void:
 	if event.is_action_pressed(\"jump\"):
 		player.buffer_jump()
+	if event.is_action_pressed('lock_on'):
+		if player.camera_controller.is_locked_on():
+			player.camera_controller.lock_off()
+		else:
+			player.camera_controller.lock_on_nearest_enemy()
 
 func state_physics_process(delta: float) -> void:
 	var current_horiz_velocity: Vector3 = player.velocity
@@ -184,8 +213,6 @@ func state_physics_process(delta: float) -> void:
 	if player.is_on_floor():
 		state_machine.execute_event(\"walking\")
 "
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_hs54n"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2i27r"]
 
@@ -229,7 +256,7 @@ script = ExtResource("1_qlps6")
 walk_speed = 5.0
 walk_acceleration = 10.0
 walk_deceleration = 7.0
-sprint_speed = 12.0
+sprint_speed = 9.0
 sprint_acceleration = 2.0
 jump_gravity = 20.0
 fall_gravity = 30.0
@@ -279,22 +306,6 @@ transitions = {
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
-[node name="CameraController3D" type="Node3D" parent="." unique_id=1462189122 node_paths=PackedStringArray("camera", "pitch_anchor")]
-unique_name_in_owner = true
-top_level = true
-script = ExtResource("6_qcnnv")
-camera = NodePath("CameraSpringArm/Camera3D")
-pitch_anchor = NodePath("CameraSpringArm")
-metadata/_custom_type_script = "uid://bsu43s1gtwkhy"
-
-[node name="CameraSpringArm" type="SpringArm3D" parent="CameraController3D" unique_id=432008451]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("SphereShape3D_hs54n")
-spring_length = 4.0
-
-[node name="Camera3D" type="Camera3D" parent="CameraController3D/CameraSpringArm" unique_id=1525454726]
-size = 2.38
-
 [node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=1717507666]
 unique_name_in_owner = true
 shape = SubResource("CapsuleShape3D_2i27r")
@@ -313,6 +324,7 @@ unique_name_in_owner = true
 one_shot = true
 
 [node name="HealthComponent" type="Node" parent="." unique_id=981849851]
+unique_name_in_owner = true
 script = ExtResource("5_ehlbk")
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
 
@@ -324,5 +336,17 @@ metadata/_custom_type_script = "uid://crq7vga7bh344"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox3D" unique_id=785969580]
 shape = SubResource("CapsuleShape3D_60spa")
+
+[node name="CameraController3D" type="SpringArm3D" parent="." unique_id=1129545509]
+unique_name_in_owner = true
+spring_length = 3.5
+script = ExtResource("6_qcnnv")
+follow_offset = Vector3(0, 1.5, 0)
+smoothing = 8.0
+metadata/_custom_type_script = "uid://bsu43s1gtwkhy"
+
+[node name="Camera3D" type="Camera3D" parent="CameraController3D" unique_id=1525454726]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+size = 2.38
 
 [connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]
