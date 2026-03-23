@@ -38,6 +38,7 @@ enabled=PackedStringArray("res://addons/SignalBus/plugin.cfg")
 [global_group]
 
 enemy=""
+squad_1=""
 
 [input]
 
@@ -107,8 +108,6 @@ dodge={
 
 3d/run_on_separate_thread=true
 3d/physics_engine="Jolt Physics"
-jolt_physics_3d/simulation/velocity_steps=30
-jolt_physics_3d/simulation/position_steps=4
 common/physics_interpolation=true
 
 [rendering]

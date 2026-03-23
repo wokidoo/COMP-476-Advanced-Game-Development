@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://brdmuactkv7sg" path="res://scripts/components/steering_component.gd" id="2_humdk"]
 [ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
 [ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="5_flffr"]
-[ext_resource type="Script" uid="uid://b42om5mouo7ee" path="res://addons/Gostate/scripts/state.gd" id="6_oerex"]
 [ext_resource type="Script" uid="uid://crq7vga7bh344" path="res://scripts/components/generic_hit_&_hurt/hurtbox_3d.gd" id="7_y06na"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jcmuf"]
@@ -16,6 +15,65 @@
 radius = 0.1
 height = 0.2
 
+[sub_resource type="GDScript" id="GDScript_oerex"]
+resource_name = "idle"
+script/source = "@tool
+extends State
+
+@export var agent:AIAgent
+
+func state_enter() -> void:
+	for c in get_children():
+		c.process_mode = Node.PROCESS_MODE_INHERIT
+
+func state_exit() -> void:
+	for c in get_children():
+		c.process_mode = Node.PROCESS_MODE_DISABLED
+
+func state_physics_process(_delta: float) -> void:
+	print('idle')
+	pass
+"
+
+[sub_resource type="GDScript" id="GDScript_y06na"]
+resource_name = "seek"
+script/source = "@tool
+extends State
+
+@export var agent:AIAgent
+@export var seek_force: float = 1.0
+@export var avoider_component:AvoiderComponent
+
+@export var cutoff_distance:float = 2.5
+
+var distance_to_target:float = 0.0
+var facing_target:float = 0.0
+
+func state_enter() -> void:
+	for c in get_children():
+		c.process_mode = Node.PROCESS_MODE_INHERIT
+
+func state_exit() -> void:
+	for c in get_children():
+		c.process_mode = Node.PROCESS_MODE_DISABLED
+
+func state_physics_process(_delta: float) -> void:
+	if not agent.target:
+		state_machine.execute_event('idle')
+		return
+	var target_direction := (agent.target.global_position - agent.global_position)
+	distance_to_target = target_direction.length()
+	target_direction = target_direction.slide(Vector3.UP).normalized()
+	facing_target = agent.get_facing_target_factor(target_direction)
+	
+	AIUtils.AIActions.look_at_target(agent,agent.target,seek_force)
+	
+	if distance_to_target > cutoff_distance and facing_target > 0.95:
+		AIUtils.AIActions.move_forward(agent,seek_force)
+	elif avoider_component.is_avoiding() and facing_target < 0.95:
+		AIUtils.AIActions.move_forward(agent,seek_force)
+"
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a5mj6"]
 
 [node name="AIAgent" type="CharacterBody3D" unique_id=17692775 groups=["enemy"]]
@@ -24,7 +82,6 @@ axis_lock_angular_z = true
 velocity = Vector3(0, -2699.1943, 0)
 floor_constant_speed = true
 script = ExtResource("1_eu1jj")
-avoidance_weight = 0.3
 metadata/_custom_type_script = "uid://ccvw0aiur5xi5"
 
 [node name="SteeringComponent" type="Node3D" parent="." unique_id=616948691]
@@ -35,8 +92,8 @@ metadata/_custom_type_script = "uid://brdmuactkv7sg"
 [node name="AvoiderComponent" type="Node3D" parent="." unique_id=1405397863 node_paths=PackedStringArray("steering_component")]
 unique_name_in_owner = true
 script = ExtResource("4_tt2bh")
-ray_length = 2.0
-ray_angle = 30.0
+ray_length = 2.5
+ray_angle = 50.0
 avoidance_weight = 2.0
 steering_component = NodePath("../SteeringComponent")
 avoidance_mask = 4
@@ -60,11 +117,25 @@ mesh = SubResource("SphereMesh_y06na")
 [node name="StateMachine" type="Node" parent="." unique_id=26237221 node_paths=PackedStringArray("initial_state")]
 unique_name_in_owner = true
 script = ExtResource("5_flffr")
-initial_state = NodePath("Idle")
+initial_state = NodePath("Seek")
 metadata/_custom_type_script = "uid://bx384iuwj3u8u"
 
-[node name="Idle" type="Node" parent="StateMachine" unique_id=1970834143]
-script = ExtResource("6_oerex")
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1970834143 node_paths=PackedStringArray("agent", "transitions")]
+script = SubResource("GDScript_oerex")
+agent = NodePath("../..")
+transitions = {
+&"seek": NodePath("../Seek")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Seek" type="Node" parent="StateMachine" unique_id=1129825890 node_paths=PackedStringArray("agent", "avoider_component", "transitions")]
+script = SubResource("GDScript_y06na")
+agent = NodePath("../..")
+avoider_component = NodePath("../../AvoiderComponent")
+cutoff_distance = null
+transitions = {
+&"idle": NodePath("../Idle")
+}
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
 [node name="Hurtbox3D" type="Area3D" parent="." unique_id=1679062543]
