@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://6vx13bt17hak"]
+
+[ext_resource type="PackedScene" uid="uid://b6idumnxvdtqv" path="res://assets/melee_enemy/T-Pose.fbx" id="1_36xsg"]
+[ext_resource type="Script" uid="uid://ccvw0aiur5xi5" path="res://scripts/AI/AI_agent.gd" id="1_m8vsl"]
+[ext_resource type="AnimationLibrary" uid="uid://c0ggrmxfmi5dq" path="res://assets/melee_enemy/Idle.fbx" id="2_m8vsl"]
+[ext_resource type="Material" uid="uid://bxg0xqm6hyund" path="res://assets/melee_enemy/Material_0.006.tres" id="3_b7e4a"]
+[ext_resource type="AnimationLibrary" uid="uid://l6g058o5nmsn" path="res://assets/melee_enemy/Jump.fbx" id="3_cun43"]
+[ext_resource type="AnimationLibrary" uid="uid://co0sochs8mcxu" path="res://assets/melee_enemy/Running.fbx" id="4_b7e4a"]
+[ext_resource type="AnimationLibrary" uid="uid://0e2x3vbxtxa0" path="res://assets/melee_enemy/Standing Melee Attack Downward.fbx" id="5_mecbb"]
+[ext_resource type="AnimationLibrary" uid="uid://bfq20axujir6" path="res://assets/melee_enemy/Walking.fbx" id="6_ism5l"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wfhii"]
+animation = &"Idle/mixamo_com"
+advance_on_start = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nwdfi"]
+animation = &"Jump/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hsw82"]
+animation = &"Running/mixamo_com"
+advance_on_start = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xy0uc"]
+animation = &"Standing Melee Attack Downward/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ws4jq"]
+animation = &"Walking/mixamo_com"
+advance_on_start = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ku8nx"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0khgf"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0e3xm"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0cyju"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wkaey"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p1q0c"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i4gpo"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y8jku"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_16o1c"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2qgei"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wfx0w"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_pfbct"]
+states/End/position = Vector2(1201, 99.4375)
+states/Idle_mixamo_com/node = SubResource("AnimationNodeAnimation_wfhii")
+states/Idle_mixamo_com/position = Vector2(319.9066, 99.62499)
+states/Jump_mixamo_com/node = SubResource("AnimationNodeAnimation_nwdfi")
+states/Jump_mixamo_com/position = Vector2(806.23285, -50.774902)
+states/Running_mixamo_com/node = SubResource("AnimationNodeAnimation_hsw82")
+states/Running_mixamo_com/position = Vector2(591.79535, 196.7251)
+"states/Standing Melee Attack Downward_mixamo_com/node" = SubResource("AnimationNodeAnimation_xy0uc")
+"states/Standing Melee Attack Downward_mixamo_com/position" = Vector2(870.6832, 99.34375)
+states/Start/position = Vector2(139, 99.25)
+states/Walking_mixamo_com/node = SubResource("AnimationNodeAnimation_ws4jq")
+states/Walking_mixamo_com/position = Vector2(594.23285, -33.047867)
+transitions = ["Start", "Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_ku8nx"), "Idle_mixamo_com", "Walking_mixamo_com", SubResource("AnimationNodeStateMachineTransition_0khgf"), "Walking_mixamo_com", "Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_0e3xm"), "Walking_mixamo_com", "Running_mixamo_com", SubResource("AnimationNodeStateMachineTransition_0cyju"), "Running_mixamo_com", "Walking_mixamo_com", SubResource("AnimationNodeStateMachineTransition_wkaey"), "Idle_mixamo_com", "Running_mixamo_com", SubResource("AnimationNodeStateMachineTransition_p1q0c"), "Running_mixamo_com", "Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_i4gpo"), "Idle_mixamo_com", "Standing Melee Attack Downward_mixamo_com", SubResource("AnimationNodeStateMachineTransition_y8jku"), "Standing Melee Attack Downward_mixamo_com", "Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_16o1c"), "Walking_mixamo_com", "Standing Melee Attack Downward_mixamo_com", SubResource("AnimationNodeStateMachineTransition_2qgei"), "Standing Melee Attack Downward_mixamo_com", "Walking_mixamo_com", SubResource("AnimationNodeStateMachineTransition_wfx0w")]
+graph_offset = Vector2(184.22803, -212.35994)
+
+[node name="MeleeEnemy" type="Node3D" unique_id=1846947767]
+script = ExtResource("1_m8vsl")
+
+[node name="T-Pose" parent="." unique_id=31936429 instance=ExtResource("1_36xsg")]
+
+[node name="Skeleton3D" parent="T-Pose" index="0" unique_id=1108606434]
+bones/0/position = Vector3(0.0024478277, 0.92146444, -0.0049299854)
+bones/0/rotation = Quaternion(-0.03134384, -0.046523575, -0.02814216, 0.99802864)
+bones/1/rotation = Quaternion(0.013296025, 0.012415529, 0.021293439, 0.9996078)
+bones/2/rotation = Quaternion(0.010091135, 0.0023945314, 0.0136619555, 0.9998529)
+bones/3/rotation = Quaternion(0.009868051, 0.0025890528, 0.013696324, 0.99985427)
+bones/4/rotation = Quaternion(0.064875714, -0.0009450453, 0.0039147674, 0.9978852)
+bones/5/rotation = Quaternion(-0.06595836, 0.011932644, -0.0014932739, 0.9977499)
+bones/7/rotation = Quaternion(-0.67766994, -0.3274144, 0.5012467, -0.42698377)
+bones/8/rotation = Quaternion(0.38922375, 0.12874883, 0.11204548, 0.9051931)
+bones/9/rotation = Quaternion(0.00034294286, 0.0008569751, 0.012423648, 0.99992245)
+bones/10/rotation = Quaternion(0.038552504, 0.0074201757, -0.011273486, 0.9991654)
+bones/11/rotation = Quaternion(0.05031704, 0.04236619, 0.25359988, 0.96507025)
+bones/12/rotation = Quaternion(0.051822107, 0.105707735, -0.27317077, 0.9547346)
+bones/13/rotation = Quaternion(-0.10619082, -0.067353524, 0.14785437, 0.9809823)
+bones/15/rotation = Quaternion(0.062335934, -0.017461637, 0.14230175, 0.9877042)
+bones/16/rotation = Quaternion(0.13620819, 0.0030142162, -0.11665114, 0.9837839)
+bones/17/rotation = Quaternion(0.06116698, 0.01756739, 0.096695475, 0.99327743)
+bones/19/rotation = Quaternion(0.67843354, -0.32513312, 0.5179014, 0.40717897)
+bones/20/rotation = Quaternion(0.31547984, -0.22223477, -0.14500934, 0.91107434)
+bones/21/rotation = Quaternion(0.000389177, 0.009184903, -0.056973282, 0.99833333)
+bones/22/rotation = Quaternion(0.04928464, -0.096949756, 0.005672826, 0.9940522)
+bones/23/rotation = Quaternion(0.04977935, -0.04391051, -0.27122632, 0.96022403)
+bones/24/rotation = Quaternion(0.08069491, -0.10310282, 0.26114416, 0.95637965)
+bones/25/rotation = Quaternion(-0.13305956, 0.07818774, -0.0040849503, 0.98801076)
+bones/27/rotation = Quaternion(0.05767586, 0.0118691, -0.12003775, 0.9910216)
+bones/28/rotation = Quaternion(0.13672486, 0.0011347012, 0.101646505, 0.9853797)
+bones/29/rotation = Quaternion(0.061592765, -0.019389164, -0.11675074, 0.9910599)
+bones/31/rotation = Quaternion(0.13448605, 0.07653474, 0.9834254, -0.094501615)
+bones/32/rotation = Quaternion(-0.14900102, -0.015955312, 0.0031745385, 0.98870325)
+bones/33/rotation = Quaternion(0.46638393, -0.079455584, 0.010703125, 0.8809417)
+bones/34/rotation = Quaternion(0.36691362, -0.049231917, 0.0129579585, 0.928861)
+bones/36/rotation = Quaternion(-0.0876887, -0.02346067, 0.9958147, -0.010657274)
+bones/37/rotation = Quaternion(-0.07742827, 0.08474455, 0.00779494, 0.9933592)
+bones/38/rotation = Quaternion(0.49319285, 0.07306695, -0.0488327, 0.8654694)
+bones/39/rotation = Quaternion(0.387328, 0.051841926, -0.011943947, 0.92040586)
+
+[node name="Mesh_0_001" parent="T-Pose/Skeleton3D" index="0" unique_id=1014645187]
+surface_material_override/0 = ExtResource("3_b7e4a")
+
+[node name="AnimationPlayer" parent="T-Pose" index="1" unique_id=1450810484]
+libraries/Idle = ExtResource("2_m8vsl")
+libraries/Jump = ExtResource("3_cun43")
+libraries/Running = ExtResource("4_b7e4a")
+"libraries/Standing Melee Attack Downward" = ExtResource("5_mecbb")
+libraries/Walking = ExtResource("6_ism5l")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1518962053]
+root_node = NodePath("../T-Pose")
+tree_root = SubResource("AnimationNodeStateMachine_pfbct")
+anim_player = NodePath("../T-Pose/AnimationPlayer")
+
+[editable path="T-Pose"]
