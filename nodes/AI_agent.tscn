@@ -32,7 +32,8 @@ func state_exit() -> void:
 		c.process_mode = Node.PROCESS_MODE_DISABLED
 
 func state_physics_process(_delta: float) -> void:
-	pass
+	if agent.target:
+		state_machine.execute_event('seek')
 "
 
 [sub_resource type="GDScript" id="GDScript_y06na"]
@@ -65,22 +66,28 @@ func state_exit() -> void:
 		c.process_mode = Node.PROCESS_MODE_DISABLED
 
 func state_physics_process(_delta: float) -> void:
-	if not agent.target:
+	if not agent.target or agent.target.global_position.distance_to(agent.global_position) < 2:
 		state_machine.execute_event('idle')
 		return
-	if _current_node.is_position_in_boundry(agent.global_position):
+	if _current_node and _current_node.overlaps_body(agent):
 		_current_node_idx += 1
 		if _current_node_idx >= path.size():
-			state_machine.execute_event('idle')
+			_current_node = null
 			return
 		_current_node = path[_current_node_idx]
-	var target_direction := (_current_node.get_world_position() - agent.global_position)
+	
+	var target_direction :Vector3= Vector3.ZERO 
+	if _current_node:
+		target_direction = (_current_node.get_world_position() - agent.global_position)
+	else:
+		target_direction = (agent.target.global_position - agent.global_position)
+		
 	distance_to_target = target_direction.length()
 	target_direction = target_direction.slide(Vector3.UP).normalized()
 	facing_target = agent.get_facing_target_factor(target_direction)
 	
-	AIUtils.AIActions.look_at_target(agent,_current_node,seek_force)
-	
+	AIUtils.AIActions.look_in_direction(agent,target_direction,seek_force)
+
 	if distance_to_target > cutoff_distance and facing_target > 0.95:
 		AIUtils.AIActions.move_forward(agent,seek_force)
 	elif avoider_component.is_avoiding() and facing_target < 0.95:
