@@ -1,64 +1,37 @@
-@tool
 extends Area3D
 class_name NavigationNode3D
 
-@export var exclude_in_path:bool = false
-@export_tool_button("Update Connections") 
-var _update_connctions: Callable = func():
-	propagate_call('update_connections',[],true)
-
-@export var child_nodes: Array[NavigationNode3D] = []
-@export var connections:Dictionary[NavigationNode3D,Vector3] = {}
-
+@export var connections: Array[NavigationNode3D] = []
+@export var gap:bool = false
 
 func _ready() -> void:
+	add_to_group("nav_node")
 	monitorable = false
 	monitoring = true
-	update_connections()
 
-func get_nearest_node()->NavigationNode3D:
-	var best_node = child_nodes.front()
-	var best_dist = best_node.global_position.distance_to(global_position)
-	for c in child_nodes:
-		var dist = c.global_position.distance_to(global_position)
-		if dist < best_dist:
-			best_dist = dist
-			best_node = c
-	return best_node
-
-func find_nearest_node_to_position(global_pos: Vector3) -> NavigationNode3D:
-	if child_nodes.is_empty():
-		return self
-
-	var best_node: NavigationNode3D = self  # or null if parents shouldn't qualify
-	var best_dist: float = global_position.distance_to(global_pos)
-	
-	for child in child_nodes:
-		var result := child.find_nearest_node_to_position(global_pos)
-		var dist := result.global_position.distance_to(global_pos)
-		if dist < best_dist:
-			best_dist = dist
-			best_node = result
-	return best_node
+func is_position_in_area(global_pos: Vector3) -> bool:
+	if not is_inside_tree():
+		return false
+	var world := get_world_3d()
+	if world == null:
+		return false
+	var space_state := world.direct_space_state
+	if space_state == null:
+		return false
+	var query := PhysicsPointQueryParameters3D.new()
+	query.position = global_pos
+	query.collide_with_areas = true
+	var results := space_state.intersect_point(query)
+	for d in results:
+		if d.collider == self:
+			return true
+	return false
 
 func get_world_position() -> Vector3:
 	return global_position
 
-func get_distance_to_position(pos:Vector3)->float:
+func get_distance_to_position(pos: Vector3) -> float:
 	return (pos - global_position).length()
 
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_CHILD_ORDER_CHANGED:
-		update_connections()
-
-func update_connections():
-	if not is_inside_tree():
-		return
-		
-	child_nodes.clear()
-	connections.clear()
-	for c in get_children():
-		if c is NavigationNode3D:
-			child_nodes.append(c)
-			connections.set(c,(c.global_position - self.global_position))
-	notify_property_list_changed()
+func is_gap():
+	return gap

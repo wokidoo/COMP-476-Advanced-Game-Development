@@ -50,14 +50,10 @@ extends State
 var distance_to_target:float = 0.0
 var facing_target:float = 0.0
 
-var path:Array[NavigationNode3D]
-var _current_node:NavigationNode3D
-var _current_node_idx:int
+var path:NavigationUtil.NavPath
 
 func state_enter() -> void:
-	path = NavigationUtil.find_path(agent.navigation_root,agent.global_position,agent.target.global_position)
-	_current_node_idx = 0
-	_current_node = path[_current_node_idx]
+	update_path()
 	for c in get_children():
 		c.process_mode = Node.PROCESS_MODE_INHERIT
 
@@ -69,16 +65,16 @@ func state_physics_process(_delta: float) -> void:
 	if not agent.target or agent.target.global_position.distance_to(agent.global_position) < 2:
 		state_machine.execute_event('idle')
 		return
-	if _current_node and _current_node.overlaps_body(agent):
-		_current_node_idx += 1
-		if _current_node_idx >= path.size():
-			_current_node = null
-			return
-		_current_node = path[_current_node_idx]
-	
+	if Engine.get_physics_frames() % 60 == 0:
+		update_path()
+	if path.get_current_node().overlaps_body(agent):
+		path.get_next_node()
+		if path.get_current_node().is_gap():
+			agent.jump_to(path.get_next_node().get_world_position())
+
 	var target_direction :Vector3= Vector3.ZERO 
-	if _current_node:
-		target_direction = (_current_node.get_world_position() - agent.global_position)
+	if not path.reached_last_node():
+		target_direction = (path.get_current_node().get_world_position() - agent.global_position)
 	else:
 		target_direction = (agent.target.global_position - agent.global_position)
 		
@@ -93,8 +89,51 @@ func state_physics_process(_delta: float) -> void:
 	elif avoider_component.is_avoiding() and facing_target < 0.95:
 		AIUtils.AIActions.move_forward(agent,seek_force)
 
-func reached_navigation_node(nav_node:NavigationNode3D) -> bool:
-	return nav_node.get_distance_to_position(agent.global_position) <= 1.0
+func update_path():
+	path = NavigationUtil.find_path(agent.global_position,agent.target.global_position)
+	while path.is_empty():
+		await get_tree().physics_frame
+		path = NavigationUtil.find_path(agent.global_position,agent.target.global_position)
+"
+
+[sub_resource type="GDScript" id="GDScript_a5mj6"]
+resource_name = "jump"
+script/source = "@tool
+extends State
+
+@export var agent:AIAgent
+
+var pos_delta:Vector3
+var h_pos:Vector3
+var v_pos:Vector3
+var h_target:Vector3
+var v_target:Vector3
+
+func state_enter() -> void:
+	agent._jumping = true
+	pos_delta = (agent.jump_target - agent.global_position)
+	h_pos = Vector3(agent.global_position.x,0.0,agent.global_position.z)
+	v_pos = Vector3(0.0,agent.global_position.y,0.0)
+	h_target = Vector3(agent.jump_target.x,0.0,agent.jump_target.z)
+	v_target = Vector3(0.0,agent.jump_target.y,0.0)
+	
+	var h_dir = h_pos.direction_to(h_target)
+	var h_dist = h_target.distance_to(h_pos)
+	var v_dist = v_target.distance_to(v_pos)
+	
+	agent.velocity = h_dir * h_dist
+	agent.velocity.y = sqrt(2*agent.gravity*v_dist)
+
+func state_exit() -> void:
+	agent.jump_target = Vector3.ZERO
+	agent._jumping = false
+
+func state_physics_process(_delta: float) -> void:
+	if agent.global_position.distance_to(agent.jump_target) < 2.0 or is_zero_approx(agent.velocity.length_squared()):
+		state_machine.execute_event('idle')
+	var dir := agent.global_position.direction_to(agent.jump_target)
+	agent.velocity.y -= agent.gravity*_delta
+	agent.move_and_slide()
 "
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a5mj6"]
@@ -158,7 +197,8 @@ agent = NodePath("../..")
 avoider_component = NodePath("../../AvoiderComponent")
 transitions = {
 &"attack": NodePath("../Attack"),
-&"idle": NodePath("../Idle")
+&"idle": NodePath("../Idle"),
+&"jump": NodePath("../Jump")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
@@ -167,6 +207,14 @@ script = ExtResource("6_y06na")
 transitions = {
 &"idle": NodePath("../Idle"),
 &"seek": NodePath("../Seek")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Jump" type="Node" parent="StateMachine" unique_id=1082547742 node_paths=PackedStringArray("agent", "transitions")]
+script = SubResource("GDScript_a5mj6")
+agent = NodePath("../..")
+transitions = {
+&"idle": NodePath("../Idle")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 

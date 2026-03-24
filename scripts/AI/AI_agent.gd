@@ -14,17 +14,23 @@ class_name AIAgent
 @onready var avoider_component: AvoiderComponent = %AvoiderComponent
 @onready var state_machine:StateMachine = %StateMachine
 
+var jump_target:Vector3 = Vector3.ZERO
+var _jumping:bool = false
+
 func _ready() -> void:
 	velocity = Vector3.ZERO
 	health_component.health_depleted.connect(_on_health_depeleted)
 
 func _physics_process(delta: float) -> void:
-	var h_velocity:Vector3 = velocity
+	if _jumping:
+		return
+	
+	var h_velocity := velocity
 	h_velocity.y = 0.0
-	_rotate_body_physics_frame(steering_component.get_direction(),delta)
-	var target_velocity = steering_component.get_movement().normalized() * walk_speed
-	var result_velocity = h_velocity.lerp(target_velocity,delta*walk_acceleration)
-	result_velocity.y = velocity.y - (gravity*delta)
+	_rotate_body_physics_frame(steering_component.get_direction(), delta)
+	var target_velocity := steering_component.get_movement().normalized() * walk_speed
+	var result_velocity := h_velocity.lerp(target_velocity, delta * walk_acceleration)
+	result_velocity.y = velocity.y - (gravity * delta)
 	velocity = result_velocity
 	move_and_slide()
 
@@ -40,6 +46,11 @@ func _rotate_body_physics_frame(dir: Vector3, delta: float) -> void:
 	var current_quat := Quaternion(global_basis)
 	# Keep bases orthonormal to avoid drift over time
 	global_basis = Basis(current_quat.slerp(target_quat, delta * turn_speed))
+
+func jump_to(target_pos: Vector3) -> void:
+	jump_target = target_pos
+	state_machine.execute_event('jump')
+
 
 func get_facing_target_factor(target_dir:Vector3) -> float:
 	return -global_basis.z.dot(target_dir)

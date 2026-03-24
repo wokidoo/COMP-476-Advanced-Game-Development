@@ -39,6 +39,7 @@ enabled=PackedStringArray("res://addons/SignalBus/plugin.cfg")
 
 enemy=""
 squad_1=""
+nav_node=""
 
 [input]
 
