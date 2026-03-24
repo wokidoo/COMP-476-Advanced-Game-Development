@@ -32,7 +32,6 @@ func state_exit() -> void:
 		c.process_mode = Node.PROCESS_MODE_DISABLED
 
 func state_physics_process(_delta: float) -> void:
-	print('idle')
 	pass
 "
 
@@ -50,7 +49,14 @@ extends State
 var distance_to_target:float = 0.0
 var facing_target:float = 0.0
 
+var path:Array[NavigationNode3D]
+var _current_node:NavigationNode3D
+var _current_node_idx:int
+
 func state_enter() -> void:
+	path = NavigationUtil.find_path(agent.navigation_root,agent.global_position,agent.target.global_position)
+	_current_node_idx = 0
+	_current_node = path[_current_node_idx]
 	for c in get_children():
 		c.process_mode = Node.PROCESS_MODE_INHERIT
 
@@ -62,17 +68,26 @@ func state_physics_process(_delta: float) -> void:
 	if not agent.target:
 		state_machine.execute_event('idle')
 		return
-	var target_direction := (agent.target.global_position - agent.global_position)
+	if _current_node.is_position_in_boundry(agent.global_position):
+		_current_node_idx += 1
+		if _current_node_idx >= path.size():
+			state_machine.execute_event('idle')
+			return
+		_current_node = path[_current_node_idx]
+	var target_direction := (_current_node.get_world_position() - agent.global_position)
 	distance_to_target = target_direction.length()
 	target_direction = target_direction.slide(Vector3.UP).normalized()
 	facing_target = agent.get_facing_target_factor(target_direction)
 	
-	AIUtils.AIActions.look_at_target(agent,agent.target,seek_force)
+	AIUtils.AIActions.look_at_target(agent,_current_node,seek_force)
 	
 	if distance_to_target > cutoff_distance and facing_target > 0.95:
 		AIUtils.AIActions.move_forward(agent,seek_force)
 	elif avoider_component.is_avoiding() and facing_target < 0.95:
 		AIUtils.AIActions.move_forward(agent,seek_force)
+
+func reached_navigation_node(nav_node:NavigationNode3D) -> bool:
+	return nav_node.get_distance_to_position(agent.global_position) <= 1.0
 "
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a5mj6"]

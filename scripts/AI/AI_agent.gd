@@ -7,12 +7,15 @@ class_name AIAgent
 
 @export var target:Node3D
 
+@export var navigation_root:NavigationNode3D
+
 @onready var health_component: HealthComponent = %HealthComponent
 @onready var steering_component: SteeringComponent = %SteeringComponent
 @onready var avoider_component: AvoiderComponent = %AvoiderComponent
 @onready var state_machine:StateMachine = %StateMachine
 
 func _ready() -> void:
+	velocity = Vector3.ZERO
 	health_component.health_depleted.connect(_on_health_depeleted)
 
 func _physics_process(delta: float) -> void:
