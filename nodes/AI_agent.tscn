@@ -132,7 +132,6 @@ metadata/_custom_type_script = "uid://b42om5mouo7ee"
 script = SubResource("GDScript_y06na")
 agent = NodePath("../..")
 avoider_component = NodePath("../../AvoiderComponent")
-cutoff_distance = null
 transitions = {
 &"idle": NodePath("../Idle")
 }

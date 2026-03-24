@@ -7,7 +7,7 @@
 [ext_resource type="CompositorEffect" uid="uid://b3vjjxwtr8a5d" path="res://post_processing_compositor/compositor_effects/film_grain_compositor_effect.tres" id="4_au7hc"]
 [ext_resource type="CompositorEffect" uid="uid://mfojdyb6rqbu" path="res://post_processing_compositor/compositor_effects/vignette_compositor_effect.tres" id="5_siv4a"]
 [ext_resource type="Script" uid="uid://7hemqvbdaskq" path="res://scripts/AI/AI_squad/AI_squad_flock.gd" id="8_6054u"]
-[ext_resource type="PackedScene" uid="uid://jvu7u56yuuvl" path="res://nodes/AI_agent.tscn" id="8_oflti"]
+[ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="9_6054u"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
 resource_name = "pauser_input_node"
@@ -222,18 +222,6 @@ text = "[b]Walk:[/b] W,A,S,D
 "
 fit_content = true
 
-[node name="AIAgent" parent="." unique_id=17692775 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("8_oflti")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.33387852, 62.23532, 0.7938452)
-target = NodePath("../PlayerCharacter")
-
-[node name="AIAgent2" parent="." unique_id=536756595 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("8_oflti")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.188405, 62.23532, 22.177979)
-target = NodePath("../PlayerCharacter")
-
-[node name="AIAgent3" parent="." unique_id=436034429 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("8_oflti")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.618633, 62.23532, -4.03487)
-target = NodePath("../PlayerCharacter")
-
 [node name="AISquadFlock" type="Node3D" parent="." unique_id=1430788997]
 script = ExtResource("8_6054u")
 flock_force = 3.0
@@ -241,3 +229,19 @@ radius = 5.0
 enabled = true
 group = "squad_1"
 metadata/_custom_type_script = "uid://7hemqvbdaskq"
+
+[node name="AIAgent" parent="." unique_id=1332426585 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.42474, 47.831223, -5.5437546)
+target = NodePath("../PlayerCharacter")
+
+[node name="AIAgent2" parent="." unique_id=17692775 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.638134, 47.831223, 12.403954)
+target = NodePath("../PlayerCharacter")
+
+[node name="AIAgent3" parent="." unique_id=527495553 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.995995, 47.831223, 29.189636)
+target = NodePath("../PlayerCharacter")
+
+[node name="AIAgent4" parent="." unique_id=1425815034 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.548546, 47.831223, 46.533497)
+target = NodePath("../PlayerCharacter")

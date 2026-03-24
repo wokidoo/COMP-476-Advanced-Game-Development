@@ -7,6 +7,8 @@ class_name AIAgent
 
 @export var target:Node3D
 
+@export var animation_tree:AnimationTree
+
 @onready var health_component: HealthComponent = %HealthComponent
 @onready var steering_component: SteeringComponent = %SteeringComponent
 @onready var avoider_component: AvoiderComponent = %AvoiderComponent
@@ -21,9 +23,14 @@ func _physics_process(delta: float) -> void:
 	_rotate_body_physics_frame(steering_component.get_direction(),delta)
 	var target_velocity = steering_component.get_movement().normalized() * walk_speed
 	var result_velocity = h_velocity.lerp(target_velocity,delta*walk_acceleration)
+	var speed_blend:float = h_velocity.length()/walk_speed
 	result_velocity.y = velocity.y - (gravity*delta)
 	velocity = result_velocity
 	move_and_slide()
+
+	if animation_tree and is_on_floor():
+		animation_tree.set('parameters/moving_animation_blend/blend_position',speed_blend)
+		animation_tree['parameters/playback'].travel('moving_animation_blend')
 
 func _rotate_body_physics_frame(dir: Vector3, delta: float) -> void:
 	# Yaw-only: project onto plane perpendicular to up
