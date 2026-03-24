@@ -6,7 +6,7 @@ class_name AISquadFlock
 
 var squad_center:Vector3
 
-func process_squad_behaviour(delta:float) -> void:
+func process_squad_behaviour(_delta:float) -> void:
 	squad_center = Vector3.ZERO
 	for a in agents:
 		squad_center += a.global_position

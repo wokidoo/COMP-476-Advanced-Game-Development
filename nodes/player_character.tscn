@@ -9,7 +9,8 @@
 
 [sub_resource type="GDScript" id="GDScript_60spa"]
 resource_name = "Grounded"
-script/source = "extends State
+script/source = "@tool
+extends State
 
 @export var player:Player3D
 
@@ -69,7 +70,8 @@ func state_physics_process(delta: float) -> void:
 
 [sub_resource type="GDScript" id="GDScript_1c71w"]
 resource_name = "Sprinting"
-script/source = "extends State
+script/source = "@tool
+extends State
 
 @export var player:Player3D
 
@@ -110,7 +112,8 @@ func state_physics_process(delta: float) -> void:
 
 [sub_resource type="GDScript" id="GDScript_efhua"]
 resource_name = "Jumping"
-script/source = "extends State
+script/source = "@tool
+extends State
 
 @export var player:Player3D
 
@@ -156,7 +159,8 @@ func state_physics_process(delta: float) -> void:
 
 [sub_resource type="GDScript" id="GDScript_5x08c"]
 resource_name = "Falling"
-script/source = "extends State
+script/source = "@tool
+extends State
 
 @export var player:Player3D
 
@@ -198,7 +202,8 @@ func state_physics_process(delta: float) -> void:
 
 [sub_resource type="GDScript" id="GDScript_750ug"]
 resource_name = "Dodge"
-script/source = "extends State
+script/source = "@tool
+extends State
 
 @export var player:Player3D
 
@@ -214,9 +219,6 @@ func state_enter() -> void:
 
 func state_exit() -> void:
 	player.dodge_cooldown_timer.start(player.dodge_cooldown)
-	
-func state_input(event: InputEvent) -> void:
-	pass
 	
 func state_physics_process(delta: float) -> void:
 	player.velocity.x = dodge_velocity.x

@@ -19,5 +19,5 @@ func _physics_process(delta: float) -> void:
 		agents = get_tree().get_nodes_in_group(group) as Array[AIAgent]
 		process_squad_behaviour(delta)
 
-func process_squad_behaviour(delta:float) -> void:
+func process_squad_behaviour(_delta:float) -> void:
 	pass

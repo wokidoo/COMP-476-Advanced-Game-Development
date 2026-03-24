@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://brdmuactkv7sg" path="res://scripts/components/steering_component.gd" id="2_humdk"]
 [ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
 [ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="5_flffr"]
+[ext_resource type="Script" uid="uid://b42om5mouo7ee" path="res://addons/Gostate/scripts/state.gd" id="6_y06na"]
 [ext_resource type="Script" uid="uid://crq7vga7bh344" path="res://scripts/components/generic_hit_&_hurt/hurtbox_3d.gd" id="7_y06na"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jcmuf"]
@@ -124,6 +125,7 @@ metadata/_custom_type_script = "uid://bx384iuwj3u8u"
 script = SubResource("GDScript_oerex")
 agent = NodePath("../..")
 transitions = {
+&"attack": NodePath("../Attack"),
 &"seek": NodePath("../Seek")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
@@ -133,7 +135,16 @@ script = SubResource("GDScript_y06na")
 agent = NodePath("../..")
 avoider_component = NodePath("../../AvoiderComponent")
 transitions = {
+&"attack": NodePath("../Attack"),
 &"idle": NodePath("../Idle")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Attack" type="Node" parent="StateMachine" unique_id=1086589799 node_paths=PackedStringArray("transitions")]
+script = ExtResource("6_y06na")
+transitions = {
+&"idle": NodePath("../Idle"),
+&"seek": NodePath("../Seek")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 

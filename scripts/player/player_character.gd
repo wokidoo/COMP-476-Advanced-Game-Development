@@ -57,7 +57,7 @@ func rotate_body_towards(direction:Vector3,delta:float,interpolation_factor:floa
 	var mov_basis:= Basis.looking_at(direction,Vector3.UP)
 	self.global_basis = player_collider.global_basis.slerp(mov_basis,delta*interpolation_factor)
 
-func receive_damage(dmg:DamageInstnace,hurtbox:Hurtbox3D):
+func receive_damage(dmg:DamageInstnace,_hurtbox:Hurtbox3D):
 	print('Player hit!\nDamage: %s'%dmg.damage)
 	health_component.health -= dmg.damage
 
