@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bd4l6cql7m0lf"]
+
+[node name="FirstScene" type="Node3D" unique_id=789139825]
+
+[node name="Terrain" type="Node3D" parent="." unique_id=1041043156]
