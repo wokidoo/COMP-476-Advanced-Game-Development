@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cn81thimpr8qt"]
+
+[ext_resource type="Texture2D" uid="uid://5x6jnb7md0jh" path="res://assets/environment/military_trenches_wall_metal_corrugated_06_ydxnbdns_low/Military_Trenches_Wall_Metal_Corrugated_06_ydxnbdns_Low_1K_BaseColor.jpg" id="1_wurq2"]
+[ext_resource type="Texture2D" uid="uid://bciu56rgw1v8b" path="res://assets/environment/military_trenches_wall_metal_corrugated_06_ydxnbdns_low/Military_Trenches_Wall_Metal_Corrugated_06_ydxnbdns_Low_1K_AO.jpg" id="2_k5yjm"]
+[ext_resource type="Texture2D" uid="uid://ikma5ysqo7kh" path="res://assets/environment/military_trenches_wall_metal_corrugated_06_ydxnbdns_low/Military_Trenches_Wall_Metal_Corrugated_06_ydxnbdns_Low_1K_Metalness.jpg" id="3_tl47o"]
+[ext_resource type="Texture2D" uid="uid://ceqd0yekid33w" path="res://assets/environment/military_trenches_wall_metal_corrugated_06_ydxnbdns_low/Military_Trenches_Wall_Metal_Corrugated_06_ydxnbdns_Low_1K_Normal.jpg" id="4_6soth"]
+[ext_resource type="Texture2D" uid="uid://bu528g1yqnrb6" path="res://assets/environment/military_trenches_wall_metal_corrugated_06_ydxnbdns_low/Military_Trenches_Wall_Metal_Corrugated_06_ydxnbdns_Low_1K_Roughness.jpg" id="5_2uqs5"]
+
+[resource]
+resource_name = "MatID_1"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.8843835, 0.8843835, 0.8843835, 1)
+albedo_texture = ExtResource("1_wurq2")
+metallic = 1.0
+metallic_texture = ExtResource("3_tl47o")
+roughness_texture = ExtResource("5_2uqs5")
+normal_enabled = true
+normal_texture = ExtResource("4_6soth")
+ao_enabled = true
+ao_texture = ExtResource("2_k5yjm")
