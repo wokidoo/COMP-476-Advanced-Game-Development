@@ -26,6 +26,6 @@ func _on_volume_h_slider_value_changed(value: float) -> void:
 	# then set volume
 	AudioServer.set_bus_volume_db(busIndex,value)
 
-func _on_back_button_tree_entered() -> void:
+func _on_back_button_pressed() -> void:
 	get_child(1).visible = true
 	get_child(2).visible = false
