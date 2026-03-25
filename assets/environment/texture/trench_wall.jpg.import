@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://77gxcm8hnusl"
-path="res://.godot/imported/trench_rock.jpg-00afc888f58b1522665f853591fb4a06.ctex"
+uid="uid://c1qdkjsrayf15"
+path="res://.godot/imported/trench_wall.jpg-4f6e26ecb989d44a4d4baf7f5b8c31ea.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/texture/trench_rock.jpg"
-dest_files=["res://.godot/imported/trench_rock.jpg-00afc888f58b1522665f853591fb4a06.ctex"]
+source_file="res://assets/environment/texture/trench_wall.jpg"
+dest_files=["res://.godot/imported/trench_wall.jpg-4f6e26ecb989d44a4d4baf7f5b8c31ea.ctex"]
 
 [params]
 
