@@ -3,6 +3,8 @@ class_name Hurtbox3D
 
 signal hit(damage_instance:DamageInstnace,hurtbox:Hurtbox3D)
 
+@export var enabled:bool = true
+
 ## Name of the method in parent Node that will resolve the consequences of the hit.
 ## The method is expected to accept two parameters. One [Hitbox3D] and one [Hurtbox3D] in that order.
 @export var damage_callback:StringName
@@ -19,7 +21,7 @@ func _ready() -> void:
 	_parent = get_parent()
 
 func trigger_hit(dmg_instance:DamageInstnace):
-	if _parent.has_method(damage_callback):
+	if enabled and _parent.has_method(damage_callback):
 		_parent.call(damage_callback,dmg_instance,self)
 		self.hit.emit(dmg_instance,self)
 

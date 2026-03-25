@@ -3,7 +3,7 @@ class_name Hitbox3D
 
 signal hit(damage_instance:DamageInstnace,hurtbox:Hurtbox3D)
 
-var damage_instance:DamageInstnace
+@export var damage_instance:DamageInstnace
 
 var hits: Array = []
 
