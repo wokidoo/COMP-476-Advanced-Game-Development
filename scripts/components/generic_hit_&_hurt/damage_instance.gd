@@ -1,4 +1,4 @@
-extends RefCounted
+extends Resource
 class_name  DamageInstnace
 
 @export var damage:float

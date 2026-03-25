@@ -13,6 +13,9 @@ class_name AIAgent
 @onready var steering_component: SteeringComponent = %SteeringComponent
 @onready var avoider_component: AvoiderComponent = %AvoiderComponent
 @onready var state_machine:StateMachine = %StateMachine
+@onready var hit_ray_3d: HitRay3D = %HitRay3D
+
+signal starting_attack
 
 var jump_target:Vector3 = Vector3.ZERO
 var _jumping:bool = false

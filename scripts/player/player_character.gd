@@ -21,6 +21,7 @@ class_name Player3D
 @export var dodge_speed:float = 15.0
 @export var dodge_duration:float = 0.25
 @export var dodge_cooldown:float = 1.25
+@export var invincibility_frames:int = 13
 
 @onready var camera_controller:CameraController3D = %CameraController3D
 @onready var state_machine:StateMachine = %StateMachine
@@ -28,6 +29,7 @@ class_name Player3D
 @onready var jump_buffer_timer: Timer = %JumpBufferTimer
 @onready var dodge_cooldown_timer: Timer = %DodgeCooldownTimer
 @onready var health_component: HealthComponent = %HealthComponent
+@onready var hurtbox_3d: Hurtbox3D = %Hurtbox3D
 
 ## Normalized movement direction based on player input.
 ## Updated every physics frame.
@@ -60,6 +62,9 @@ func rotate_body_towards(direction:Vector3,delta:float,interpolation_factor:floa
 func receive_damage(dmg:DamageInstnace,_hurtbox:Hurtbox3D):
 	print('Player hit!\nDamage: %s'%dmg.damage)
 	health_component.health -= dmg.damage
+	if dmg.has_meta('Force'):
+		velocity += dmg.get_meta('Force') as Vector3
+		move_and_slide()
 
 func _on_health_depleted():
 	self.queue_free()

@@ -209,11 +209,14 @@ extends State
 
 var dodge_velocity:Vector3
 var dodge_time_left:float
+var i_frames_left:int = 0
 
 func state_enter() -> void:
 	if player.input_direction.is_zero_approx():
 		state_machine.execute_event('walk')
 		return
+	i_frames_left = player.invincibility_frames
+	player.hurtbox_3d.enabled = false
 	dodge_time_left = player.dodge_duration
 	dodge_velocity = player.input_direction * player.dodge_speed
 
@@ -221,6 +224,8 @@ func state_exit() -> void:
 	player.dodge_cooldown_timer.start(player.dodge_cooldown)
 	
 func state_physics_process(delta: float) -> void:
+	if i_frames_left <= 0:
+		player.hurtbox_3d.enabled = true
 	player.velocity.x = dodge_velocity.x
 	player.velocity.z = dodge_velocity.z
 	player.move_and_slide()
@@ -238,6 +243,7 @@ func state_physics_process(delta: float) -> void:
 			state_machine.execute_event(\"sprint\")
 		else:
 			state_machine.execute_event(\"walk\")
+	i_frames_left -= 1
 "
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2i27r"]
@@ -373,6 +379,8 @@ script = ExtResource("5_ehlbk")
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
 
 [node name="Hurtbox3D" type="Area3D" parent="." unique_id=1128235420]
+unique_name_in_owner = true
+collision_layer = 8
 input_ray_pickable = false
 script = ExtResource("6_60spa")
 damage_callback = &"receive_damage"
