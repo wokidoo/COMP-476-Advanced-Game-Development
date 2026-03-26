@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="2_dtquj"]
 [ext_resource type="Script" uid="uid://brdmuactkv7sg" path="res://scripts/components/steering_component.gd" id="2_humdk"]
 [ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
+[ext_resource type="Script" uid="uid://bedemc3s6xpby" path="res://nodes/gpu_particles_3d.gd" id="5_y06na"]
 [ext_resource type="Script" uid="uid://ciut8gqte38k3" path="res://user_interface/health_container.gd" id="6_oerex"]
 [ext_resource type="PackedScene" uid="uid://7ya36e4xkn1a" path="res://user_interface/health_container.tscn" id="6_y06na"]
 
@@ -17,6 +18,24 @@ height = 0.2
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_flffr"]
 viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oerex"]
+emission_shape_scale = Vector3(0.5, 0.5, 0.5)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
+scale_min = 0.29999998
+scale_max = 0.79999995
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y06na"]
+albedo_color = Color(0.7649673, 0.01020112, 0.17282087, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_a5mj6"]
+material = SubResource("StandardMaterial3D_y06na")
+radius = 0.125
+height = 0.25
 
 [sub_resource type="GDScript" id="GDScript_oerex"]
 script/source = "extends SubViewport
@@ -49,6 +68,7 @@ metadata/_custom_type_script = "uid://dykry5e1tr1mi"
 [node name="HealthComponent" type="Node" parent="." unique_id=999017945]
 unique_name_in_owner = true
 script = ExtResource("2_dtquj")
+health = 0.0
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1213396453]
@@ -65,6 +85,15 @@ mesh = SubResource("SphereMesh_y06na")
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.2986801, 0)
 texture = SubResource("ViewportTexture_flffr")
 
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1334223416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37737167, 0)
+emitting = false
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_oerex")
+draw_pass_1 = SubResource("SphereMesh_a5mj6")
+script = ExtResource("5_y06na")
+
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1627169895]
 transparent_bg = true
 size = Vector2i(305, 60)
@@ -77,4 +106,6 @@ offset_right = 304.0
 script = ExtResource("6_oerex")
 
 [connection signal="health_changed" from="HealthComponent" to="SubViewport/HealthContainer" method="_healthChanged"]
+[connection signal="health_changed" from="HealthComponent" to="GPUParticles3D" method="_on_health_component_health_changed"]
 [connection signal="max_health_changed" from="HealthComponent" to="SubViewport/HealthContainer" method="_maxHealthChanged"]
+[connection signal="finished" from="GPUParticles3D" to="GPUParticles3D" method="_on_finished"]
