@@ -1,0 +1,23 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cwrcekayi1chj"]
+
+[ext_resource type="Texture2D" uid="uid://ql8s2api42ld" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Barrer_albedo.jpg" id="1_n74vc"]
+[ext_resource type="Texture2D" uid="uid://cstdnn0h78cex" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Barrer_metallic.jpg" id="2_4rebg"]
+[ext_resource type="Texture2D" uid="uid://bu2q3idguxtn1" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Barrer_AO.jpg" id="2_u8dyv"]
+[ext_resource type="Texture2D" uid="uid://c38i7mvgbu0w5" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Barrer_opacity.jpg" id="3_7vtc2"]
+[ext_resource type="Texture2D" uid="uid://c4adccr8an4me" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Barrer_normal.png" id="3_u8dyv"]
+[ext_resource type="Texture2D" uid="uid://b2d8jqb0friaj" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Barrer_roughness.jpg" id="4_7vtc2"]
+
+[resource]
+resource_name = "Barrer"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+albedo_texture = ExtResource("1_n74vc")
+metallic = 1.0
+metallic_texture = ExtResource("2_4rebg")
+roughness_texture = ExtResource("4_7vtc2")
+emission_texture = ExtResource("3_7vtc2")
+normal_enabled = true
+normal_texture = ExtResource("3_u8dyv")
+ao_enabled = true
+ao_texture = ExtResource("2_u8dyv")

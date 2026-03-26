@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b2wtrnpfa4res"]
+
+[ext_resource type="PackedScene" uid="uid://yva6f3eh7gwx" path="res://assets/environment_import/ww1-observation-post-helsinki-finland/models/model.fbx" id="1_q2xn5"]
+
+[node name="model" unique_id=2065727260 instance=ExtResource("1_q2xn5")]
+
+[node name="Model" parent="." index="0" unique_id=42891311]
+transform = Transform3D(0.25, 0, 0, 0, -0.25, -3.774895e-08, 0, 3.774895e-08, -0.25, 0, 0, 0)
