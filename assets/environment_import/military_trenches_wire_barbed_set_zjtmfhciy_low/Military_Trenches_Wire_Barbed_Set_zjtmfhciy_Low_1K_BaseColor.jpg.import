@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://co1k3qdvsasue"
-path.s3tc="res://.godot/imported/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg-1f92e67aaf1c30ac415a742e6c107c9e.s3tc.ctex"
+uid="uid://du48kf7ui7ao8"
+path.s3tc="res://.godot/imported/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low_1K_BaseColor.jpg-7fc4b317fabaf1c15b9dc628b17a1e95.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg"
-dest_files=["res://.godot/imported/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg-1f92e67aaf1c30ac415a742e6c107c9e.s3tc.ctex"]
+source_file="res://assets/environment_import/military_trenches_wire_barbed_set_zjtmfhciy_low/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low_1K_BaseColor.jpg"
+dest_files=["res://.godot/imported/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low_1K_BaseColor.jpg-7fc4b317fabaf1c15b9dc628b17a1e95.s3tc.ctex"]
 
 [params]
 

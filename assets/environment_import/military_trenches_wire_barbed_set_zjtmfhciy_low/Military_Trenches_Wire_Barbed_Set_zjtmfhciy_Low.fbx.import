@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c06jngwdmfkw"
-path="res://.godot/imported/Sandbag_Pile_udqjbg1qx_Low.fbx-64bf3cae7e006cc954fea5dff318a6da.scn"
+uid="uid://ce0hpitguijt7"
+path="res://.godot/imported/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low.fbx-3b8c65db07cb6a1e8741049e30873283.scn"
 
 [deps]
 
-source_file="res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/Sandbag_Pile_udqjbg1qx_Low.fbx"
-dest_files=["res://.godot/imported/Sandbag_Pile_udqjbg1qx_Low.fbx-64bf3cae7e006cc954fea5dff318a6da.scn"]
+source_file="res://assets/environment_import/military_trenches_wire_barbed_set_zjtmfhciy_low/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low.fbx"
+dest_files=["res://.godot/imported/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low.fbx-3b8c65db07cb6a1e8741049e30873283.scn"]
 
 [params]
 
@@ -41,8 +41,8 @@ _subresources={
 "materials": {
 "MatID_1": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/MatID_1.tres",
-"use_external/path": "uid://bcxba53lft77p"
+"use_external/fallback_path": "res://assets/environment_import/military_trenches_wire_barbed_set_zjtmfhciy_low/MatID_1.tres",
+"use_external/path": "uid://bxquewp6o4jw1"
 }
 }
 }

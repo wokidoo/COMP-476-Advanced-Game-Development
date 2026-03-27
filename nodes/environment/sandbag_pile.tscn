@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dvq0qpi31oh3w"]
+
+[ext_resource type="PackedScene" uid="uid://c06jngwdmfkw" path="res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/Sandbag_Pile_udqjbg1qx_Low.fbx" id="1_pe2d6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b70gs"]
+size = Vector3(1.796875, 2.2199707, 1.6680298)
+
+[node name="Sandbag_Pile_udqjbg1qx_Low" unique_id=451671049 instance=ExtResource("1_pe2d6")]
+
+[node name="udqjbg1qx_LOD0_TIER3_000" parent="." index="0" unique_id=692120479]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1" unique_id=747444299]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1390918523]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.047851563, 0.60998535, -0.060455322)
+shape = SubResource("BoxShape3D_b70gs")

@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dfyjrl72ft8df"]
+
+[ext_resource type="Texture2D" uid="uid://c5hg4eql2pr4u" path="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_s.png" id="1_7unhn"]
+[ext_resource type="Texture2D" uid="uid://r3lamc0r16j8" path="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_n.png" id="2_twglu"]
+
+[resource]
+resource_name = "ssjn"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_7unhn")
+emission_enabled = true
+normal_enabled = true
+normal_texture = ExtResource("2_twglu")

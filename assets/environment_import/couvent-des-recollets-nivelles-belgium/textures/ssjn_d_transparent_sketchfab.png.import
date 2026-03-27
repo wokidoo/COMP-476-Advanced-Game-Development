@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://co1k3qdvsasue"
-path.s3tc="res://.godot/imported/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg-1f92e67aaf1c30ac415a742e6c107c9e.s3tc.ctex"
+uid="uid://dqcvlgsp34ar7"
+path="res://.godot/imported/ssjn_d_transparent_sketchfab.png-393a88c8dd298f5eba88f48c17c12e35.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg"
-dest_files=["res://.godot/imported/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg-1f92e67aaf1c30ac415a742e6c107c9e.s3tc.ctex"]
+source_file="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_d_transparent_sketchfab.png"
+dest_files=["res://.godot/imported/ssjn_d_transparent_sketchfab.png-393a88c8dd298f5eba88f48c17c12e35.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -24,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -38,4 +37,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

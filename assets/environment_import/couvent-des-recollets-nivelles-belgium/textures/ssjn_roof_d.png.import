@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://co1k3qdvsasue"
-path.s3tc="res://.godot/imported/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg-1f92e67aaf1c30ac415a742e6c107c9e.s3tc.ctex"
+uid="uid://drwn7cocll43h"
+path.s3tc="res://.godot/imported/ssjn_roof_d.png-2686d06ab2d3d5f260e58d289f25ca06.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg"
-dest_files=["res://.godot/imported/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg-1f92e67aaf1c30ac415a742e6c107c9e.s3tc.ctex"]
+source_file="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_roof_d.png"
+dest_files=["res://.godot/imported/ssjn_roof_d.png-2686d06ab2d3d5f260e58d289f25ca06.s3tc.ctex"]
 
 [params]
 

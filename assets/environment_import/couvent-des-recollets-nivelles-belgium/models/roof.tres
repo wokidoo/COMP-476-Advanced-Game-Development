@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://0l8alk2ix1ax"]
+
+[ext_resource type="Texture2D" uid="uid://drwn7cocll43h" path="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_roof_d.png" id="1_b052o"]
+[ext_resource type="Texture2D" uid="uid://dwsorkrwmfod0" path="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_roof_s.png" id="2_1fgfx"]
+[ext_resource type="Texture2D" uid="uid://bovctnur4ejun" path="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_roof_n.png" id="3_vensj"]
+
+[resource]
+resource_name = "roof"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_b052o")
+emission_enabled = true
+normal_enabled = true
+normal_texture = ExtResource("3_vensj")
+ao_enabled = true
+ao_texture = ExtResource("2_1fgfx")

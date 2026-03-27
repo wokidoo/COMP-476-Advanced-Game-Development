@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dyrj36c6x16mt"]
+
+[ext_resource type="PackedScene" uid="uid://ce0hpitguijt7" path="res://assets/environment_import/military_trenches_wire_barbed_set_zjtmfhciy_low/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low.fbx" id="1_y3g0a"]
+
+[node name="Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low" unique_id=558908403 instance=ExtResource("1_y3g0a")]
