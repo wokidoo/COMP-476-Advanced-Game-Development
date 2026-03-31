@@ -51,33 +51,133 @@ animation = &"Ultimate_Attack/mixamo_com"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ptp8x"]
 animation = &"Walking/mixamo_com"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4bfop"]
+animation = &"Running Jump/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l8pnb"]
+animation = &"Locked_Strife_Left/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iqvic"]
+animation = &"Locked_Strife_Right/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dmejd"]
+animation = &"Locked_Walk_Forward/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_y553k"]
+animation = &"Locked_Walk_Back/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_irnir"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jfh0l"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fumdk"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uelxn"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rd6d1"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_irnir"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_l8pnb")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_iqvic")
+blend_point_1/pos = Vector2(1, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_dmejd")
+blend_point_2/pos = Vector2(0, 1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_y553k")
+blend_point_3/pos = Vector2(0, -1)
+blend_point_4/node = SubResource("AnimationNodeAnimation_irnir")
+blend_point_4/pos = Vector2(0, 0)
+blend_point_5/node = SubResource("AnimationNodeAnimation_jfh0l")
+blend_point_5/pos = Vector2(-0.2, 0)
+blend_point_6/node = SubResource("AnimationNodeAnimation_fumdk")
+blend_point_6/pos = Vector2(0, 0.2)
+blend_point_7/node = SubResource("AnimationNodeAnimation_uelxn")
+blend_point_7/pos = Vector2(0.2, 0)
+blend_point_8/node = SubResource("AnimationNodeAnimation_rd6d1")
+blend_point_8/pos = Vector2(0, -0.2)
+x_label = "y_FB"
+y_label = "x_LR"
+sync = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6mdn2"]
+animation = &"Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_aj8h8"]
+animation = &"Walking/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4ts6l"]
+animation = &"Running/mixamo_com"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_l8pnb"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_6mdn2")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_aj8h8")
+blend_point_1/pos = 0.5
+blend_point_2/node = SubResource("AnimationNodeAnimation_4ts6l")
+blend_point_2/pos = 1.0
+min_space = 0.0
+sync = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_iqvic"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6mdn2"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aj8h8"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4ts6l"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3k8pg"]
+switch_mode = 1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_018lk"]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5lhju"]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8j7nq"]
+switch_mode = 1
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_rd6d1"]
+states/End/position = Vector2(564, 157.3551)
 states/Heavy_Attack_mixamo_com/node = SubResource("AnimationNodeAnimation_xaneo")
-states/Heavy_Attack_mixamo_com/position = Vector2(841.56995, -45.36734)
+states/Heavy_Attack_mixamo_com/position = Vector2(766.56995, -83.81795)
 states/Idle_mixamo_com/node = SubResource("AnimationNodeAnimation_kd6ke")
-states/Idle_mixamo_com/position = Vector2(329, -141)
+states/Idle_mixamo_com/position = Vector2(254, -179.4506)
 states/Locked_Idle_mixamo_com/node = SubResource("AnimationNodeAnimation_g76vx")
-states/Locked_Idle_mixamo_com/position = Vector2(1108.1426, -47.16858)
+states/Locked_Idle_mixamo_com/position = Vector2(1033.1426, -85.61919)
 states/Locked_Strife_Left_mixamo_com/node = SubResource("AnimationNodeAnimation_wq2c7")
-states/Locked_Strife_Left_mixamo_com/position = Vector2(1411.3926, -136.00864)
+states/Locked_Strife_Left_mixamo_com/position = Vector2(1336.3926, -174.45924)
 states/Locked_Strife_Right_mixamo_com/node = SubResource("AnimationNodeAnimation_e2pwi")
-states/Locked_Strife_Right_mixamo_com/position = Vector2(1411.3926, -42.88861)
+states/Locked_Strife_Right_mixamo_com/position = Vector2(1336.3926, -81.33922)
 states/Locked_Walk_Back_mixamo_com/node = SubResource("AnimationNodeAnimation_hol3s")
-states/Locked_Walk_Back_mixamo_com/position = Vector2(1714.4077, -135.8255)
+states/Locked_Walk_Back_mixamo_com/position = Vector2(1639.4077, -174.27611)
 states/Locked_Walk_Forward_mixamo_com/node = SubResource("AnimationNodeAnimation_p5bs7")
-states/Locked_Walk_Forward_mixamo_com/position = Vector2(1733.9077, -41.48175)
+states/Locked_Walk_Forward_mixamo_com/position = Vector2(1658.9077, -79.93236)
 states/Quick_Attack_mixamo_com/node = SubResource("AnimationNodeAnimation_7dvpy")
-states/Quick_Attack_mixamo_com/position = Vector2(839.31995, -136.37488)
+states/Quick_Attack_mixamo_com/position = Vector2(764.31995, -174.82549)
 "states/Running Jump_mixamo_com/node" = SubResource("AnimationNodeAnimation_i5h01")
-"states/Running Jump_mixamo_com/position" = Vector2(569.1074, -138.73491)
+"states/Running Jump_mixamo_com/position" = Vector2(494.10742, -177.18552)
 states/Running_mixamo_com/node = SubResource("AnimationNodeAnimation_65d76")
-states/Running_mixamo_com/position = Vector2(340.6074, -48.96982)
-states/Start/position = Vector2(152, 246)
+states/Running_mixamo_com/position = Vector2(265.6074, -87.420425)
+states/Start/position = Vector2(564, 68.3551)
 states/Ultimate_Attack_mixamo_com/node = SubResource("AnimationNodeAnimation_05s0h")
-states/Ultimate_Attack_mixamo_com/position = Vector2(1106.8926, -135.64238)
+states/Ultimate_Attack_mixamo_com/position = Vector2(1031.8926, -174.09299)
 states/Walking_mixamo_com/node = SubResource("AnimationNodeAnimation_ptp8x")
-states/Walking_mixamo_com/position = Vector2(571.1074, -47.71982)
-graph_offset = Vector2(612.72015, -330.6449)
+states/Walking_mixamo_com/position = Vector2(496.10742, -86.170425)
+states/jump/node = SubResource("AnimationNodeAnimation_4bfop")
+states/jump/position = Vector2(1125.7211, 68.3551)
+states/lock_on_blend/node = SubResource("AnimationNodeBlendSpace2D_irnir")
+states/lock_on_blend/position = Vector2(895.7202, 157.3551)
+states/moving_blend/node = SubResource("AnimationNodeBlendSpace1D_l8pnb")
+states/moving_blend/position = Vector2(895.7202, 68.3551)
+transitions = ["Start", "moving_blend", SubResource("AnimationNodeStateMachineTransition_iqvic"), "Start", "lock_on_blend", SubResource("AnimationNodeStateMachineTransition_6mdn2"), "lock_on_blend", "moving_blend", SubResource("AnimationNodeStateMachineTransition_aj8h8"), "moving_blend", "lock_on_blend", SubResource("AnimationNodeStateMachineTransition_4ts6l"), "moving_blend", "jump", SubResource("AnimationNodeStateMachineTransition_3k8pg"), "jump", "moving_blend", SubResource("AnimationNodeStateMachineTransition_018lk"), "jump", "lock_on_blend", SubResource("AnimationNodeStateMachineTransition_5lhju"), "lock_on_blend", "jump", SubResource("AnimationNodeStateMachineTransition_8j7nq")]
+graph_offset = Vector2(263.72107, -170.34955)
 
 [node name="T-Pose" unique_id=411427401 instance=ExtResource("1_j53xp")]
 
@@ -117,3 +217,5 @@ libraries/Walking = ExtResource("13_uelxn")
 [node name="AnimationTree" type="AnimationTree" parent="." index="2" unique_id=809974527]
 tree_root = SubResource("AnimationNodeStateMachine_rd6d1")
 anim_player = NodePath("../AnimationPlayer")
+parameters/lock_on_blend/blend_position = Vector2(0, 0)
+parameters/moving_blend/blend_position = 0.0

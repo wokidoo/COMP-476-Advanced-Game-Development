@@ -26,6 +26,8 @@ func state_enter() -> void:
 	if player.is_jump_buffered():
 		state_machine.execute_event(\"jump\")
 	# Play walk animation
+	var speed_blend = player.velocity.length() / player.sprint_speed
+	player.animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
 	player.animation_tree['parameters/playback'].travel('moving_blend')
 	
 func state_exit() -> void:
@@ -71,10 +73,20 @@ func state_physics_process(delta: float) -> void:
 	if player.camera_controller.is_locked_on():
 		var dir = (player.camera_controller._lock_on_target.global_position - player.global_position).normalized()
 		player.rotate_body_towards(dir,delta*2.5)
+		# Animation for lock on depends on the xz velocity relative to the camera forward direction
+		var cam_forward = -player.global_transform.basis.z
+		var forward_amount = cam_forward.dot(_velocity)
+		var right_amount = cam_forward.cross(Vector3.UP).dot(_velocity)
+		# x is right, y is forward for the blend space
+		var smoothed_direction = Vector2(right_amount,forward_amount)
+		player.animation_tree.set('parameters/lock_on_blend/blend_position',smoothed_direction)
+		player.animation_tree['parameters/playback'].travel('lock_on_blend')
 	else:
 		player.rotate_body_towards(player.velocity,delta,player.velocity.length()*0.5)
-	# Animation
-	animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+		# Animation
+		var speed_blend = player.velocity.length() / player.sprint_speed
+		player.animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+		player.animation_tree['parameters/playback'].travel('moving_blend')
 "
 
 [sub_resource type="GDScript" id="GDScript_1c71w"]
@@ -86,7 +98,10 @@ extends State
 @export var animation_tree:AnimationTree
 
 func state_enter() -> void:
-	
+	# Play sprinting animation
+	var speed_blend = player.velocity.length() / player.sprint_speed
+	player.animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+	player.animation_tree['parameters/playback'].travel('moving_blend')
 	pass
 
 func state_exit() -> void:
@@ -117,7 +132,10 @@ func state_physics_process(delta: float) -> void:
 		state_machine.execute_event(\"falling\")
 	if is_zero_approx(player.input_direction.length()):
 		state_machine.execute_event('walk')
-		
+	# Animation
+	var speed_blend = player.velocity.length() / player.sprint_speed
+	player.animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+
 "
 
 [sub_resource type="GDScript" id="GDScript_efhua"]
@@ -130,6 +148,8 @@ extends State
 
 func state_enter() -> void:
 	player.velocity.y += player.jump_force
+	# Animation
+	player.animation_tree['parameters/playback'].travel('jump')
 
 func state_exit() -> void:
 	pass # Replace with function body.

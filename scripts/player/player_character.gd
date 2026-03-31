@@ -38,8 +38,10 @@ var input_direction:Vector3 = Vector3.ZERO
 
 func _ready() -> void:
 	health_component.health_depleted.connect(_on_health_depleted)
-	# get animation tree from a node named "Player Model" which is a child of the player node and has an AnimationTree as a child
+	# Get animation tree
 	animation_tree = get_node("Player Model/AnimationTree") as AnimationTree
+	if not animation_tree:
+		push_error("Player3D: AnimationTree node not found at 'Player Model/AnimationTree'")
 
 # Normal physics frame. Runs no matter which state the player is in.
 func _physics_process(_delta: float) -> void:
