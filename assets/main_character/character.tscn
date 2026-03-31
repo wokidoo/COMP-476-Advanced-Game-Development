@@ -81,44 +81,26 @@ graph_offset = Vector2(612.72015, -330.6449)
 
 [node name="T-Pose" unique_id=411427401 instance=ExtResource("1_j53xp")]
 
-[node name="Skeleton3D" parent="." index="0" unique_id=1874022724]
-bones/0/position = Vector3(-3.678142e-07, 0.8419911, -0.019029863)
-bones/7/rotation = Quaternion(0.55246603, 0.4467563, -0.5370484, 0.45471883)
-bones/8/rotation = Quaternion(-0.09357514, 0.029698309, -0.01484006, 0.99505854)
-bones/9/rotation = Quaternion(-3.0816096e-08, -0.049837932, -4.1995622e-07, 0.9987573)
-bones/10/rotation = Quaternion(-0.012898529, 0.24199118, 0.0032170299, 0.9701874)
-bones/11/rotation = Quaternion(0.08618951, 0.030870285, 0.27352127, 0.95749915)
-bones/12/rotation = Quaternion(0.00018566847, -0.00436272, 0.071300425, 0.99744534)
-bones/13/rotation = Quaternion(-0.00026883927, -0.0037251867, 0.042996544, 0.9990682)
-bones/15/rotation = Quaternion(0.013043143, -0.0031457958, 0.101071246, 0.9947887)
-bones/16/rotation = Quaternion(1.4364721e-05, -0.0019481855, -0.20827244, 0.978069)
-bones/17/rotation = Quaternion(-0.0017400682, 0.013988518, 0.093150236, 0.9955523)
-bones/19/rotation = Quaternion(0.54674274, -0.44988513, 0.54347324, 0.45090193)
-bones/20/rotation = Quaternion(-0.094713315, -0.0020460119, 0.002444766, 0.99549955)
-bones/21/rotation = Quaternion(-1.9475121e-07, 0.01872892, 3.0176204e-07, 0.99982464)
-bones/22/rotation = Quaternion(-0.011280948, -0.24159192, -0.002808607, 0.9703083)
-bones/23/rotation = Quaternion(0.085407175, -0.028776748, -0.27718657, 0.9565799)
-bones/24/rotation = Quaternion(0.00047256803, 0.0070679085, -0.038908407, 0.99921775)
-bones/25/rotation = Quaternion(-0.0007957221, 0.009169973, -0.11417947, 0.99341756)
-bones/27/rotation = Quaternion(0.011425286, 0.0024929638, -0.10607103, 0.9942899)
-bones/28/rotation = Quaternion(5.215407e-07, -0.0003411882, 0.20975101, 0.97775483)
-bones/29/rotation = Quaternion(-0.0016429424, -0.012397428, -0.07819813, 0.99685943)
-bones/31/rotation = Quaternion(-0.00022181787, -0.0058351685, 0.99985105, -0.016248131)
-bones/32/rotation = Quaternion(-0.019916436, 0.0007709067, -0.032163218, 0.9992839)
-bones/33/rotation = Quaternion(0.5056518, -0.11079669, 0.102095686, 0.8494804)
-bones/36/rotation = Quaternion(-0.0005132216, -0.00014216374, 0.9998678, 0.01625119)
-bones/37/rotation = Quaternion(-0.030476173, -0.0012093086, 0.032134358, 0.9990181)
-bones/38/rotation = Quaternion(0.51228493, 0.107070714, -0.101847775, 0.8460065)
+[node name="Skeleton3D" parent="." index="0" unique_id=498815268]
+transform = Transform3D(-1.25, 0, -1.8874475e-07, 0, 1.25, 0, 1.8874475e-07, 0, -1.25, 0, -1, 0)
+bones/12/rotation = Quaternion(0.10212424, -6.9753635e-18, 4.1852182e-17, 0.99477166)
+bones/13/rotation = Quaternion(-0.0518491, -2.7792958e-17, -1.3896479e-17, 0.99865496)
+bones/16/rotation = Quaternion(0.25407213, -4.3045903e-17, -5.3807378e-17, 0.96718526)
+bones/17/rotation = Quaternion(-0.11297145, 2.7934405e-17, -2.4442605e-17, 0.9935982)
+bones/24/rotation = Quaternion(0.105487265, 4.8844784e-17, -4.1866956e-17, 0.99442065)
+bones/25/rotation = Quaternion(-0.105172284, 0, 8.373109e-17, 0.994454)
+bones/28/rotation = Quaternion(0.2549092, 1.4351903e-17, 4.3055714e-17, 0.96696496)
+bones/29/rotation = Quaternion(-0.09447294, -4.1820406e-17, -1.3940136e-17, 0.99552745)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Skeleton3D" index="1" unique_id=511955305]
-transform = Transform3D(-6.0556026e-06, -0.9997294, -0.02326041, -0.5035306, 0.02009957, -0.8637434, 0.86397725, 0.011707072, -0.5033946, -0.6268086, 1.2568767, 0.011780237)
+transform = Transform3D(0.6638979, -0.53245646, 0.52509946, 0.017216653, -0.6911021, -0.7225521, 0.7476248, 0.4887413, -0.44965422, -0.44223845, 0.89961815, 0.04612145)
 bone_name = "mixamorig_RightHand"
 bone_idx = 22
 
 [node name="Sabre" parent="Skeleton3D/BoneAttachment3D" index="0" unique_id=225740513 instance=ExtResource("2_6mdn2")]
 transform = Transform3D(-0.2181038, -0.00022544473, 0.12219148, -0.0035709057, -0.24988109, -0.006834883, 0.12213938, -0.007708185, 0.21799682, 0.3052755, 0.18131596, -0.14145231)
 
-[node name="AnimationPlayer" parent="." index="1" unique_id=170061204]
+[node name="AnimationPlayer" parent="." index="1" unique_id=1715372229]
 libraries/Heavy_Attack = ExtResource("2_arnyr")
 libraries/Idle = ExtResource("3_6mdn2")
 libraries/Locked_Idle = ExtResource("4_aj8h8")

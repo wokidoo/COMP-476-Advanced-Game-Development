@@ -30,6 +30,7 @@ class_name Player3D
 @onready var dodge_cooldown_timer: Timer = %DodgeCooldownTimer
 @onready var health_component: HealthComponent = %HealthComponent
 @onready var hurtbox_3d: Hurtbox3D = %Hurtbox3D
+@onready var animation_tree: AnimationTree
 
 ## Normalized movement direction based on player input.
 ## Updated every physics frame.
@@ -37,6 +38,8 @@ var input_direction:Vector3 = Vector3.ZERO
 
 func _ready() -> void:
 	health_component.health_depleted.connect(_on_health_depleted)
+	# get animation tree from a node named "Player Model" which is a child of the player node and has an AnimationTree as a child
+	animation_tree = get_node("Player Model/AnimationTree") as AnimationTree
 
 # Normal physics frame. Runs no matter which state the player is in.
 func _physics_process(_delta: float) -> void:

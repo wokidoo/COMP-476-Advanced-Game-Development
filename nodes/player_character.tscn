@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://bn6evds4qsgc4" path="res://scripts/player/player_character.gd" id="1_qlps6"]
 [ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="2_5l2xy"]
 [ext_resource type="Shader" uid="uid://bgjer4ly5f8rs" path="res://materials/grid_debug.gdshader" id="2_hs54n"]
+[ext_resource type="Script" uid="uid://cnk25gumc3iwg" path="res://scripts/player/attack_ground.gd" id="3_1c71w"]
+[ext_resource type="PackedScene" uid="uid://ksulwv01p1pc" path="res://assets/main_character/character.tscn" id="4_1c71w"]
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="5_ehlbk"]
 [ext_resource type="Script" uid="uid://crq7vga7bh344" path="res://scripts/components/generic_hit_&_hurt/hurtbox_3d.gd" id="6_60spa"]
 [ext_resource type="Script" uid="uid://bsu43s1gtwkhy" path="res://scripts/components/camera_controller_3d.gd" id="6_qcnnv"]
@@ -23,6 +25,8 @@ func state_enter() -> void:
 	# If jump is buffered, immediately start a new jump
 	if player.is_jump_buffered():
 		state_machine.execute_event(\"jump\")
+	# Play walk animation
+	player.animation_tree['parameters/playback'].travel('moving_blend')
 	
 func state_exit() -> void:
 	pass
@@ -38,6 +42,9 @@ func state_input(event: InputEvent) -> void:
 			player.camera_controller.lock_off()
 		else:
 			player.camera_controller.lock_on_nearest_enemy()
+	# Attack
+	if event.is_action_pressed(\"attack_ground\"):
+		state_machine.execute_event(\"attack_ground\")
 
 	
 func state_physics_process(delta: float) -> void:
@@ -66,6 +73,8 @@ func state_physics_process(delta: float) -> void:
 		player.rotate_body_towards(dir,delta*2.5)
 	else:
 		player.rotate_body_towards(player.velocity,delta,player.velocity.length()*0.5)
+	# Animation
+	animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
 "
 
 [sub_resource type="GDScript" id="GDScript_1c71w"]
@@ -74,6 +83,7 @@ script/source = "@tool
 extends State
 
 @export var player:Player3D
+@export var animation_tree:AnimationTree
 
 func state_enter() -> void:
 	
@@ -116,6 +126,7 @@ script/source = "@tool
 extends State
 
 @export var player:Player3D
+@export var animation_tree:AnimationTree
 
 func state_enter() -> void:
 	player.velocity.y += player.jump_force
@@ -163,6 +174,7 @@ script/source = "@tool
 extends State
 
 @export var player:Player3D
+@export var animation_tree:AnimationTree
 
 func state_enter() -> void:
 	pass # Replace with function body.
@@ -206,6 +218,7 @@ script/source = "@tool
 extends State
 
 @export var player:Player3D
+@export var animation_tree:AnimationTree
 
 var dodge_velocity:Vector3
 var dodge_time_left:float
@@ -351,11 +364,17 @@ transitions = {
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
+[node name="Attack_ground" type="Node" parent="StateMachine" unique_id=845140347 node_paths=PackedStringArray("player")]
+script = ExtResource("3_1c71w")
+player = NodePath("../..")
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
 [node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=1717507666]
 unique_name_in_owner = true
 shape = SubResource("CapsuleShape3D_2i27r")
 
 [node name="BodyMesh" type="MeshInstance3D" parent="PlayerCollider" unique_id=1157442348]
+visible = false
 material_override = SubResource("ShaderMaterial_ehlbk")
 mesh = SubResource("CapsuleMesh_5l2xy")
 skeleton = NodePath("../..")
@@ -363,6 +382,8 @@ skeleton = NodePath("../..")
 [node name="NoseMesh" type="MeshInstance3D" parent="PlayerCollider" unique_id=1692454159]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45670342, -1.0724702)
 mesh = SubResource("SphereMesh_5l2xy")
+
+[node name="Player Model" parent="." unique_id=411427401 instance=ExtResource("4_1c71w")]
 
 [node name="JumpBufferTimer" type="Timer" parent="." unique_id=47575190]
 unique_name_in_owner = true
