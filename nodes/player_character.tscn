@@ -80,13 +80,17 @@ func state_physics_process(delta: float) -> void:
 		# x is right, y is forward for the blend space
 		var smoothed_direction = Vector2(right_amount,forward_amount)
 		player.animation_tree.set('parameters/lock_on_blend/blend_position',smoothed_direction)
-		player.animation_tree['parameters/playback'].travel('lock_on_blend')
+		if player.animation_tree['parameters/playback'].get_current_node() != 'lock_on_blend':
+			player.animation_tree['parameters/playback'].travel('lock_on_blend')
 	else:
 		player.rotate_body_towards(player.velocity,delta,player.velocity.length()*0.5)
 		# Animation
 		var speed_blend = player.velocity.length() / player.sprint_speed
 		player.animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
 		player.animation_tree['parameters/playback'].travel('moving_blend')
+		if player.animation_tree['parameters/playback'].get_current_node() != 'moving_blend':
+			player.animation_tree['parameters/playback'].travel('moving_blend')
+			
 "
 
 [sub_resource type="GDScript" id="GDScript_1c71w"]
@@ -150,9 +154,10 @@ func state_enter() -> void:
 	player.velocity.y += player.jump_force
 	# Animation
 	player.animation_tree['parameters/playback'].travel('jump')
+	pass
 
 func state_exit() -> void:
-	pass # Replace with function body.
+	pass
 
 func state_input(event: InputEvent) -> void:
 	if event.is_action_pressed(\"jump\"):
