@@ -10,9 +10,7 @@
 [ext_resource type="Script" uid="uid://cmh6706pagrpf" path="res://scripts/AI/behaviours/AI_behaviour.gd" id="10_o70wo"]
 [ext_resource type="Script" uid="uid://b5siemtk3ecxe" path="res://scripts/AI/behaviours/look_at_behaviour.gd" id="11_pbjje"]
 [ext_resource type="Script" uid="uid://c6pxqjuoxdnvv" path="res://scripts/AI/behaviours/move_forward_behaviour.gd" id="12_8iuhj"]
-[ext_resource type="PackedScene" uid="uid://yx0mraktnb0f" path="res://user_interface/user_interface.tscn" id="12_hhdwb"]
 [ext_resource type="Script" uid="uid://boc1uvgo8ekdj" path="res://scripts/AI/behaviours/stay_away_behaviour.gd" id="13_o70wo"]
-[ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="13_pbjje"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
 resource_name = "pauser_input_node"
@@ -215,17 +213,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.554457, 10.172798, -6.957
 [node name="AIAgent5" parent="." unique_id=1307815357 instance=ExtResource("8_oflti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.026407, 10.172798, 0.37721634)
 
-[node name="UserInterface" parent="." unique_id=1567975266 instance=ExtResource("12_hhdwb")]
-
-[node name="PauseMenu" parent="UserInterface" unique_id=1685693337 instance=ExtResource("13_pbjje")]
-visible = false
-layout_mode = 1
-
-[node name="InstructionsContainer" type="MarginContainer" parent="UserInterface" unique_id=2050711432]
-layout_mode = 1
+[node name="InstructionsContainer" type="MarginContainer" parent="." unique_id=2050711432]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 89.0
+offset_bottom = 135.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -235,7 +226,7 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 script = SubResource("GDScript_b3yjl")
 
-[node name="InstructionsLabel" type="RichTextLabel" parent="UserInterface/InstructionsContainer" unique_id=1412153888]
+[node name="InstructionsLabel" type="RichTextLabel" parent="InstructionsContainer" unique_id=1412153888]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
