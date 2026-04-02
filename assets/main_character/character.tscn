@@ -1,0 +1,255 @@
+[gd_scene format=3 uid="uid://ksulwv01p1pc"]
+
+[ext_resource type="PackedScene" uid="uid://bxmdlpnaxrr53" path="res://assets/main_character/Animations/T-Pose.fbx" id="1_j53xp"]
+[ext_resource type="PackedScene" uid="uid://cyhav0f47nwk3" path="res://assets/main_character/sabre.tscn" id="2_6mdn2"]
+[ext_resource type="AnimationLibrary" uid="uid://cmdnr1msvqi87" path="res://assets/main_character/Animations/Heavy_Attack.fbx" id="2_arnyr"]
+[ext_resource type="AnimationLibrary" uid="uid://b4wmipf53xmjs" path="res://assets/main_character/Animations/Idle.fbx" id="3_6mdn2"]
+[ext_resource type="AnimationLibrary" uid="uid://b6na6b8wwho6y" path="res://assets/main_character/Animations/Locked_Idle.fbx" id="4_aj8h8"]
+[ext_resource type="AnimationLibrary" uid="uid://hrywjgxbqywv" path="res://assets/main_character/Animations/Locked_Strife_Left.fbx" id="5_4ts6l"]
+[ext_resource type="AnimationLibrary" uid="uid://cbfp67amgp8ts" path="res://assets/main_character/Animations/Jump.fbx" id="5_aj8h8"]
+[ext_resource type="AnimationLibrary" uid="uid://58h2qb3as6ps" path="res://assets/main_character/Animations/Locked_Strife_Right.fbx" id="6_l8pnb"]
+[ext_resource type="AnimationLibrary" uid="uid://dmn7trgvufls2" path="res://assets/main_character/Animations/Locked_Walk_Back.fbx" id="7_iqvic"]
+[ext_resource type="AnimationLibrary" uid="uid://ctht8yic184k1" path="res://assets/main_character/Animations/Locked_Walk_Forward.fbx" id="8_dmejd"]
+[ext_resource type="AnimationLibrary" uid="uid://bt2a2ukia2o05" path="res://assets/main_character/Animations/Quick_Attack.fbx" id="9_y553k"]
+[ext_resource type="AnimationLibrary" uid="uid://btvny8f6alq0" path="res://assets/main_character/Animations/Running.fbx" id="10_irnir"]
+[ext_resource type="AnimationLibrary" uid="uid://b2gercxj4xsnv" path="res://assets/main_character/Animations/Running Jump.fbx" id="11_jfh0l"]
+[ext_resource type="AnimationLibrary" uid="uid://dka6uk2ila60m" path="res://assets/main_character/Animations/Ultimate_Attack.fbx" id="12_fumdk"]
+[ext_resource type="AnimationLibrary" uid="uid://cotosyfgemajm" path="res://assets/main_character/Animations/Walking.fbx" id="13_uelxn"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xaneo"]
+animation = &"Heavy_Attack/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kd6ke"]
+animation = &"Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3k8pg"]
+animation = &"Jump/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g76vx"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wq2c7"]
+animation = &"Locked_Strife_Left/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e2pwi"]
+animation = &"Locked_Strife_Right/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hol3s"]
+animation = &"Locked_Walk_Back/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p5bs7"]
+animation = &"Locked_Walk_Forward/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7dvpy"]
+animation = &"Quick_Attack/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i5h01"]
+animation = &"Running Jump/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_65d76"]
+animation = &"Running/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_05s0h"]
+animation = &"Ultimate_Attack/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ptp8x"]
+animation = &"Walking/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4bfop"]
+animation = &"Jump/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l8pnb"]
+animation = &"Locked_Strife_Left/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iqvic"]
+animation = &"Locked_Strife_Right/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dmejd"]
+animation = &"Locked_Walk_Forward/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_y553k"]
+animation = &"Locked_Walk_Back/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_irnir"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jfh0l"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fumdk"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uelxn"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rd6d1"]
+animation = &"Locked_Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_irnir"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_l8pnb")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_iqvic")
+blend_point_1/pos = Vector2(1, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_dmejd")
+blend_point_2/pos = Vector2(0, 1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_y553k")
+blend_point_3/pos = Vector2(0, -1)
+blend_point_4/node = SubResource("AnimationNodeAnimation_irnir")
+blend_point_4/pos = Vector2(0, 0)
+blend_point_5/node = SubResource("AnimationNodeAnimation_jfh0l")
+blend_point_5/pos = Vector2(-0.2, 0)
+blend_point_6/node = SubResource("AnimationNodeAnimation_fumdk")
+blend_point_6/pos = Vector2(0, 0.2)
+blend_point_7/node = SubResource("AnimationNodeAnimation_uelxn")
+blend_point_7/pos = Vector2(0.2, 0)
+blend_point_8/node = SubResource("AnimationNodeAnimation_rd6d1")
+blend_point_8/pos = Vector2(0, -0.2)
+x_label = "y_FB"
+y_label = "x_LR"
+sync = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6mdn2"]
+animation = &"Idle/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_aj8h8"]
+animation = &"Walking/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4ts6l"]
+animation = &"Running/mixamo_com"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_l8pnb"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_6mdn2")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_aj8h8")
+blend_point_1/pos = 0.5
+blend_point_2/node = SubResource("AnimationNodeAnimation_4ts6l")
+blend_point_2/pos = 1.0
+min_space = 0.0
+sync = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_iqvic"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6mdn2"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aj8h8"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4ts6l"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3k8pg"]
+switch_mode = 1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_018lk"]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5lhju"]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8j7nq"]
+switch_mode = 1
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_rd6d1"]
+states/End/position = Vector2(564, 157.3551)
+states/Heavy_Attack_mixamo_com/node = SubResource("AnimationNodeAnimation_xaneo")
+states/Heavy_Attack_mixamo_com/position = Vector2(766.56995, -83.81795)
+states/Idle_mixamo_com/node = SubResource("AnimationNodeAnimation_kd6ke")
+states/Idle_mixamo_com/position = Vector2(254, -179.4506)
+states/Jump_mixamo_com/node = SubResource("AnimationNodeAnimation_3k8pg")
+states/Jump_mixamo_com/position = Vector2(296.2219, 165.30539)
+states/Locked_Idle_mixamo_com/node = SubResource("AnimationNodeAnimation_g76vx")
+states/Locked_Idle_mixamo_com/position = Vector2(1033.1426, -85.61919)
+states/Locked_Strife_Left_mixamo_com/node = SubResource("AnimationNodeAnimation_wq2c7")
+states/Locked_Strife_Left_mixamo_com/position = Vector2(1336.3926, -174.45924)
+states/Locked_Strife_Right_mixamo_com/node = SubResource("AnimationNodeAnimation_e2pwi")
+states/Locked_Strife_Right_mixamo_com/position = Vector2(1336.3926, -81.33922)
+states/Locked_Walk_Back_mixamo_com/node = SubResource("AnimationNodeAnimation_hol3s")
+states/Locked_Walk_Back_mixamo_com/position = Vector2(1639.4077, -174.27611)
+states/Locked_Walk_Forward_mixamo_com/node = SubResource("AnimationNodeAnimation_p5bs7")
+states/Locked_Walk_Forward_mixamo_com/position = Vector2(1658.9077, -79.93236)
+states/Quick_Attack_mixamo_com/node = SubResource("AnimationNodeAnimation_7dvpy")
+states/Quick_Attack_mixamo_com/position = Vector2(764.31995, -174.82549)
+"states/Running Jump_mixamo_com/node" = SubResource("AnimationNodeAnimation_i5h01")
+"states/Running Jump_mixamo_com/position" = Vector2(494.10742, -177.18552)
+states/Running_mixamo_com/node = SubResource("AnimationNodeAnimation_65d76")
+states/Running_mixamo_com/position = Vector2(265.6074, -87.420425)
+states/Start/position = Vector2(564, 68.3551)
+states/Ultimate_Attack_mixamo_com/node = SubResource("AnimationNodeAnimation_05s0h")
+states/Ultimate_Attack_mixamo_com/position = Vector2(1031.8926, -174.09299)
+states/Walking_mixamo_com/node = SubResource("AnimationNodeAnimation_ptp8x")
+states/Walking_mixamo_com/position = Vector2(496.10742, -86.170425)
+states/jump/node = SubResource("AnimationNodeAnimation_4bfop")
+states/jump/position = Vector2(1125.7211, 68.3551)
+states/lock_on_blend/node = SubResource("AnimationNodeBlendSpace2D_irnir")
+states/lock_on_blend/position = Vector2(895.7202, 157.3551)
+states/moving_blend/node = SubResource("AnimationNodeBlendSpace1D_l8pnb")
+states/moving_blend/position = Vector2(895.7202, 68.3551)
+transitions = ["Start", "moving_blend", SubResource("AnimationNodeStateMachineTransition_iqvic"), "Start", "lock_on_blend", SubResource("AnimationNodeStateMachineTransition_6mdn2"), "lock_on_blend", "moving_blend", SubResource("AnimationNodeStateMachineTransition_aj8h8"), "moving_blend", "lock_on_blend", SubResource("AnimationNodeStateMachineTransition_4ts6l"), "moving_blend", "jump", SubResource("AnimationNodeStateMachineTransition_3k8pg"), "jump", "moving_blend", SubResource("AnimationNodeStateMachineTransition_018lk"), "jump", "lock_on_blend", SubResource("AnimationNodeStateMachineTransition_5lhju"), "lock_on_blend", "jump", SubResource("AnimationNodeStateMachineTransition_8j7nq")]
+graph_offset = Vector2(688.447, -30.594633)
+
+[node name="T-Pose" unique_id=411427401 instance=ExtResource("1_j53xp")]
+
+[node name="Skeleton3D" parent="." index="0" unique_id=257990061]
+transform = Transform3D(-1.25, 0, -1.8874475e-07, 0, 1.25, 0, 1.8874475e-07, 0, -1.25, 0, -1, 0)
+bones/0/position = Vector3(0.006031152, 0.7734926, -0.014435772)
+bones/0/rotation = Quaternion(0.17426217, -0.1337468, -0.025814867, 0.9752323)
+bones/1/rotation = Quaternion(0.0915722, 0.021576438, -0.012830605, 0.995482)
+bones/2/rotation = Quaternion(0.03665501, 0.008624674, 0.0007276543, 0.9992905)
+bones/3/rotation = Quaternion(0.036864158, 0.007146193, 0.0013948334, 0.99929386)
+bones/4/rotation = Quaternion(-0.12570235, 0.0017425118, 0.008476949, 0.99203026)
+bones/5/rotation = Quaternion(-0.1966418, 0.08667106, -0.013089829, 0.97654945)
+bones/7/rotation = Quaternion(0.5759449, 0.41507414, -0.5743425, 0.40759265)
+bones/8/rotation = Quaternion(0.40590104, 0.32187063, -0.03805262, 0.8545149)
+bones/9/rotation = Quaternion(-0.04442787, -0.043005254, 0.50342065, 0.86182624)
+bones/10/rotation = Quaternion(-0.0017047205, -0.027763952, -0.0002409252, 0.999613)
+bones/11/rotation = Quaternion(0.027811203, 0.09360978, 0.23080339, 0.9680876)
+bones/12/rotation = Quaternion(0.09330131, -0.059131004, -0.1439874, 0.9833952)
+bones/13/rotation = Quaternion(0.063117765, -0.039836977, -0.075627066, 0.9943388)
+bones/15/rotation = Quaternion(0.160939, -0.03412277, 0.18046695, 0.9697248)
+bones/16/rotation = Quaternion(0.17101088, -0.0017802084, -0.13712473, 0.9756788)
+bones/17/rotation = Quaternion(-0.034162547, 0.009842594, 0.08007743, 0.9961545)
+bones/19/rotation = Quaternion(0.61299014, -0.37170944, 0.5835046, 0.38157243)
+bones/20/rotation = Quaternion(0.30885968, -0.02479304, -0.29465598, 0.903974)
+bones/21/rotation = Quaternion(-0.040461868, 0.013490699, -0.6924744, 0.72018063)
+bones/22/rotation = Quaternion(-0.18728969, -0.23871183, -0.13300194, 0.9435305)
+bones/23/rotation = Quaternion(0.089966856, -0.03313525, -0.19608459, 0.97588885)
+bones/24/rotation = Quaternion(-0.0027524754, 0.015287806, 0.10294408, 0.99456584)
+bones/25/rotation = Quaternion(0.06472565, 0.049023442, 0.0049692485, 0.9966858)
+bones/27/rotation = Quaternion(0.14782439, 0.029970527, -0.16397828, 0.97486454)
+bones/28/rotation = Quaternion(0.17079313, 0.0009872318, 0.1378914, 0.97560996)
+bones/29/rotation = Quaternion(0.06344533, -0.019524878, -0.1200819, 0.99054223)
+bones/31/rotation = Quaternion(0.11554255, 0.46392366, 0.87701035, -0.047726147)
+bones/32/rotation = Quaternion(-0.7804281, -0.045649853, 0.05112118, 0.6214779)
+bones/33/rotation = Quaternion(0.47142127, -0.16024318, 0.19555043, 0.84489304)
+bones/34/rotation = Quaternion(0.3335201, -0.04633077, 0.0077109654, 0.9415723)
+bones/36/rotation = Quaternion(0.012434851, 0.3052239, 0.9503769, -0.058884982)
+bones/37/rotation = Quaternion(-0.43447828, 0.016708931, 0.020357009, 0.9002973)
+bones/38/rotation = Quaternion(0.6848554, 0.11819174, -0.08041888, 0.7145184)
+bones/39/rotation = Quaternion(0.34863555, 0.04909627, -0.009352384, 0.9359248)
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Skeleton3D" index="1" unique_id=511955305]
+transform = Transform3D(0.7536299, 0.060195, 0.6545366, 0.64151627, 0.14954527, -0.75239146, -0.14317311, 0.98692083, 0.07408579, -0.19627613, 0.8382727, 0.34499317)
+bone_name = "mixamorig_RightHand"
+bone_idx = 22
+
+[node name="Sabre" parent="Skeleton3D/BoneAttachment3D" index="0" unique_id=225740513 instance=ExtResource("2_6mdn2")]
+transform = Transform3D(-0.2181038, -0.00022544473, 0.12219148, -0.0035709057, -0.24988109, -0.006834883, 0.12213938, -0.007708185, 0.21799682, 0.3052755, 0.18131596, -0.14145231)
+
+[node name="AnimationPlayer" parent="." index="1" unique_id=1962160529]
+libraries/Heavy_Attack = ExtResource("2_arnyr")
+libraries/Idle = ExtResource("3_6mdn2")
+libraries/Jump = ExtResource("5_aj8h8")
+libraries/Locked_Idle = ExtResource("4_aj8h8")
+libraries/Locked_Strife_Left = ExtResource("5_4ts6l")
+libraries/Locked_Strife_Right = ExtResource("6_l8pnb")
+libraries/Locked_Walk_Back = ExtResource("7_iqvic")
+libraries/Locked_Walk_Forward = ExtResource("8_dmejd")
+libraries/Quick_Attack = ExtResource("9_y553k")
+libraries/Running = ExtResource("10_irnir")
+"libraries/Running Jump" = ExtResource("11_jfh0l")
+libraries/Ultimate_Attack = ExtResource("12_fumdk")
+libraries/Walking = ExtResource("13_uelxn")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2" unique_id=809974527]
+tree_root = SubResource("AnimationNodeStateMachine_rd6d1")
+anim_player = NodePath("../AnimationPlayer")
+parameters/lock_on_blend/blend_position = Vector2(0, 0)
+parameters/moving_blend/blend_position = 0.0

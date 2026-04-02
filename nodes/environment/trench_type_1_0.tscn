@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cro31pec5vago"]
+
+[ext_resource type="PackedScene" uid="uid://bxo825qpdv8wy" path="res://assets/environment_import/military_trenches_wall_extrusion_metal_corrugated_01_ydxlcils_low/Military_Trenches_Wall_Extrusion_Metal_Corrugated_01_ydxlcils_Low.fbx" id="1_skca5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gvchj"]
+size = Vector3(5.6116943, 3.2869873, 1.4411621)
+
+[node name="Military_Trenches_Wall_Extrusion_Metal_Corrugated_01_ydxlcils_Low" unique_id=1958750258 instance=ExtResource("1_skca5")]
+
+[node name="ydxlcils_LOD0_TIER3_000" parent="world_root" parent_id_path=PackedInt32Array(1094962688) index="0" unique_id=1987086044]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1" unique_id=175545876]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=935818766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6685944, 0.9650574, 0.6144409)
+shape = SubResource("BoxShape3D_gvchj")

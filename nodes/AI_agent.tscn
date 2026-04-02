@@ -4,6 +4,10 @@
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="2_dtquj"]
 [ext_resource type="Script" uid="uid://brdmuactkv7sg" path="res://scripts/components/steering_component.gd" id="2_humdk"]
 [ext_resource type="Script" uid="uid://dykry5e1tr1mi" path="res://scripts/components/avoider_component.gd" id="4_tt2bh"]
+[ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="5_flffr"]
+[ext_resource type="Script" uid="uid://dd5tgdggeel8o" path="res://scripts/components/generic_hit_&_hurt/hit_ray_3d.gd" id="7_a5mj6"]
+[ext_resource type="Script" uid="uid://crq7vga7bh344" path="res://scripts/components/generic_hit_&_hurt/hurtbox_3d.gd" id="7_y06na"]
+[ext_resource type="Script" uid="uid://cvawy4li3pqti" path="res://scripts/components/generic_hit_&_hurt/damage_instance.gd" id="8_a5mj6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jcmuf"]
 
@@ -13,16 +17,205 @@
 radius = 0.1
 height = 0.2
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_flffr"]
-viewport_path = NodePath("SubViewport")
+[sub_resource type="GDScript" id="GDScript_oerex"]
+resource_name = "idle"
+script/source = "@tool
+extends State
 
-[node name="AIAgent" type="CharacterBody3D" unique_id=17692775]
+@export var agent:AIAgent
+@export var animation_tree:AnimationTree
+
+func state_enter() -> void:
+	var h_velocity:Vector3 = agent.velocity
+	h_velocity.y = 0.0
+	var _v_velocity:float = agent.velocity.y
+	
+	var speed_blend:float = h_velocity.length()/agent.walk_speed
+	animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+	animation_tree['parameters/playback'].travel('moving_blend')
+	
+	for c in get_children():
+		c.process_mode = Node.PROCESS_MODE_INHERIT
+
+func state_exit() -> void:
+	for c in get_children():
+		c.process_mode = Node.PROCESS_MODE_DISABLED
+
+func state_physics_process(_delta: float) -> void:
+	if agent.target:
+		if agent.target is Player3D and agent.target.global_position.distance_to(agent.global_position) < 2.0:
+			state_machine.execute_event('attack')
+		else:
+			state_machine.execute_event('seek')
+	
+	var h_velocity:Vector3 = agent.velocity
+	h_velocity.y = 0.0
+	var _v_velocity:float = agent.velocity.y
+	
+	var speed_blend:float = h_velocity.length()/agent.walk_speed
+	animation_tree['parameters/playback'].travel('moving_blend')
+"
+
+[sub_resource type="GDScript" id="GDScript_y06na"]
+resource_name = "seek"
+script/source = "@tool
+extends State
+
+@export var agent:AIAgent
+@export var seek_force: float = 1.0
+@export var avoider_component:AvoiderComponent
+@export var animation_tree:AnimationTree
+
+@export var cutoff_distance:float = 2.5
+
+var distance_to_target:float = 0.0
+var facing_target:float = 0.0
+
+var path:NavigationUtil.NavPath
+
+func state_enter() -> void:
+	animation_tree['parameters/playback'].travel('moving_blend')
+	update_path()
+	for c in get_children():
+		c.process_mode = Node.PROCESS_MODE_INHERIT
+
+func state_exit() -> void:
+	for c in get_children():
+		c.process_mode = Node.PROCESS_MODE_DISABLED
+
+func state_physics_process(_delta: float) -> void:
+	if not agent.target or agent.target.global_position.distance_to(agent.global_position) < 2:
+		state_machine.execute_event('idle')
+		return
+	if Engine.get_physics_frames() % 60 == 0:
+		update_path()
+	if path.get_current_node().overlaps_body(agent):
+		path.get_next_node()
+		if path.get_current_node().is_gap():
+			agent.jump_to(path.get_next_node().get_world_position())
+
+	var target_direction :Vector3= Vector3.ZERO 
+	if not path.reached_last_node():
+		target_direction = (path.get_current_node().get_world_position() - agent.global_position)
+	else:
+		target_direction = (agent.target.global_position - agent.global_position)
+		
+	distance_to_target = target_direction.length()
+	target_direction = target_direction.slide(Vector3.UP).normalized()
+	facing_target = agent.get_facing_target_factor(target_direction)
+	
+	AIUtils.AIActions.look_in_direction(agent,target_direction,seek_force)
+
+	if distance_to_target > cutoff_distance and facing_target > 0.95:
+		AIUtils.AIActions.move_forward(agent,seek_force)
+	elif avoider_component.is_avoiding() and facing_target < 0.95:
+		AIUtils.AIActions.move_forward(agent,seek_force)
+	
+	var h_velocity:Vector3 = agent.velocity
+	h_velocity.y = 0.0
+	var _v_velocity:float = agent.velocity.y
+	
+	var speed_blend:float = h_velocity.length()/agent.walk_speed
+	animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+	
+
+func update_path():
+	path = NavigationUtil.find_path(agent.global_position,agent.target.global_position)
+	while path.is_empty():
+		await get_tree().physics_frame
+		path = NavigationUtil.find_path(agent.global_position,agent.target.global_position)
+"
+
+[sub_resource type="GDScript" id="GDScript_jbp7b"]
+resource_name = "attack"
+script/source = "@tool
+extends State
+
+@export var agent:AIAgent
+@export var hit_ray:HitRay3D
+@export var animation_tree:AnimationTree
+var animation_playback:AnimationNodeStateMachinePlayback
+
+func state_enter() -> void:
+	animation_playback = animation_tree.get(\"parameters/playback\")
+	animation_tree['parameters/playback'].travel('attack_0')
+
+func state_exit() -> void:
+	animation_tree['parameters/playback'].travel('moving_blend')
+
+func state_physics_process(_delta: float) -> void:
+	AIUtils.AIActions.look_at_target(agent,agent.target,1)
+	agent.steering_component.override_movement(Vector3.ZERO)
+	agent.velocity = Vector3.ZERO
+	if agent.target.global_position.distance_to(agent.global_position) > 2:
+		state_machine.execute_event('idle')
+		return
+	agent.move_and_slide()
+	#if animation_playback.get_current_node() == 'moving_animation_blend':
+		#print('restart animation')
+		#animation_tree['parameters/playback'].travel('attack_0')
+		#print(animation_playback.get_current_node())
+
+
+func trigger_attack():
+	hit_ray.trigger_ray()
+"
+
+[sub_resource type="GDScript" id="GDScript_a5mj6"]
+resource_name = "jump"
+script/source = "@tool
+extends State
+
+@export var agent:AIAgent
+@export var animation_tree:AnimationTree
+
+var pos_delta:Vector3
+var h_pos:Vector3
+var v_pos:Vector3
+var h_target:Vector3
+var v_target:Vector3
+
+func state_enter() -> void:
+	animation_tree['parameters/playback'].travel('jump')
+	agent._jumping = true
+	pos_delta = (agent.jump_target - agent.global_position)
+	h_pos = Vector3(agent.global_position.x,0.0,agent.global_position.z)
+	v_pos = Vector3(0.0,agent.global_position.y,0.0)
+	h_target = Vector3(agent.jump_target.x,0.0,agent.jump_target.z)
+	v_target = Vector3(0.0,agent.jump_target.y,0.0)
+	
+	var h_dir = h_pos.direction_to(h_target)
+	var h_dist = h_target.distance_to(h_pos)
+	var v_dist = v_target.distance_to(v_pos)
+	
+	agent.velocity = h_dir * h_dist
+	agent.velocity.y = sqrt(2*agent.gravity*v_dist)
+
+func state_exit() -> void:
+	agent.jump_target = Vector3.ZERO
+	agent._jumping = false
+
+func state_physics_process(_delta: float) -> void:
+	if agent.global_position.distance_to(agent.jump_target) < 2.0 or is_zero_approx(agent.velocity.length_squared()):
+		state_machine.execute_event('idle')
+	var dir := agent.global_position.direction_to(agent.jump_target)
+	agent.velocity.y -= agent.gravity*_delta
+	agent.move_and_slide()
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a5mj6"]
+
+[sub_resource type="Resource" id="Resource_a5mj6"]
+script = ExtResource("8_a5mj6")
+damage = 1.0
+metadata/_custom_type_script = "uid://cvawy4li3pqti"
+
+[node name="AIAgent" type="CharacterBody3D" unique_id=17692775 groups=["enemy"]]
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 velocity = Vector3(0, -2699.1943, 0)
 floor_constant_speed = true
 script = ExtResource("1_eu1jj")
-avoidance_weight = 0.3
 metadata/_custom_type_script = "uid://ccvw0aiur5xi5"
 
 [node name="SteeringComponent" type="Node3D" parent="." unique_id=616948691]
@@ -33,8 +226,8 @@ metadata/_custom_type_script = "uid://brdmuactkv7sg"
 [node name="AvoiderComponent" type="Node3D" parent="." unique_id=1405397863 node_paths=PackedStringArray("steering_component")]
 unique_name_in_owner = true
 script = ExtResource("4_tt2bh")
-ray_length = 2.0
-ray_angle = 30.0
+ray_length = 2.5
+ray_angle = 50.0
 avoidance_weight = 2.0
 steering_component = NodePath("../SteeringComponent")
 avoidance_mask = 4
@@ -56,6 +249,62 @@ mesh = SubResource("CapsuleMesh_fibwc")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("SphereMesh_y06na")
 
-[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1086328026]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.2986801, 0)
-texture = SubResource("ViewportTexture_flffr")
+[node name="StateMachine" type="Node" parent="." unique_id=26237221 node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("5_flffr")
+initial_state = NodePath("Seek")
+metadata/_custom_type_script = "uid://bx384iuwj3u8u"
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1970834143 node_paths=PackedStringArray("agent", "transitions")]
+script = SubResource("GDScript_oerex")
+agent = NodePath("../..")
+transitions = {
+&"attack": NodePath("../Attack"),
+&"seek": NodePath("../Seek")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Seek" type="Node" parent="StateMachine" unique_id=1129825890 node_paths=PackedStringArray("agent", "avoider_component", "transitions")]
+script = SubResource("GDScript_y06na")
+agent = NodePath("../..")
+avoider_component = NodePath("../../AvoiderComponent")
+transitions = {
+&"attack": NodePath("../Attack"),
+&"idle": NodePath("../Idle"),
+&"jump": NodePath("../Jump")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Attack" type="Node" parent="StateMachine" unique_id=1086589799 node_paths=PackedStringArray("agent", "transitions")]
+script = SubResource("GDScript_jbp7b")
+agent = NodePath("../..")
+transitions = {
+&"idle": NodePath("../Idle"),
+&"seek": NodePath("../Seek")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Jump" type="Node" parent="StateMachine" unique_id=1082547742 node_paths=PackedStringArray("agent", "transitions")]
+script = SubResource("GDScript_a5mj6")
+agent = NodePath("../..")
+transitions = {
+&"idle": NodePath("../Idle")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Hurtbox3D" type="Area3D" parent="." unique_id=1679062543]
+script = ExtResource("7_y06na")
+damage_callback = &"receive_damage"
+metadata/_custom_type_script = "uid://crq7vga7bh344"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox3D" unique_id=342035709]
+shape = SubResource("CapsuleShape3D_a5mj6")
+
+[node name="HitRay3D" type="Node3D" parent="." unique_id=1079454313]
+unique_name_in_owner = true
+script = ExtResource("7_a5mj6")
+trigger_delay = 1.866
+length = 5.0
+hit_mask = 8
+damage_instance = SubResource("Resource_a5mj6")
+metadata/_custom_type_script = "uid://dd5tgdggeel8o"

@@ -3,11 +3,286 @@
 [ext_resource type="Script" uid="uid://bn6evds4qsgc4" path="res://scripts/player/player_character.gd" id="1_qlps6"]
 [ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="2_5l2xy"]
 [ext_resource type="Shader" uid="uid://bgjer4ly5f8rs" path="res://materials/grid_debug.gdshader" id="2_hs54n"]
-[ext_resource type="Script" uid="uid://b42om5mouo7ee" path="res://addons/Gostate/scripts/state.gd" id="3_bvxdu"]
+[ext_resource type="Script" uid="uid://cnk25gumc3iwg" path="res://scripts/player/attack_ground.gd" id="3_1c71w"]
+[ext_resource type="PackedScene" uid="uid://ksulwv01p1pc" path="res://assets/main_character/character.tscn" id="4_1c71w"]
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="5_ehlbk"]
+[ext_resource type="Script" uid="uid://crq7vga7bh344" path="res://scripts/components/generic_hit_&_hurt/hurtbox_3d.gd" id="6_60spa"]
 [ext_resource type="Script" uid="uid://bsu43s1gtwkhy" path="res://scripts/components/camera_controller_3d.gd" id="6_qcnnv"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_hs54n"]
+[sub_resource type="GDScript" id="GDScript_60spa"]
+resource_name = "Grounded"
+script/source = "@tool
+extends State
+
+@export var player:Player3D
+
+func state_enter() -> void:
+	# Guarentees buffer timer to be initialized before using it
+	if not player.is_node_ready():
+		await player.ready
+	player.capture_mouse()
+	player.velocity.y = 0.0
+	# If jump is buffered, immediately start a new jump
+	if player.is_jump_buffered():
+		state_machine.execute_event(\"jump\")
+	# Play walk animation
+	var speed_blend = player.velocity.length() / player.sprint_speed
+	player.animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+	player.animation_tree['parameters/playback'].travel('moving_blend')
+	
+func state_exit() -> void:
+	pass
+	
+func state_input(event: InputEvent) -> void:
+	if event.is_action_pressed(\"dodge\"):
+		if player.dodge_cooldown_timer.is_stopped():
+			state_machine.execute_event(\"dodge\")
+	elif event.is_action_pressed(\"jump\"):
+		state_machine.execute_event(\"jump\")
+	if event.is_action_pressed('lock_on'):
+		if player.camera_controller.is_locked_on():
+			player.camera_controller.lock_off()
+		else:
+			player.camera_controller.lock_on_nearest_enemy()
+	# Attack
+	if event.is_action_pressed(\"attack_ground\"):
+		state_machine.execute_event(\"attack_ground\")
+
+	
+func state_physics_process(delta: float) -> void:
+	var _velocity:Vector3 = player.velocity
+	var _velocity_mag:float = _velocity.length_squared()
+	var target_velocity: Vector3 = player.input_direction * player.walk_speed
+	var interpolation_factor:float = 0.0
+	var result_velocity: Vector3 = Vector3.ZERO
+	
+	if _velocity_mag > target_velocity.length_squared():
+		interpolation_factor = delta * player.walk_deceleration
+		result_velocity = _velocity.lerp(target_velocity,interpolation_factor)
+	else:
+		interpolation_factor = delta * player.walk_acceleration
+		result_velocity = _velocity.lerp(target_velocity,interpolation_factor)
+	
+	player.velocity = result_velocity
+	player.velocity.y = 0.0
+	player.move_and_slide()
+	
+	if not player.is_on_floor():
+		state_machine.execute_event(\"falling\")
+	
+	if player.camera_controller.is_locked_on():
+		var dir = (player.camera_controller._lock_on_target.global_position - player.global_position).normalized()
+		player.rotate_body_towards(dir,delta*2.5)
+		# Animation for lock on depends on the xz velocity relative to the camera forward direction
+		var cam_forward = -player.global_transform.basis.z
+		var forward_amount = cam_forward.dot(_velocity)
+		var right_amount = cam_forward.cross(Vector3.UP).dot(_velocity)
+		# x is right, y is forward for the blend space
+		var smoothed_direction = Vector2(right_amount,forward_amount)
+		player.animation_tree.set('parameters/lock_on_blend/blend_position',smoothed_direction)
+		if player.animation_tree['parameters/playback'].get_current_node() != 'lock_on_blend':
+			player.animation_tree['parameters/playback'].travel('lock_on_blend')
+	else:
+		player.rotate_body_towards(player.velocity,delta,player.velocity.length()*0.5)
+		# Animation
+		var speed_blend = player.velocity.length() / player.sprint_speed
+		player.animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+		player.animation_tree['parameters/playback'].travel('moving_blend')
+		if player.animation_tree['parameters/playback'].get_current_node() != 'moving_blend':
+			player.animation_tree['parameters/playback'].travel('moving_blend')
+			
+"
+
+[sub_resource type="GDScript" id="GDScript_1c71w"]
+resource_name = "Sprinting"
+script/source = "@tool
+extends State
+
+@export var player:Player3D
+@export var animation_tree:AnimationTree
+
+func state_enter() -> void:
+	# Play sprinting animation
+	var speed_blend = player.velocity.length() / player.sprint_speed
+	player.animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+	player.animation_tree['parameters/playback'].travel('moving_blend')
+	pass
+
+func state_exit() -> void:
+	pass
+
+func state_input(event: InputEvent) -> void:
+	if event.is_action_released(\"dodge\"):
+		state_machine.execute_event(\"walk\")
+	elif event.is_action_pressed(\"jump\"):
+		state_machine.execute_event(\"jump\")
+	elif event.is_action_pressed('lock_on'):
+		if player.camera_controller.is_locked_on():
+			player.camera_controller.lock_off()
+		else:
+			player.camera_controller.lock_on_nearest_enemy()
+
+func state_physics_process(delta: float) -> void:
+	var target_velocity: Vector3 = player.sprint_speed * player.input_direction
+	var result_velocity:Vector3 = player.velocity.lerp(target_velocity,player.sprint_acceleration * delta)
+	
+	player.velocity = result_velocity
+	player.velocity.y = 0.0
+	player.move_and_slide()
+	
+	player.rotate_body_towards(player.velocity,delta,player.velocity.length())
+	
+	if not player.is_on_floor():
+		state_machine.execute_event(\"falling\")
+	if is_zero_approx(player.input_direction.length()):
+		state_machine.execute_event('walk')
+	# Animation
+	var speed_blend = player.velocity.length() / player.sprint_speed
+	player.animation_tree.set('parameters/moving_blend/blend_position',speed_blend)
+
+"
+
+[sub_resource type="GDScript" id="GDScript_efhua"]
+resource_name = "Jumping"
+script/source = "@tool
+extends State
+
+@export var player:Player3D
+@export var animation_tree:AnimationTree
+
+func state_enter() -> void:
+	player.velocity.y += player.jump_force
+	# Animation
+	player.animation_tree['parameters/playback'].travel('jump')
+	pass
+
+func state_exit() -> void:
+	pass
+
+func state_input(event: InputEvent) -> void:
+	if event.is_action_pressed(\"jump\"):
+		player.buffer_jump()
+	
+	if event.is_action_pressed('lock_on'):
+		if player.camera_controller.is_locked_on():
+			player.camera_controller.lock_off()
+		else:
+			player.camera_controller.lock_on_nearest_enemy()
+
+func state_physics_process(delta: float) -> void:
+	var h_velocity = player.velocity
+	h_velocity.y = 0.0
+	
+	var target_velocity: Vector3 = player.input_direction * player.air_speed
+	var result_velocity: Vector3 = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
+	
+	if h_velocity.length_squared() > target_velocity.length_squared():
+		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_deceleration)
+	else:
+		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
+	
+	result_velocity.y = player.velocity.y - (player.jump_gravity * delta)
+
+	player.velocity = result_velocity
+	player.move_and_slide()
+	
+	if player.is_on_floor():
+		state_machine.execute_event(\"walking\")
+	if player.velocity.y <= 0.0:
+		state_machine.execute_event(\"falling\")
+	
+"
+
+[sub_resource type="GDScript" id="GDScript_5x08c"]
+resource_name = "Falling"
+script/source = "@tool
+extends State
+
+@export var player:Player3D
+@export var animation_tree:AnimationTree
+
+func state_enter() -> void:
+	pass # Replace with function body.
+
+func state_exit() -> void:
+	pass # Replace with function body.
+
+func state_input(event: InputEvent) -> void:
+	if event.is_action_pressed(\"jump\"):
+		player.buffer_jump()
+	if event.is_action_pressed('lock_on'):
+		if player.camera_controller.is_locked_on():
+			player.camera_controller.lock_off()
+		else:
+			player.camera_controller.lock_on_nearest_enemy()
+
+func state_physics_process(delta: float) -> void:
+	var h_velocity = player.velocity
+	h_velocity.y = 0.0
+	
+	var target_velocity: Vector3 = player.input_direction * player.air_speed
+	var result_velocity: Vector3 = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
+	
+	if h_velocity.length_squared() > target_velocity.length_squared():
+		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_deceleration)
+	else:
+		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
+	
+	result_velocity.y = player.velocity.y - (player.fall_gravity * delta)
+
+	player.velocity = result_velocity
+	player.move_and_slide()
+	
+	if player.is_on_floor():
+		state_machine.execute_event(\"walking\")
+"
+
+[sub_resource type="GDScript" id="GDScript_750ug"]
+resource_name = "Dodge"
+script/source = "@tool
+extends State
+
+@export var player:Player3D
+@export var animation_tree:AnimationTree
+
+var dodge_velocity:Vector3
+var dodge_time_left:float
+var i_frames_left:int = 0
+
+func state_enter() -> void:
+	if player.input_direction.is_zero_approx():
+		state_machine.execute_event('walk')
+		return
+	i_frames_left = player.invincibility_frames
+	player.hurtbox_3d.enabled = false
+	dodge_time_left = player.dodge_duration
+	dodge_velocity = player.input_direction * player.dodge_speed
+
+func state_exit() -> void:
+	player.dodge_cooldown_timer.start(player.dodge_cooldown)
+	
+func state_physics_process(delta: float) -> void:
+	if i_frames_left <= 0:
+		player.hurtbox_3d.enabled = true
+	player.velocity.x = dodge_velocity.x
+	player.velocity.z = dodge_velocity.z
+	player.move_and_slide()
+	
+	dodge_velocity = dodge_velocity.lerp(Vector3.ZERO,delta)
+	dodge_time_left -= delta
+	
+	if not player.is_on_floor():
+		state_machine.execute_event(\"falling\")
+	
+	player.rotate_body_towards(player.velocity,delta,player.velocity.length())
+	
+	if player.velocity.is_zero_approx() or dodge_velocity.is_zero_approx() or dodge_time_left <= 0.0:
+		if Input.is_action_pressed('dodge'):
+			state_machine.execute_event(\"sprint\")
+		else:
+			state_machine.execute_event(\"walk\")
+	i_frames_left -= 1
+"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2i27r"]
 
@@ -41,89 +316,90 @@ shader_parameter/in_dashed_count_y = 6.0
 radius = 0.1
 height = 0.2
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_5x08c"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_60spa"]
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_60spa"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5x08c"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1c71w"]
-
-[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_efhua"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_750ug"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pw1jq"]
-
-[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_rc07s"]
-
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_0q5j8"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2aww7"]
-
-[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_l8cal"]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_6u63h"]
-graph_offset = Vector2(-448.40717, -28.448853)
-nodes/output/position = Vector2(608, 160)
-nodes/Hurt/node = SubResource("AnimationNodeAnimation_750ug")
-nodes/Hurt/position = Vector2(-544, 368)
-nodes/Parry_OneShot/node = SubResource("AnimationNodeOneShot_l8cal")
-nodes/Parry_OneShot/position = Vector2(416, 144)
-nodes/Movement_BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_0q5j8")
-nodes/Movement_BlendSpace2D/position = Vector2(-832, 80)
-nodes/LightSlash_OneShot/node = SubResource("AnimationNodeOneShot_rc07s")
-nodes/LightSlash_OneShot/position = Vector2(-80, 144)
-nodes/LightSlash/node = SubResource("AnimationNodeAnimation_pw1jq")
-nodes/LightSlash/position = Vector2(-320, 432)
-nodes/HeavySlash/node = SubResource("AnimationNodeAnimation_1c71w")
-nodes/HeavySlash/position = Vector2(-80, 448)
-nodes/Blocking/node = SubResource("AnimationNodeAnimation_5x08c")
-nodes/Blocking/position = Vector2(-752, 320)
-nodes/HeavySlash_OneShot/node = SubResource("AnimationNodeOneShot_efhua")
-nodes/HeavySlash_OneShot/position = Vector2(160, 144)
-nodes/Blend2/node = SubResource("AnimationNodeBlend2_60spa")
-nodes/Blend2/position = Vector2(-544, 80)
-nodes/Parry/node = SubResource("AnimationNodeAnimation_2aww7")
-nodes/Parry/position = Vector2(160, 448)
-"nodes/Blend2 2/node" = SubResource("AnimationNodeBlend2_5x08c")
-"nodes/Blend2 2/position" = Vector2(-320, 144)
-node_connections = [&"output", 0, &"Parry_OneShot", &"Parry_OneShot", 0, &"HeavySlash_OneShot", &"Parry_OneShot", 1, &"Parry", &"LightSlash_OneShot", 0, &"Blend2 2", &"LightSlash_OneShot", 1, &"LightSlash", &"HeavySlash_OneShot", 0, &"LightSlash_OneShot", &"HeavySlash_OneShot", 1, &"HeavySlash", &"Blend2", 0, &"Movement_BlendSpace2D", &"Blend2", 1, &"Blocking", &"Blend2 2", 0, &"Blend2", &"Blend2 2", 1, &"Hurt"]
-
-[node name="PlayerCharacter" type="CharacterBody3D" unique_id=1161731980 node_paths=PackedStringArray("camera_controller", "state_machine")]
+[node name="PlayerCharacter" type="CharacterBody3D" unique_id=1161731980]
 collision_layer = 2
 collision_mask = 3
 floor_constant_speed = true
 script = ExtResource("1_qlps6")
-camera_controller = NodePath("CameraController3D")
-state_machine = NodePath("StateMachine")
-walk_speed = 5.0
+walk_speed = 4.0
 walk_acceleration = 10.0
-walk_deceleration = 15.0
-sprint_speed = 12.0
-sprint_acceleration = 2.0
+walk_deceleration = 7.0
+sprint_acceleration = 10.0
+air_speed = 2.0
 jump_gravity = 20.0
 fall_gravity = 30.0
+dodge_speed = 12.0
+dodge_cooldown = 0.25
 
-[node name="CameraController3D" type="Node3D" parent="." unique_id=1462189122 node_paths=PackedStringArray("camera", "pitch_anchor")]
-top_level = true
-script = ExtResource("6_qcnnv")
-camera = NodePath("CameraSpringArm/Camera3D")
-pitch_anchor = NodePath("CameraSpringArm")
-metadata/_custom_type_script = "uid://bsu43s1gtwkhy"
+[node name="StateMachine" type="Node" parent="." unique_id=105280299 node_paths=PackedStringArray("initial_state")]
+unique_name_in_owner = true
+script = ExtResource("2_5l2xy")
+initial_state = NodePath("Grounded")
+metadata/_custom_type_script = "uid://bx384iuwj3u8u"
 
-[node name="CameraSpringArm" type="SpringArm3D" parent="CameraController3D" unique_id=432008451]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("SphereShape3D_hs54n")
-spring_length = 4.0
+[node name="Grounded" type="Node" parent="StateMachine" unique_id=837258184 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_60spa")
+player = NodePath("../..")
+transitions = {
+&"dodge": NodePath("../Dodge"),
+&"falling": NodePath("../Falling"),
+&"jump": NodePath("../Jumping")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
-[node name="Camera3D" type="Camera3D" parent="CameraController3D/CameraSpringArm" unique_id=1525454726]
+[node name="Sprinting" type="Node" parent="StateMachine" unique_id=1980962346 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_1c71w")
+player = NodePath("../..")
+transitions = {
+&"dodge": NodePath("../Dodge"),
+&"falling": NodePath("../Falling"),
+&"jump": NodePath("../Jumping"),
+&"walk": NodePath("../Grounded")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Jumping" type="Node" parent="StateMachine" unique_id=1417499918 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_efhua")
+player = NodePath("../..")
+transitions = {
+&"falling": NodePath("../Falling"),
+&"sprinting": NodePath("../Sprinting"),
+&"walking": NodePath("../Grounded")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Falling" type="Node" parent="StateMachine" unique_id=2104792821 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_5x08c")
+player = NodePath("../..")
+transitions = {
+&"sprinting": NodePath("../Sprinting"),
+&"walking": NodePath("../Grounded")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Dodge" type="Node" parent="StateMachine" unique_id=174383529 node_paths=PackedStringArray("player", "transitions")]
+script = SubResource("GDScript_750ug")
+player = NodePath("../..")
+transitions = {
+&"falling": NodePath("../Falling"),
+&"sprint": NodePath("../Sprinting"),
+&"walk": NodePath("../Grounded")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Attack_ground" type="Node" parent="StateMachine" unique_id=845140347 node_paths=PackedStringArray("player")]
+script = ExtResource("3_1c71w")
+player = NodePath("../..")
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
 [node name="PlayerCollider" type="CollisionShape3D" parent="." unique_id=1717507666]
 unique_name_in_owner = true
 shape = SubResource("CapsuleShape3D_2i27r")
 
 [node name="BodyMesh" type="MeshInstance3D" parent="PlayerCollider" unique_id=1157442348]
+visible = false
 material_override = SubResource("ShaderMaterial_ehlbk")
 mesh = SubResource("CapsuleMesh_5l2xy")
 skeleton = NodePath("../..")
@@ -132,104 +408,43 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45670342, -1.0724702)
 mesh = SubResource("SphereMesh_5l2xy")
 
-[node name="StateMachine" type="Node" parent="." unique_id=105280299 node_paths=PackedStringArray("initial_state")]
-script = ExtResource("2_5l2xy")
-initial_state = NodePath("GroundedState")
-metadata/_custom_type_script = "uid://bx384iuwj3u8u"
-
-[node name="GroundedState" type="Node" parent="StateMachine" unique_id=837258184 node_paths=PackedStringArray("transitions")]
-script = ExtResource("3_bvxdu")
-transitions = {
-&"falling": NodePath("../FallingState"),
-&"jump": NodePath("../JumpState"),
-&"noplay": NodePath("../NoplayState"),
-&"sprinting": NodePath("../SprintState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
-
-[node name="SprintState" type="Node" parent="StateMachine" unique_id=1980962346 node_paths=PackedStringArray("transitions")]
-script = ExtResource("3_bvxdu")
-transitions = {
-&"falling": NodePath("../FallingState"),
-&"jump": NodePath("../JumpState"),
-&"noplay": NodePath("../NoplayState"),
-&"walking": NodePath("../GroundedState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
-
-[node name="JumpState" type="Node" parent="StateMachine" unique_id=1417499918 node_paths=PackedStringArray("transitions")]
-script = ExtResource("3_bvxdu")
-transitions = {
-&"falling": NodePath("../FallingState"),
-&"noplay": NodePath("../NoplayState"),
-&"sprinting": NodePath("../SprintState"),
-&"walking": NodePath("../GroundedState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
-
-[node name="FallingState" type="Node" parent="StateMachine" unique_id=2104792821 node_paths=PackedStringArray("transitions")]
-script = ExtResource("3_bvxdu")
-transitions = {
-&"noplay": NodePath("../NoplayState"),
-&"sprinting": NodePath("../SprintState"),
-&"walking": NodePath("../GroundedState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
-
-[node name="NoplayState" type="Node" parent="StateMachine" unique_id=1218211838 node_paths=PackedStringArray("transitions")]
-process_mode = 2
-script = ExtResource("3_bvxdu")
-transitions = {
-&"FallingState": NodePath("../FallingState"),
-&"GroundedState": NodePath("../GroundedState"),
-&"JumpState": NodePath("../FallingState"),
-&"SprintState": NodePath("../SprintState")
-}
-metadata/_custom_type_script = "uid://b42om5mouo7ee"
+[node name="Player Model" parent="." unique_id=411427401 instance=ExtResource("4_1c71w")]
 
 [node name="JumpBufferTimer" type="Timer" parent="." unique_id=47575190]
 unique_name_in_owner = true
 one_shot = true
 
+[node name="DodgeCooldownTimer" type="Timer" parent="." unique_id=24468016]
+unique_name_in_owner = true
+process_callback = 0
+one_shot = true
+
 [node name="HealthComponent" type="Node" parent="." unique_id=981849851]
+unique_name_in_owner = true
 script = ExtResource("5_ehlbk")
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
 
-[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1038606099]
-tree_root = SubResource("AnimationNodeBlendTree_6u63h")
-anim_player = NodePath("../AnimationPlayer")
-parameters/Parry_OneShot/active = false
-parameters/Parry_OneShot/internal_active = false
-parameters/Parry_OneShot/request = 0
-parameters/Movement_BlendSpace2D/blend_position = Vector2(0, 0)
-parameters/LightSlash_OneShot/active = false
-parameters/LightSlash_OneShot/internal_active = false
-parameters/LightSlash_OneShot/request = 0
-parameters/HeavySlash_OneShot/active = false
-parameters/HeavySlash_OneShot/internal_active = false
-parameters/HeavySlash_OneShot/request = 0
-parameters/Blend2/blend_amount = 0.0
-"parameters/Blend2 2/blend_amount" = 0.0
+[node name="Hurtbox3D" type="Area3D" parent="." unique_id=1128235420]
+unique_name_in_owner = true
+collision_layer = 8
+input_ray_pickable = false
+script = ExtResource("6_60spa")
+damage_callback = &"receive_damage"
+metadata/_custom_type_script = "uid://crq7vga7bh344"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=854156319]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox3D" unique_id=785969580]
+shape = SubResource("CapsuleShape3D_60spa")
+
+[node name="CameraController3D" type="SpringArm3D" parent="." unique_id=1129545509]
+unique_name_in_owner = true
+spring_length = 3.5
+script = ExtResource("6_qcnnv")
+follow_offset = Vector3(0, 1.5, 0)
+smoothing = 8.0
+metadata/_custom_type_script = "uid://bsu43s1gtwkhy"
+
+[node name="Camera3D" type="Camera3D" parent="CameraController3D" unique_id=1525454726]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+size = 2.38
 
 [connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]
-[connection signal="entered" from="StateMachine/GroundedState" to="." method="_on_grounded_state_entered"]
-[connection signal="exited" from="StateMachine/GroundedState" to="." method="_on_grounded_state_exited"]
-[connection signal="input" from="StateMachine/GroundedState" to="." method="_on_grounded_state_input"]
-[connection signal="physics_process" from="StateMachine/GroundedState" to="." method="_on_grounded_state_physics_process"]
-[connection signal="entered" from="StateMachine/SprintState" to="." method="_on_sprint_state_entered"]
-[connection signal="exited" from="StateMachine/SprintState" to="." method="_on_sprint_state_exited"]
-[connection signal="input" from="StateMachine/SprintState" to="." method="_on_sprint_state_input"]
-[connection signal="physics_process" from="StateMachine/SprintState" to="." method="_on_sprint_state_physics_process"]
-[connection signal="entered" from="StateMachine/JumpState" to="." method="_on_jump_state_entered"]
-[connection signal="exited" from="StateMachine/JumpState" to="." method="_on_jump_state_exited"]
-[connection signal="input" from="StateMachine/JumpState" to="." method="_on_jump_state_input"]
-[connection signal="physics_process" from="StateMachine/JumpState" to="." method="_on_jump_state_physics_process"]
-[connection signal="entered" from="StateMachine/FallingState" to="." method="_on_falling_state_entered"]
-[connection signal="exited" from="StateMachine/FallingState" to="." method="_on_falling_state_exited"]
-[connection signal="input" from="StateMachine/FallingState" to="." method="_on_falling_state_input"]
-[connection signal="physics_process" from="StateMachine/FallingState" to="." method="_on_falling_state_physics_process"]
-[connection signal="entered" from="StateMachine/NoplayState" to="." method="_on_noplay_state_entered"]
-[connection signal="exited" from="StateMachine/NoplayState" to="." method="_on_noplay_state_exited"]
-[connection signal="input" from="StateMachine/NoplayState" to="." method="_on_noplay_state_input"]

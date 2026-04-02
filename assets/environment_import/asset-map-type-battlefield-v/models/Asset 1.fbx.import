@@ -1,0 +1,77 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://d5s1q7q7fla1"
+path="res://.godot/imported/Asset 1.fbx-3bc684faa8807530d1eb308643dce212.scn"
+
+[deps]
+
+source_file="res://assets/environment_import/asset-map-type-battlefield-v/models/Asset 1.fbx"
+dest_files=["res://.godot/imported/Asset 1.fbx-3bc684faa8807530d1eb308643dce212.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=true
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"Barrer": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/environment_import/asset-map-type-battlefield-v/models/Barrer.tres",
+"use_external/path": "uid://cwrcekayi1chj"
+},
+"Lamp": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/environment_import/asset-map-type-battlefield-v/models/Lamp.tres",
+"use_external/path": "uid://dmcs7re7peu5o"
+},
+"Metal Box": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/environment_import/asset-map-type-battlefield-v/models/Metal Box.tres",
+"use_external/path": "uid://b2eogvxn4cddk"
+},
+"Mirador": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/environment_import/asset-map-type-battlefield-v/models/Mirador.tres",
+"use_external/path": "uid://c0e71yxvyhb2r"
+},
+"Stair": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/environment_import/asset-map-type-battlefield-v/models/Stair.tres",
+"use_external/path": "uid://c3vybmjnvb8n"
+},
+"Wooden Box": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/environment_import/asset-map-type-battlefield-v/models/Wooden Box.tres",
+"use_external/path": "uid://botefq60oxhth"
+}
+}
+}
+fbx/importer=0
+fbx/allow_geometry_helper_nodes=false
+fbx/embedded_image_handling=1
+fbx/naming_version=2

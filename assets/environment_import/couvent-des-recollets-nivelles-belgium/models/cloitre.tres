@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b7vxayfn4sg8d"]
+
+[ext_resource type="Texture2D" uid="uid://77611nwgwfos" path="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_cloitre_d.png" id="1_fe368"]
+[ext_resource type="Texture2D" uid="uid://btoaf7nkx2wby" path="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_cloitre_s.png" id="2_a7tkp"]
+[ext_resource type="Texture2D" uid="uid://bgcwky84oa88q" path="res://assets/environment_import/couvent-des-recollets-nivelles-belgium/textures/ssjn_cloitre_n.png" id="3_0ic7v"]
+
+[resource]
+resource_name = "cloitre"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_fe368")
+emission_enabled = true
+normal_enabled = true
+normal_texture = ExtResource("3_0ic7v")
+anisotropy_flowmap = ExtResource("2_a7tkp")
+ao_enabled = true
+ao_texture = ExtResource("2_a7tkp")

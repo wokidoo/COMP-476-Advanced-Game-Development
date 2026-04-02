@@ -1,0 +1,52 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://bxo825qpdv8wy"
+path="res://.godot/imported/Military_Trenches_Wall_Extrusion_Metal_Corrugated_01_ydxlcils_Low.fbx-57e649546077ccf027ccaa983102c6ba.scn"
+
+[deps]
+
+source_file="res://assets/environment_import/military_trenches_wall_extrusion_metal_corrugated_01_ydxlcils_low/Military_Trenches_Wall_Extrusion_Metal_Corrugated_01_ydxlcils_Low.fbx"
+dest_files=["res://.godot/imported/Military_Trenches_Wall_Extrusion_Metal_Corrugated_01_ydxlcils_Low.fbx-57e649546077ccf027ccaa983102c6ba.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=true
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"MatID_0": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/environment_import/military_trenches_wall_extrusion_metal_corrugated_01_ydxlcils_low/MatID_0.tres",
+"use_external/path": "uid://n3v14oyg4gga"
+}
+}
+}
+fbx/importer=0
+fbx/allow_geometry_helper_nodes=false
+fbx/embedded_image_handling=1
+fbx/naming_version=2

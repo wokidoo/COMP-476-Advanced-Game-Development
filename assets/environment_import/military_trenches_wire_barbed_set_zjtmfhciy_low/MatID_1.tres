@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bxquewp6o4jw1"]
+
+[ext_resource type="Texture2D" uid="uid://du48kf7ui7ao8" path="res://assets/environment_import/military_trenches_wire_barbed_set_zjtmfhciy_low/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low_1K_BaseColor.jpg" id="1_86n64"]
+[ext_resource type="Texture2D" uid="uid://bqfbhpvynh4x0" path="res://assets/environment_import/military_trenches_wire_barbed_set_zjtmfhciy_low/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low_1K_Metalness.jpg" id="2_r4od0"]
+[ext_resource type="Texture2D" uid="uid://d3unk1utkwqp1" path="res://assets/environment_import/military_trenches_wire_barbed_set_zjtmfhciy_low/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low_1K_Normal.jpg" id="3_uuui0"]
+[ext_resource type="Texture2D" uid="uid://cgggwsco1g3un" path="res://assets/environment_import/military_trenches_wire_barbed_set_zjtmfhciy_low/Military_Trenches_Wire_Barbed_Set_zjtmfhciy_Low_1K_Roughness.jpg" id="4_kp6wa"]
+
+[resource]
+resource_name = "MatID_1"
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.8843835, 0.8843835, 0.8843835, 1)
+albedo_texture = ExtResource("1_86n64")
+metallic = 1.0
+metallic_texture = ExtResource("2_r4od0")
+roughness_texture = ExtResource("4_kp6wa")
+emission_enabled = true
+normal_enabled = true
+normal_texture = ExtResource("3_uuui0")

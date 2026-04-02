@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bxg0xqm6hyund"]
+
+[ext_resource type="Texture2D" uid="uid://d0s1u2chco1pe" path="res://assets/melee_enemy/EnemyMelee_Image_0.jpg" id="1_ol2e2"]
+[ext_resource type="Texture2D" uid="uid://l5kwsjaj6sgd" path="res://assets/melee_enemy/EnemyMelee_Image_1.jpg" id="2_0dj2t"]
+[ext_resource type="Texture2D" uid="uid://5yfgtnwth7cw" path="res://assets/melee_enemy/EnemyMelee_Image_2.jpg" id="3_6najf"]
+
+[resource]
+resource_name = "Material_0.006"
+cull_mode = 2
+albedo_texture = ExtResource("1_ol2e2")
+metallic = 1.0
+metallic_texture = ExtResource("2_0dj2t")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_0dj2t")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("3_6najf")

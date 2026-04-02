@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bcxba53lft77p"]
+
+[ext_resource type="Texture2D" uid="uid://bjvart4oai1lx" path="res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/Sandbag_Pile_udqjbg1qx_Low_1K_BaseColor.jpg" id="1_y4v3r"]
+[ext_resource type="Texture2D" uid="uid://juuf1fm7s7m1" path="res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/Sandbag_Pile_udqjbg1qx_Low_1K_AO.jpg" id="2_jole6"]
+[ext_resource type="Texture2D" uid="uid://8sfb3nl30p1s" path="res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/Sandbag_Pile_udqjbg1qx_Low_1K_Normal.jpg" id="3_1st0h"]
+[ext_resource type="Texture2D" uid="uid://co1k3qdvsasue" path="res://assets/environment_import/sandbag_pile_udqjbg1qx_l_extracted/Sandbag_Pile_udqjbg1qx_Low_1K_Roughness.jpg" id="4_654in"]
+
+[resource]
+resource_name = "MatID_1"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_y4v3r")
+roughness_texture = ExtResource("4_654in")
+emission_enabled = true
+normal_enabled = true
+normal_scale = 0.0
+normal_texture = ExtResource("3_1st0h")
+ao_enabled = true
+ao_texture = ExtResource("2_jole6")

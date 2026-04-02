@@ -24,7 +24,11 @@ func _set_health(value:float):
 func _set_max_health(value:float):
 	if is_equal_approx(value,max_health):
 		return
-	var old_max:float=max_health
+	var old_max:float = max_health
 	max_health = maxf(value,0.0)
 	health = clampf(health,0.0,max_health)
 	max_health_changed.emit(old_max,max_health)
+
+
+func handle_hit()->void:
+	pass

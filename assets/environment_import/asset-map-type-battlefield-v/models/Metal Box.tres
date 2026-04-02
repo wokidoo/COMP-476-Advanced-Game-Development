@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b2eogvxn4cddk"]
+
+[ext_resource type="Texture2D" uid="uid://bumxf0fmw2rj2" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/DefaultMaterial_albedo.jpg" id="1_h5hwr"]
+[ext_resource type="Texture2D" uid="uid://ca8i4ccgpll8h" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/DefaultMaterial_AO.jpg" id="2_itxh7"]
+[ext_resource type="Texture2D" uid="uid://dq1qi84fckbc8" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/DefaultMaterial_metallic.jpg" id="3_23oyw"]
+[ext_resource type="Texture2D" uid="uid://b2v7ddyp0gpi6" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/DefaultMaterial_normal.png" id="4_m6lv0"]
+[ext_resource type="Texture2D" uid="uid://dockx5uk34iwu" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/DefaultMaterial_roughness.jpg" id="5_80pcb"]
+
+[resource]
+resource_name = "Metal Box"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+albedo_texture = ExtResource("1_h5hwr")
+metallic = 1.0
+metallic_texture = ExtResource("3_23oyw")
+roughness_texture = ExtResource("5_80pcb")
+normal_enabled = true
+normal_texture = ExtResource("4_m6lv0")
+ao_enabled = true
+ao_texture = ExtResource("2_itxh7")

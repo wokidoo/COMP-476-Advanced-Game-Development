@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://drf0j8jguu17u"]
+
+[ext_resource type="PackedScene" uid="uid://b6m0cbccgwcw7" path="res://assets/environment_import/military_trenches_barrie_extracted/Military_Trenches_Barrier_Sandbag_Canvas_02_ydypddkga_Low.fbx" id="1_pmugp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pmugp"]
+size = Vector3(2.7749481, 0.6816406, 0.5878906)
+
+[node name="Sandbag_Cover" unique_id=1366372889 instance=ExtResource("1_pmugp")]
+
+[node name="ydypddkga_LOD0_TIER3_000" parent="world_root" parent_id_path=PackedInt32Array(445635505) index="0" unique_id=268864595]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1" unique_id=265213102]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=71166352]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.029525757, 0.6500244, -0.85839844)
+shape = SubResource("BoxShape3D_pmugp")
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="StaticBody3D" index="1" unique_id=778763865]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+polygon = PackedVector2Array(-1.0088884, 0.778791, -1.3392847, 0.74339145, -1.3698771, -0.054732203, 1.3687503, -0.053167462, 1.1386869, 0.65489244, 0.8141906, 0.73749155, 0.8141906, 0.035399653, -0.9327518, 0.017639518)

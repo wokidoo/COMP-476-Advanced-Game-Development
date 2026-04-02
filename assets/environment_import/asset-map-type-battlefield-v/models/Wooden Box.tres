@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://botefq60oxhth"]
+
+[ext_resource type="Texture2D" uid="uid://bpw2e57treuar" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Wood_Box_albedo.jpg" id="1_8yygs"]
+[ext_resource type="Texture2D" uid="uid://fypjhjb3isbb" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Wood_Box_AO.jpg" id="2_7vmte"]
+[ext_resource type="Texture2D" uid="uid://b41ddsgda63t3" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Wood_Box_metallic.jpg" id="3_xe1dl"]
+[ext_resource type="Texture2D" uid="uid://nmm4a271ll4p" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Wood_Box_normal.png" id="4_sfq8g"]
+[ext_resource type="Texture2D" uid="uid://cx2gpp23vq37y" path="res://assets/environment_import/asset-map-type-battlefield-v/textures/Wood_Box_roughness.jpg" id="5_vysi4"]
+
+[resource]
+resource_name = "Wooden Box"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+albedo_texture = ExtResource("1_8yygs")
+metallic = 1.0
+metallic_texture = ExtResource("3_xe1dl")
+roughness_texture = ExtResource("5_vysi4")
+normal_enabled = true
+normal_texture = ExtResource("4_sfq8g")
+ao_enabled = true
+ao_texture = ExtResource("2_7vmte")
