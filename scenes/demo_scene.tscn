@@ -9,6 +9,26 @@
 [ext_resource type="Script" uid="uid://7hemqvbdaskq" path="res://scripts/AI/AI_squad/AI_squad_flock.gd" id="8_6054u"]
 [ext_resource type="Script" uid="uid://bo2t4ik2smig8" path="res://scripts/navigation/navigation_node_3d.gd" id="9_5q064"]
 [ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="9_6054u"]
+[ext_resource type="AudioStream" uid="uid://crpri3b60mnss" path="res://sounds/music/01.OverThere.mp3" id="10_uoi2n"]
+[ext_resource type="AudioStream" uid="uid://go844hqjoyd5" path="res://sounds/music/02.ItsALongLongWayToTipperary.mp3" id="11_67mw3"]
+[ext_resource type="AudioStream" uid="uid://bol0rtus5uk8n" path="res://sounds/music/11.WhenAlexanderTakesHisBandToFrance.mp3" id="12_217oh"]
+[ext_resource type="AudioStream" uid="uid://c2xf1xrdkxev5" path="res://sounds/music/12.JustLikeWashingtonCrossedTheDelaware.mp3" id="13_wjfg5"]
+[ext_resource type="AudioStream" uid="uid://dtjo3um42wlg8" path="res://sounds/music/13.SendMeACurl.mp3" id="14_2rf26"]
+[ext_resource type="AudioStream" uid="uid://cqbd1508yehth" path="res://sounds/music/14.WeDontWantTheBacon.mp3" id="15_dle54"]
+[ext_resource type="AudioStream" uid="uid://dgbg4ix2l7oxp" path="res://sounds/music/15.LetsBuryTheHatchet.mp3" id="16_kfml7"]
+[ext_resource type="AudioStream" uid="uid://cpi08iqxepcey" path="res://sounds/music/16.TheYanksAreAtItAgain.mp3" id="17_lq0of"]
+[ext_resource type="AudioStream" uid="uid://bgq4jp7br8tvk" path="res://sounds/music/17.YourBoyIsOnTheCoalPileNow.mp3" id="18_ah2if"]
+[ext_resource type="AudioStream" uid="uid://7s6a14wu8fpy" path="res://sounds/music/18.OhFrenchy.mp3" id="19_nkmtj"]
+[ext_resource type="AudioStream" uid="uid://ci5t26qmk8tn0" path="res://sounds/music/19.LookWhatMyBoyGotInFrance.mp3" id="20_7n8oy"]
+[ext_resource type="AudioStream" uid="uid://dqfm0j8sji2jh" path="res://sounds/music/03.RosesOfPicardy.mp3" id="21_pigdn"]
+[ext_resource type="AudioStream" uid="uid://bun0v02phbt8n" path="res://sounds/music/04.WouldYouRatherBeAColonelWithAnEagleOnYourShoulderOrAPrivateWithAChickenOnYourKnee.mp3" id="22_1cc2y"]
+[ext_resource type="AudioStream" uid="uid://cf32qav5dypx7" path="res://sounds/music/05.TheAmericansCome.mp3" id="23_kj0d3"]
+[ext_resource type="AudioStream" uid="uid://b3on1e81jhuo1" path="res://sounds/music/06.KeepTheHomes-firesBurning.mp3" id="24_lpjmc"]
+[ext_resource type="AudioStream" uid="uid://dvchjgaehata7" path="res://sounds/music/07.WereAllGoingCallingOnTheKaiser.mp3" id="25_18x67"]
+[ext_resource type="AudioStream" uid="uid://barhiogoaj13q" path="res://sounds/music/08.ICanAlwaysFindALittleSunshineInTheY.M.C.A..mp3" id="26_k3844"]
+[ext_resource type="AudioStream" uid="uid://byhcsje7imb1l" path="res://sounds/music/09.HowIHateToGetUpInTheMorning.mp3" id="27_xtggc"]
+[ext_resource type="AudioStream" uid="uid://gh8uh0s2vk83" path="res://sounds/music/10.WhatAreYouGoingToDoToHelpTheBoys.mp3" id="28_nbpb3"]
+[ext_resource type="Script" uid="uid://kph7lvyp8kq5" path="res://scenes/music_player.gd" id="29_ylixx"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
 resource_name = "pauser_input_node"
@@ -141,6 +161,29 @@ size = Vector3(10, 1, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hhdwb"]
 size = Vector3(10, 1, 6)
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_3e52g"]
+shuffle = true
+stream_count = 19
+stream_0 = ExtResource("10_uoi2n")
+stream_1 = ExtResource("11_67mw3")
+stream_2 = ExtResource("21_pigdn")
+stream_3 = ExtResource("22_1cc2y")
+stream_4 = ExtResource("23_kj0d3")
+stream_5 = ExtResource("24_lpjmc")
+stream_6 = ExtResource("25_18x67")
+stream_7 = ExtResource("26_k3844")
+stream_8 = ExtResource("27_xtggc")
+stream_9 = ExtResource("28_nbpb3")
+stream_10 = ExtResource("12_217oh")
+stream_11 = ExtResource("13_wjfg5")
+stream_12 = ExtResource("14_2rf26")
+stream_13 = ExtResource("15_dle54")
+stream_14 = ExtResource("16_kfml7")
+stream_15 = ExtResource("17_lq0of")
+stream_16 = ExtResource("18_ah2if")
+stream_17 = ExtResource("19_nkmtj")
+stream_18 = ExtResource("20_7n8oy")
 
 [node name="DemoScene" type="Node3D" unique_id=1134558745]
 
@@ -428,3 +471,8 @@ metadata/_custom_type_script = "uid://bo2t4ik2smig8"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D14" unique_id=1458549723]
 shape = SubResource("BoxShape3D_o70wo")
 debug_color = Color(0, 11.708403, 13.469126, 1)
+
+[node name="MusicPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1697847197]
+stream = SubResource("AudioStreamPlaylist_3e52g")
+autoplay = true
+script = ExtResource("29_ylixx")
