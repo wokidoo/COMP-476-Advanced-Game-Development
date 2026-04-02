@@ -236,6 +236,7 @@ metadata/_custom_type_script = "uid://dykry5e1tr1mi"
 [node name="HealthComponent" type="Node" parent="." unique_id=999017945]
 unique_name_in_owner = true
 script = ExtResource("2_dtquj")
+health = 0.0
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1213396453]

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bb71w7qc3d31d"]
+
+[ext_resource type="PackedScene" uid="uid://baq4ad5b404oq" path="res://assets/melee_enemy/Bludger.fbx" id="1_a0gey"]
+
+[node name="Bludger" unique_id=1198616338 instance=ExtResource("1_a0gey")]
