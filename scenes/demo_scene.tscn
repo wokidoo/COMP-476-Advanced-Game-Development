@@ -448,5 +448,7 @@ debug_color = Color(0, 11.708403, 13.469126, 1)
 
 [node name="MusicPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1697847197]
 stream = SubResource("AudioStreamPlaylist_3e52g")
+attenuation_model = 3
+volume_db = -2.0
 autoplay = true
 script = ExtResource("29_ylixx")
