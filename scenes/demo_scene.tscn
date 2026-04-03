@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://7hemqvbdaskq" path="res://scripts/AI/AI_squad/AI_squad_flock.gd" id="8_6054u"]
 [ext_resource type="Script" uid="uid://bo2t4ik2smig8" path="res://scripts/navigation/navigation_node_3d.gd" id="9_5q064"]
 [ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="9_6054u"]
+[ext_resource type="PackedScene" uid="uid://tmgmbyjfdeie" path="res://user_interface/simple_instructions.tscn" id="10_nvxfb"]
 [ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
@@ -119,17 +120,6 @@ size = Vector3(10, 1, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hhdwb"]
 size = Vector3(10, 1, 6)
-
-[sub_resource type="GDScript" id="GDScript_b3yjl"]
-resource_name = "instructions_menu"
-script/source = "extends MarginContainer
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_PAUSED:
-		visible = false
-	elif what == NOTIFICATION_UNPAUSED:
-		visible = true
-"
 
 [sub_resource type="GDScript" id="GDScript_5q064"]
 resource_name = "healthDebug"
@@ -394,33 +384,10 @@ metadata/_custom_type_script = "uid://bo2t4ik2smig8"
 shape = SubResource("BoxShape3D_o70wo")
 debug_color = Color(0, 11.708403, 13.469126, 1)
 
+[node name="SimpleInstructions" parent="." unique_id=1464139731 instance=ExtResource("10_nvxfb")]
+
 [node name="Paused" parent="." unique_id=1685693337 instance=ExtResource("11_hhdwb")]
 visible = false
-
-[node name="InstructionsContainer" type="MarginContainer" parent="." unique_id=2050711432]
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 112.0
-grow_horizontal = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-script = SubResource("GDScript_b3yjl")
-
-[node name="InstructionsLabel" type="RichTextLabel" parent="InstructionsContainer" unique_id=1412153888]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 6
-bbcode_enabled = true
-text = "[b]Walk:[/b] W,A,S,D 
-[b]Jump:[/b] Space
-[b]Sprint:[/b] Shift (hold)
-[b]Lock On:[/b] E
-"
-fit_content = true
 
 [node name="HealthDebugger" type="Node3D" parent="." unique_id=1916579790 node_paths=PackedStringArray("agents", "player")]
 script = SubResource("GDScript_5q064")

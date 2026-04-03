@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://tmgmbyjfdeie"]
+
+[sub_resource type="GDScript" id="GDScript_b3yjl"]
+resource_name = "instructions_menu"
+script/source = "extends MarginContainer
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PAUSED:
+		visible = false
+	elif what == NOTIFICATION_UNPAUSED:
+		visible = true
+"
+
+[node name="SimpleInstructions" type="MarginContainer" unique_id=1464139731]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 112.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = SubResource("GDScript_b3yjl")
+
+[node name="InstructionsLabel" type="RichTextLabel" parent="." unique_id=1074435664]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+bbcode_enabled = true
+text = "[b]Walk:[/b] W,A,S,D 
+[b]Jump:[/b] Space
+[b]Sprint:[/b] Shift (hold)
+[b]Lock On:[/b] E
+"
+fit_content = true
