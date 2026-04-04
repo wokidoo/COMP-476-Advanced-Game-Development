@@ -29,6 +29,5 @@ func _set_max_health(value:float):
 	health = clampf(health,0.0,max_health)
 	max_health_changed.emit(old_max,max_health)
 
-
 func handle_hit()->void:
 	pass
