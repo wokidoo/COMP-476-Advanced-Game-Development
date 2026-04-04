@@ -22,6 +22,8 @@ class NavPath extends RefCounted:
 		return path[_last_node_idx]
 	
 	func reached_last_node()->bool:
+		if is_empty():
+			return true
 		return path.back() == path[_current_idx]
 	
 	func is_empty()->bool:
@@ -30,6 +32,9 @@ class NavPath extends RefCounted:
 static func find_path(starting_pos: Vector3, target_pos: Vector3) -> NavPath:
 	var start := find_nearest_node_to_position(starting_pos)
 	var goal  := find_nearest_node_to_position(target_pos)
+
+	if start == null or goal == null:
+		return NavPath.new()
 
 	if start == goal:
 		return NavPath.new([start])
@@ -97,8 +102,10 @@ static func _reconstruct_path(
 	return NavigationUtil.NavPath.new(path)
 
 static func find_nearest_node_to_position(global_pos: Vector3) -> NavigationNode3D:
-	var root := Engine.get_main_loop() as SceneTree
-	var nav_nodes:Array = root.get_nodes_in_group('nav_node')
+	var nav_nodes: Array[NavigationNode3D] = _get_all_nav_nodes()
+	if nav_nodes.is_empty():
+		return null
+
 	var best_node: NavigationNode3D = nav_nodes.front()
 	var best_dist: float = best_node.get_distance_to_position(global_pos)
 	for c:NavigationNode3D in nav_nodes:
@@ -107,3 +114,30 @@ static func find_nearest_node_to_position(global_pos: Vector3) -> NavigationNode
 			best_dist = dist
 			best_node = c
 	return best_node
+
+# GEN CODE
+static func _get_all_nav_nodes() -> Array[NavigationNode3D]:
+	var root := Engine.get_main_loop() as SceneTree
+	if root == null:
+		return []
+
+	var result: Array[NavigationNode3D] = []
+	var meshes: Array = root.get_nodes_in_group("nav_mesh")
+	for n in meshes:
+		var mesh := n as NavMesh
+		if mesh == null:
+			continue
+		for nav_node in mesh.nav_nodes:
+			if nav_node != null and is_instance_valid(nav_node):
+				result.append(nav_node)
+
+	if not result.is_empty():
+		return result
+
+	var fallback_nodes: Array = root.get_nodes_in_group("nav_node")
+	for n in fallback_nodes:
+		var nav_node := n as NavigationNode3D
+		if nav_node != null:
+			result.append(nav_node)
+
+	return result

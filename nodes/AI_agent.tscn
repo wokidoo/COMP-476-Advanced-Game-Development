@@ -89,7 +89,7 @@ func state_physics_process(_delta: float) -> void:
 		return
 	if Engine.get_physics_frames() % 60 == 0:
 		update_path()
-	if path.get_current_node().overlaps_body(agent):
+	if !path.is_empty() and path.get_current_node().overlaps_body(agent):
 		path.get_next_node()
 		if path.get_current_node().is_gap():
 			agent.jump_to(path.get_next_node().get_world_position())

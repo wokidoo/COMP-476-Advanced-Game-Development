@@ -18,7 +18,6 @@ func state_input(_event: InputEvent) -> void:
 func state_physics_process(_delta: float) -> void:
 	var h_velocity:Vector3 = player.velocity
 	h_velocity.y = 0.0
-	var v_velocity:float = player.velocity.y
 	var result_velocity = h_velocity.lerp(Vector3.ZERO,_delta*5.0)
 	player.velocity = result_velocity
 	player.velocity.y = player.velocity.y - (player.jump_gravity * _delta)
