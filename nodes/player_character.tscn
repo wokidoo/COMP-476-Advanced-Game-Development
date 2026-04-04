@@ -3,11 +3,13 @@
 [ext_resource type="Script" uid="uid://bn6evds4qsgc4" path="res://scripts/player/player_character.gd" id="1_qlps6"]
 [ext_resource type="Script" uid="uid://bx384iuwj3u8u" path="res://addons/Gostate/scripts/state_machine.gd" id="2_5l2xy"]
 [ext_resource type="Shader" uid="uid://bgjer4ly5f8rs" path="res://materials/grid_debug.gdshader" id="2_hs54n"]
-[ext_resource type="Script" uid="uid://cnk25gumc3iwg" path="res://scripts/player/attack_ground.gd" id="3_1c71w"]
+[ext_resource type="Script" path="res://scripts/player/attack_ground.gd" id="3_1c71w"]
 [ext_resource type="PackedScene" uid="uid://ksulwv01p1pc" path="res://assets/main_character/character.tscn" id="4_1c71w"]
 [ext_resource type="Script" uid="uid://c070f3tql7y7s" path="res://scripts/components/health_component.gd" id="5_ehlbk"]
 [ext_resource type="Script" uid="uid://crq7vga7bh344" path="res://scripts/components/generic_hit_&_hurt/hurtbox_3d.gd" id="6_60spa"]
 [ext_resource type="Script" uid="uid://bsu43s1gtwkhy" path="res://scripts/components/camera_controller_3d.gd" id="6_qcnnv"]
+[ext_resource type="PackedScene" uid="uid://ca2rn8t05e61x" path="res://user_interface/gpu_particles_3d.tscn" id="9_750ug"]
+[ext_resource type="PackedScene" uid="uid://yx0mraktnb0f" path="res://user_interface/user_interface.tscn" id="9_efhua"]
 
 [sub_resource type="GDScript" id="GDScript_60spa"]
 resource_name = "Grounded"
@@ -422,6 +424,7 @@ one_shot = true
 [node name="HealthComponent" type="Node" parent="." unique_id=981849851]
 unique_name_in_owner = true
 script = ExtResource("5_ehlbk")
+health = 9.0
 metadata/_custom_type_script = "uid://c070f3tql7y7s"
 
 [node name="Hurtbox3D" type="Area3D" parent="." unique_id=1128235420]
@@ -447,4 +450,12 @@ metadata/_custom_type_script = "uid://bsu43s1gtwkhy"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 size = 2.38
 
+[node name="GPUParticles3D" parent="." unique_id=255868794 instance=ExtResource("9_750ug")]
+transform = Transform3D(0.49319726, 0, 0, 0, 0.88511163, 0, 0, 0, 0.4385442, 0, 0.24683237, 0)
+
+[node name="UserInterface" parent="." unique_id=1567975266 instance=ExtResource("9_efhua")]
+
 [connection signal="state_transition" from="StateMachine" to="." method="_on_state_machine_state_transition"]
+[connection signal="health_changed" from="HealthComponent" to="UserInterface" method="_healthChanged"]
+[connection signal="health_changed" from="HealthComponent" to="GPUParticles3D" method="_on_health_component_health_changed"]
+[connection signal="max_health_changed" from="HealthComponent" to="UserInterface" method="_maxHealthChanged"]

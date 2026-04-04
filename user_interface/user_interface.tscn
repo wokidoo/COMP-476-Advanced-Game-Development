@@ -48,8 +48,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_hlq4j")
 metadata/_edit_use_anchors_ = true
-metadata/_edit_lock_ = true
 
 [node name="PlayerResources" type="Control" parent="." unique_id=775084820]
 layout_mode = 1
@@ -59,7 +59,6 @@ anchor_right = 0.5
 anchor_bottom = 0.99
 offset_right = -0.32000732
 offset_bottom = -0.17602539
-script = ExtResource("1_hlq4j")
 metadata/_edit_use_anchors_ = true
 
 [node name="BarsContainer" type="MarginContainer" parent="PlayerResources" unique_id=970665329]
@@ -93,6 +92,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_i7dvk")
 
 [node name="StaminaBar" type="ProgressBar" parent="PlayerResources/BarsContainer/BarsSubContainer/StaminaContainer/StaminaSubcontainer" unique_id=1663861124]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 1
 anchors_preset = 4
@@ -121,6 +121,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_hsgek")
 metadata/_edit_use_anchors_ = true
 
 [node name="CherAmiIcon" type="TextureRect" parent="PlayerResources/CherAmiIconContainer" unique_id=1094082639]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

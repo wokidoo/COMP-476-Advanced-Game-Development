@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://7hemqvbdaskq" path="res://scripts/AI/AI_squad/AI_squad_flock.gd" id="8_6054u"]
 [ext_resource type="Script" uid="uid://bo2t4ik2smig8" path="res://scripts/navigation/navigation_node_3d.gd" id="9_5q064"]
 [ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="9_6054u"]
+[ext_resource type="PackedScene" uid="uid://tmgmbyjfdeie" path="res://user_interface/simple_instructions.tscn" id="10_nvxfb"]
+[ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
 resource_name = "pauser_input_node"
@@ -92,29 +94,6 @@ shader_parameter/texture_x = SubResource("GradientTexture2D_tk8g1")
 shader_parameter/texture_y = SubResource("GradientTexture2D_21int")
 shader_parameter/texture_z = SubResource("GradientTexture2D_hhdwb")
 
-[sub_resource type="GDScript" id="GDScript_3q56x"]
-resource_name = "pause_menu"
-script/source = "extends Control
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_PAUSED:
-		visible = false
-	elif what == NOTIFICATION_UNPAUSED:
-		visible = true
-"
-
-[sub_resource type="GDScript" id="GDScript_b3yjl"]
-resource_name = "instructions_menu"
-script/source = "extends MarginContainer
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_PAUSED:
-		visible = false
-	elif what == NOTIFICATION_UNPAUSED:
-		visible = true
-"
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_r10i8"]
 size = Vector3(7, 1, 5)
 
@@ -141,6 +120,33 @@ size = Vector3(10, 1, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hhdwb"]
 size = Vector3(10, 1, 6)
+
+[sub_resource type="GDScript" id="GDScript_5q064"]
+resource_name = "healthDebug"
+script/source = "extends Node3D
+
+@export var agents:Array[AIAgent]
+@export var player:Player3D
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed and event.keycode == KEY_X:
+			for agent in agents:
+				var hc = agent.health_component
+				hc._set_health(hc.health - 0.5)
+		if event.pressed and event.keycode == KEY_Z:
+			var hc = player.health_component
+			hc._set_health(hc.health - 0.5)
+	
+"
 
 [node name="DemoScene" type="Node3D" unique_id=1134558745]
 
@@ -206,57 +212,6 @@ use_collision = true
 radius = 3.0
 radial_segments = 24
 material = SubResource("ShaderMaterial_b3yjl")
-
-[node name="PauseMenu" type="Control" parent="." unique_id=640842078]
-process_mode = 2
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
-script = SubResource("GDScript_3q56x")
-
-[node name="PanelContainer" type="PanelContainer" parent="PauseMenu" unique_id=268816588]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="PauseMenu/PanelContainer" unique_id=751245391]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Paused"
-horizontal_alignment = 1
-
-[node name="InstructionsContainer" type="MarginContainer" parent="." unique_id=2050711432]
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 75.0
-grow_horizontal = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-script = SubResource("GDScript_b3yjl")
-
-[node name="InstructionsLabel" type="RichTextLabel" parent="InstructionsContainer" unique_id=1412153888]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 6
-bbcode_enabled = true
-text = "[b]Walk:[/b] W,A,S,D 
-[b]Jump:[/b] Space
-[b]Sprint:[/b] Shift (hold)
-"
-fit_content = true
 
 [node name="AISquadFlock" type="Node3D" parent="." unique_id=1430788997]
 script = ExtResource("8_6054u")
@@ -428,3 +383,13 @@ metadata/_custom_type_script = "uid://bo2t4ik2smig8"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D14" unique_id=1458549723]
 shape = SubResource("BoxShape3D_o70wo")
 debug_color = Color(0, 11.708403, 13.469126, 1)
+
+[node name="SimpleInstructions" parent="." unique_id=1464139731 instance=ExtResource("10_nvxfb")]
+
+[node name="Paused" parent="." unique_id=1685693337 instance=ExtResource("11_hhdwb")]
+visible = false
+
+[node name="HealthDebugger" type="Node3D" parent="." unique_id=1916579790 node_paths=PackedStringArray("agents", "player")]
+script = SubResource("GDScript_5q064")
+agents = [NodePath("../AIAgent"), NodePath("../AIAgent2"), NodePath("../AIAgent3"), NodePath("../AIAgent4")]
+player = NodePath("../PlayerCharacter")
