@@ -59,11 +59,10 @@ func get_facing_target_factor(target_dir:Vector3) -> float:
 	return -global_basis.z.dot(target_dir)
 
 func receive_damage(dmg:DamageInstnace,_hurtbox:Hurtbox3D):
-	print('NPC hit!\nDamage: %s \t Force: %s'%[dmg.damage,dmg.get_meta("force")])
+	print('NPC hit!\nDamage: %s'%[dmg.damage])
 	health_component.health -= dmg.damage
-	if dmg.has_meta("force"):
-		print(dmg.get_meta("force"))
-		velocity += dmg.get_meta("force")
+	state_machine.execute_event('hurt')
+
 
 func _on_health_depeleted():
 	self.queue_free()
