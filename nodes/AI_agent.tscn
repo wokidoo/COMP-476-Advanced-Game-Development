@@ -151,11 +151,6 @@ func state_physics_process(_delta: float) -> void:
 		state_machine.execute_event('idle')
 		return
 	agent.move_and_slide()
-	#if animation_playback.get_current_node() == 'moving_animation_blend':
-		#print('restart animation')
-		#animation_tree['parameters/playback'].travel('attack_0')
-		#print(animation_playback.get_current_node())
-
 
 func trigger_attack():
 	hit_ray.trigger_ray()
@@ -260,7 +255,16 @@ script = SubResource("GDScript_oerex")
 agent = NodePath("../..")
 transitions = {
 &"attack": NodePath("../Attack"),
+&"hurt": NodePath("../Hurt"),
 &"seek": NodePath("../Seek")
+}
+metadata/_custom_type_script = "uid://b42om5mouo7ee"
+
+[node name="Hurt" type="Node" parent="StateMachine" unique_id=1797519547 node_paths=PackedStringArray("agent", "transitions")]
+script = SubResource("GDScript_oerex")
+agent = NodePath("../..")
+transitions = {
+&"idle": NodePath("../Idle")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
@@ -270,6 +274,7 @@ agent = NodePath("../..")
 avoider_component = NodePath("../../AvoiderComponent")
 transitions = {
 &"attack": NodePath("../Attack"),
+&"hurt": NodePath("../Hurt"),
 &"idle": NodePath("../Idle"),
 &"jump": NodePath("../Jump")
 }
@@ -279,6 +284,7 @@ metadata/_custom_type_script = "uid://b42om5mouo7ee"
 script = SubResource("GDScript_jbp7b")
 agent = NodePath("../..")
 transitions = {
+&"hurt": NodePath("../Hurt"),
 &"idle": NodePath("../Idle"),
 &"seek": NodePath("../Seek")
 }
@@ -288,11 +294,14 @@ metadata/_custom_type_script = "uid://b42om5mouo7ee"
 script = SubResource("GDScript_a5mj6")
 agent = NodePath("../..")
 transitions = {
+&"hurt": NodePath("../Hurt"),
 &"idle": NodePath("../Idle")
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
 [node name="Hurtbox3D" type="Area3D" parent="." unique_id=1679062543]
+collision_layer = 16
+collision_mask = 17
 script = ExtResource("7_y06na")
 damage_callback = &"receive_damage"
 metadata/_custom_type_script = "uid://crq7vga7bh344"

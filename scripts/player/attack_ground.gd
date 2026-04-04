@@ -2,43 +2,34 @@
 extends State
 
 @export var player:Player3D
-@export var animation_tree:AnimationTree
+@export var lunge_speed:float = 5.0
+var anim_playback:AnimationNodeStateMachinePlayback
 
 func state_enter() -> void:
-	player.velocity.y += player.jump_force
-
+	anim_playback = player.animation_tree['parameters/playback']
+	anim_playback.travel('light_attack')
+	player.velocity += -player.global_basis.z * lunge_speed
 func state_exit() -> void:
-	pass # Replace with function body.
+	pass
 
-func state_input(event: InputEvent) -> void:
-	if event.is_action_pressed("jump"):
-		player.buffer_jump()
-	
-	if event.is_action_pressed('lock_on'):
-		if player.camera_controller.is_locked_on():
-			player.camera_controller.lock_off()
-		else:
-			player.camera_controller.lock_on_nearest_enemy()
+func state_input(_event: InputEvent) -> void:
+	pass
 
-func state_physics_process(delta: float) -> void:
-	var h_velocity = player.velocity
+func state_physics_process(_delta: float) -> void:
+	var h_velocity:Vector3 = player.velocity
 	h_velocity.y = 0.0
-	
-	var target_velocity: Vector3 = player.input_direction * player.air_speed
-	var result_velocity: Vector3 = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
-	
-	if h_velocity.length_squared() > target_velocity.length_squared():
-		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_deceleration)
-	else:
-		result_velocity = h_velocity.lerp(target_velocity,delta*player.air_acceleration)
-	
-	result_velocity.y = player.velocity.y - (player.jump_gravity * delta)
-
+	var v_velocity:float = player.velocity.y
+	var result_velocity = h_velocity.lerp(Vector3.ZERO,_delta*5.0)
 	player.velocity = result_velocity
+	player.velocity.y = player.velocity.y - (player.jump_gravity * _delta)
 	player.move_and_slide()
 	
-	if player.is_on_floor():
-		state_machine.execute_event("walking")
-	if player.velocity.y <= 0.0:
-		state_machine.execute_event("falling")
+	var anim_ratio:float = anim_playback.get_current_play_position()/anim_playback.get_current_length()
+	
+	if anim_ratio < 0.5 and anim_ratio > 0.25:
+		player.sabre_hitbox.enabled = true
+	elif anim_ratio >= 0.5:
+		player.sabre_hitbox.enabled = false
+		state_machine.execute_event('grounded')
+		
 	
