@@ -3,6 +3,11 @@ class_name Hitbox3D
 
 signal hit(damage_instance:DamageInstnace,hurtbox:Hurtbox3D)
 
+@export var enabled:bool = true:
+	set(value):
+		enabled = value
+		monitorable = enabled
+		monitoring = enabled
 @export var damage_instance:DamageInstnace
 
 var hits: Array = []
@@ -13,7 +18,7 @@ func _init(_damage_instance:DamageInstnace = DamageInstnace.new()) -> void:
 	area_exited.connect(_on_area_exited)
 
 func _on_area_entered(area:Area3D):
-	if area is Hitbox3D and not hits.has(area):
+	if enabled and area is Hitbox3D and not hits.has(area):
 		hits.append(area)
 		area.tree_exiting.connect(_on_hurtbox_freeing.bind(area))
 		hit.emit(damage_instance,area)

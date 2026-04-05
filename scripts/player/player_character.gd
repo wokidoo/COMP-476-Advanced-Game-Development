@@ -23,6 +23,7 @@ class_name Player3D
 @export var dodge_cooldown:float = 1.25
 @export var invincibility_frames:int = 13
 
+@onready var base_mesh: MeshInstance3D
 @onready var camera_controller:CameraController3D = %CameraController3D
 @onready var state_machine:StateMachine = %StateMachine
 @onready var player_collider: CollisionShape3D = %PlayerCollider
@@ -31,12 +32,13 @@ class_name Player3D
 @onready var health_component: HealthComponent = %HealthComponent
 @onready var hurtbox_3d: Hurtbox3D = %Hurtbox3D
 @onready var animation_tree: AnimationTree
-
+@onready var sabre_hitbox: Hitbox3D = %Hitbox3D
 ## Normalized movement direction based on player input.
 ## Updated every physics frame.
 var input_direction:Vector3 = Vector3.ZERO
 
 func _ready() -> void:
+	base_mesh = $"Player Model/Skeleton3D/Mesh_0"
 	health_component.health_depleted.connect(_on_health_depleted)
 	# Get animation tree
 	animation_tree = get_node("Player Model/AnimationTree") as AnimationTree
@@ -67,9 +69,9 @@ func rotate_body_towards(direction:Vector3,delta:float,interpolation_factor:floa
 func receive_damage(dmg:DamageInstnace,_hurtbox:Hurtbox3D):
 	print('Player hit!\nDamage: %s'%dmg.damage)
 	health_component.health -= dmg.damage
-	if dmg.has_meta('Force'):
-		velocity += dmg.get_meta('Force') as Vector3
-		move_and_slide()
+	base_mesh.material_overlay.albedo_color.a = 0.25
+	var tween:Tween = create_tween()
+	tween.tween_property(base_mesh.material_overlay,'albedo_color:a',0.0,0.5)
 
 func _on_health_depleted():
 	self.queue_free()

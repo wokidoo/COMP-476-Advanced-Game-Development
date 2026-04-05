@@ -2,21 +2,17 @@ extends Control
 
 @export var health = 10.0
 @export var stamina = 10.0
+@onready var healthBar = $PlayerResources/BarsContainer/BarsSubContainer/HealthContainer/HealthBar
+@onready var staminaBar = %StaminaBar
+@onready var cherAmiIcon: TextureRect = %CherAmiIcon
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$Timer.connect("timeout", _reset)
+	$PlayerResources/Timer.connect("timeout", _reset)
 	pass 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	# damage simulator
-	if Input.is_action_just_pressed("damage_player_debug"):
-		_vibrate()
-		$CherAmiIconContainer/CherAmiIcon.texture = load("res://user_interface/distraction.png")
-		health -= 0.5
-		$Timer.start(1)
-	
 	#stamina simulator
 	if Input.is_action_pressed("sprint"):
 		stamina -= 0.01
@@ -24,12 +20,12 @@ func _process(delta: float) -> void:
 		stamina += 0.01
 	
 	#update visual components
-	$BarsContainer/BarsSubContainer/HealthContainer/HealthBar.value = health
-	$BarsContainer/BarsSubContainer/StaminaContainer/StaminaSubcontainer/StaminaBar.value = stamina
+	healthBar.value = health
+	staminaBar.value = stamina
 	pass
 
 func _reset() -> void:
-	$CherAmiIconContainer/CherAmiIcon.texture = load("res://user_interface/finch.png")
+	cherAmiIcon.texture = load("res://user_interface/finch.png")
 	set_offset(0,0)
 	set_offset(1,0)
 	set_offset(2,0)
@@ -50,5 +46,14 @@ func _get_offset() -> float:
 		offset *= -1
 	offset *= 5
 	return offset
+	
+func _healthChanged(old_health: float, new_health: float) -> void:
+	_vibrate()
+	cherAmiIcon.texture = load("res://user_interface/distraction.png")
+	health = new_health
+	$PlayerResources/Timer.start(1)
+
+func _maxHealthChanged(old_max: float, new_max: float) -> void:
+	healthBar.max_value = new_max
 	
 	
