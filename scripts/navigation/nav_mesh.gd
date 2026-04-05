@@ -9,10 +9,36 @@ class_name NavMesh
 @export var generation_grid_cell_size: float = 1.0
 @export var node_prefab: PackedScene
 @export var obstacle_collision_mask: int = 1  # Layer mask for obstacles
+@export_group("Debug")
+@export var DEBUG_generate_grid: bool = false
+@export var DEBUG_check_collisions: bool = false
+
+var _pending_debug_generate: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	add_to_group("nav_mesh")
+	if DEBUG_generate_grid:
+		_pending_debug_generate = true
+		set_physics_process(true)
+
+
+func _physics_process(_delta: float) -> void:
+	if not _pending_debug_generate:
+		set_physics_process(false)
+		return
+	if not _can_access_space_state():
+		return
+
+	_pending_debug_generate = false
+	set_physics_process(false)
+	generate_grid(DEBUG_check_collisions)
+
+
+func _can_access_space_state() -> bool:
+	if not is_inside_tree() or not Engine.is_in_physics_frame():
+		return false
+	return get_world_3d() != null
 
 func clear() -> void:
 	"""Clear all generated navigation nodes"""
@@ -21,15 +47,7 @@ func clear() -> void:
 			node.queue_free()
 	nav_nodes.clear()
 
-# Make this function exposed to the editor for testing purposes
-@export var DEBUG_generate_grid: bool = false:
-	set(value):
-		if value:
-			generate_grid(false)
-			DEBUG_generate_grid = false
-			print("Grid generated without collision checks:\n", nav_nodes)
-
-func generate_grid(check_collisions: bool = true) -> void:
+func generate_grid(check_collisions: bool = false) -> void:
 	"""
 	Generate a grid of navigation nodes, avoiding obstacles.
 	Similar to GridGraph.GenerateGrid in the C# reference.
@@ -88,25 +106,22 @@ func generate_grid(check_collisions: bool = true) -> void:
 
 func _has_collision_at(check_position: Vector3) -> bool:
 	"""Check if there's a collision at the given position using a sphere cast"""
+	if not _can_access_space_state():
+		return false
 	var world = get_world_3d()
 	if world == null:
 		return false
 	var space_state = world.direct_space_state
 	if space_state == null:
 		return false
-	
-	var query = PhysicsShapeQueryParameters3D.new()
-	var sphere = SphereShape3D.new()
-	sphere.radius = 0.25  # Adjust based on your needs
-	
-	query.shape = sphere
-	query.transform = Transform3D(Basis.IDENTITY, check_position)
+
+	var query := PhysicsPointQueryParameters3D.new()
+	query.position = check_position
 	query.collide_with_areas = true
 	query.collide_with_bodies = true
-	# Set collision layer/mask as needed
 	query.collision_mask = obstacle_collision_mask
-	
-	var result = space_state.intersect_shape(query)
+
+	var result = space_state.intersect_point(query)
 	return result.size() > 0
 
 
@@ -152,6 +167,8 @@ func _create_adjacency_lists(node_grid: Array, check_collisions: bool) -> void:
 
 func _raycast_collision(start: Vector3, direction: Vector3) -> bool:
 	"""Check if there's a collision along a ray between two nodes"""
+	if not _can_access_space_state():
+		return false
 	var world = get_world_3d()
 	if world == null:
 		return false

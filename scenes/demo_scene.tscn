@@ -194,32 +194,21 @@ radius = 5.0
 group = "squad_1"
 metadata/_custom_type_script = "uid://7hemqvbdaskq"
 
-[node name="AIAgent" parent="." unique_id=17692775 node_paths=PackedStringArray("target", "navigation_root") groups=["squad_1"] instance=ExtResource("9_6054u")]
+[node name="AIAgent" parent="." unique_id=17692775 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.895798, 1.2637105, 10.949715)
 target = NodePath("../PlayerCharacter")
-navigation_root = NodePath("")
 
-[node name="AIAgent2" parent="." unique_id=985863439 node_paths=PackedStringArray("target", "navigation_root") groups=["squad_1"] instance=ExtResource("9_6054u")]
+[node name="AIAgent2" parent="." unique_id=985863439 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.02366, 1.2637095, 2.0635595)
 target = NodePath("../PlayerCharacter")
-navigation_root = NodePath("")
 
-[node name="AIAgent3" parent="." unique_id=385043741 node_paths=PackedStringArray("target", "navigation_root") groups=["squad_1"] instance=ExtResource("9_6054u")]
+[node name="AIAgent3" parent="." unique_id=385043741 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.704155, 1.2637105, -7.0964613)
 target = NodePath("../PlayerCharacter")
-navigation_root = NodePath("")
 
-[node name="AIAgent4" parent="." unique_id=1089065892 node_paths=PackedStringArray("target", "navigation_root") groups=["squad_1"] instance=ExtResource("9_6054u")]
+[node name="AIAgent4" parent="." unique_id=1089065892 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.542887, 1.2637115, -16.783829)
 target = NodePath("../PlayerCharacter")
-navigation_root = NodePath("")
-
-[node name="NavMesh" type="Node3D" parent="." unique_id=733489138]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.410046, 0, -8.224006)
-script = ExtResource("9_hhdwb")
-generation_grid_cell_size = 2.0
-node_prefab = ExtResource("10_o70wo")
-DEBUG_generate_grid = true
 
 [node name="SimpleInstructions" parent="." unique_id=1464139731 instance=ExtResource("10_nvxfb")]
 
@@ -231,5 +220,10 @@ script = SubResource("GDScript_5q064")
 agents = [NodePath("../AIAgent"), NodePath("../AIAgent2"), NodePath("../AIAgent3"), NodePath("../AIAgent4")]
 player = NodePath("../PlayerCharacter")
 
-[node name="NavigationNode3D12" parent="." unique_id=718945752 instance=ExtResource("10_o70wo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, -7)
+[node name="NavMesh" type="Node3D" parent="." unique_id=1088466215]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+script = ExtResource("9_hhdwb")
+generation_grid_cell_size = 4.0
+node_prefab = ExtResource("10_o70wo")
+DEBUG_generate_grid = true
+DEBUG_check_collisions = true
