@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://tmgmbyjfdeie" path="res://user_interface/simple_instructions.tscn" id="10_nvxfb"]
 [ext_resource type="PackedScene" uid="uid://cuk8tl4068kwq" path="res://nodes/navigation_node.tscn" id="10_o70wo"]
 [ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
+[ext_resource type="PackedScene" uid="uid://cro31pec5vago" path="res://nodes/environment/trench_type_1_0.tscn" id="13_o70wo"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
 resource_name = "pauser_input_node"
@@ -183,6 +184,7 @@ size = Vector3(200, 40, 200)
 [node name="Ball" type="CSGSphere3D" parent="Structures" unique_id=989441350]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9421597, 0, 21.808403)
 use_collision = true
+collision_layer = 5
 radius = 3.0
 radial_segments = 24
 material = SubResource("ShaderMaterial_b3yjl")
@@ -221,9 +223,14 @@ agents = [NodePath("../AIAgent"), NodePath("../AIAgent2"), NodePath("../AIAgent3
 player = NodePath("../PlayerCharacter")
 
 [node name="NavMesh" type="Node3D" parent="." unique_id=1088466215]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -14)
 script = ExtResource("9_hhdwb")
+generation_grid_columns = 3
+generation_grid_rows = 3
 generation_grid_cell_size = 4.0
 node_prefab = ExtResource("10_o70wo")
 DEBUG_generate_grid = true
 DEBUG_check_collisions = true
+
+[node name="Military_Trenches_Wall_Extrusion_Metal_Corrugated_01_ydxlcils_Low" parent="." unique_id=1958750258 instance=ExtResource("13_o70wo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 3, -15)

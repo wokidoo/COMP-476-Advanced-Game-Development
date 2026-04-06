@@ -247,7 +247,7 @@ mesh = SubResource("SphereMesh_y06na")
 [node name="StateMachine" type="Node" parent="." unique_id=26237221 node_paths=PackedStringArray("initial_state")]
 unique_name_in_owner = true
 script = ExtResource("5_flffr")
-initial_state = NodePath("Seek")
+initial_state = NodePath("Idle")
 metadata/_custom_type_script = "uid://bx384iuwj3u8u"
 
 [node name="Idle" type="Node" parent="StateMachine" unique_id=1970834143 node_paths=PackedStringArray("agent", "transitions")]
@@ -268,16 +268,10 @@ transitions = {
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
-[node name="Seek" type="Node" parent="StateMachine" unique_id=1129825890 node_paths=PackedStringArray("agent", "avoider_component", "transitions")]
+[node name="Seek" type="Node" parent="StateMachine" unique_id=1129825890 node_paths=PackedStringArray("agent", "avoider_component")]
 script = SubResource("GDScript_y06na")
 agent = NodePath("../..")
 avoider_component = NodePath("../../AvoiderComponent")
-transitions = {
-&"attack": NodePath("../Attack"),
-&"hurt": NodePath("../Hurt"),
-&"idle": NodePath("../Idle"),
-&"jump": NodePath("../Jump")
-}
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
 [node name="Attack" type="Node" parent="StateMachine" unique_id=1086589799 node_paths=PackedStringArray("agent", "transitions")]

@@ -7,6 +7,9 @@
 size = Vector3(5, 0.5, 5)
 
 [node name="NavigationNode3D" type="Area3D" unique_id=718945752 groups=["nav_node"]]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
 monitorable = false
 script = ExtResource("1_4w5fe")
 size = 5.0

@@ -128,6 +128,7 @@ damage_enemy_debug={
 3d_physics/layer_1="DEFAULT"
 3d_physics/layer_2="PHYSICS_BODIES"
 3d_physics/layer_3="OBSTACLE"
+3d_physics/layer_4="NAVIGATION"
 
 [physics]
 

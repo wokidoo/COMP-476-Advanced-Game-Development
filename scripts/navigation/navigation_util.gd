@@ -120,22 +120,10 @@ static func _get_all_nav_nodes() -> Array[NavigationNode3D]:
 	var root := Engine.get_main_loop() as SceneTree
 	if root == null:
 		return []
-
+	
 	var result: Array[NavigationNode3D] = []
-	var meshes: Array = root.get_nodes_in_group("nav_mesh")
-	for n in meshes:
-		var mesh := n as NavMesh
-		if mesh == null:
-			continue
-		for nav_node in mesh.nav_nodes:
-			if nav_node != null and is_instance_valid(nav_node):
-				result.append(nav_node)
-
-	if not result.is_empty():
-		return result
-
-	var fallback_nodes: Array = root.get_nodes_in_group("nav_node")
-	for n in fallback_nodes:
+	var nav_nodes: Array = root.get_nodes_in_group("nav_node")
+	for n in nav_nodes:
 		var nav_node := n as NavigationNode3D
 		if nav_node != null:
 			result.append(nav_node)

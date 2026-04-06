@@ -1,4 +1,3 @@
-@tool
 extends Area3D
 class_name NavigationNode3D
 
@@ -28,12 +27,11 @@ var _cached_debug_mesh: MeshInstance3D
 var _fallback_debug_material: StandardMaterial3D
 
 func _ready() -> void:
-	add_to_group("nav_node")
-	monitorable = false
-	monitoring = true
+	if !is_in_group("nav_node"):
+		add_to_group("nav_node")
+	monitorable = true
 	_update_collision_box()
 	_update_debug_collision_box()
-
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSFORM_CHANGED:
@@ -43,24 +41,6 @@ func _notification(what: int) -> void:
 		_cached_debug_mesh = null
 		_update_debug_collision_box()
 
-func is_position_in_area(global_pos: Vector3) -> bool:
-	if not is_inside_tree():
-		return false
-	var world := get_world_3d()
-	if world == null:
-		return false
-	var space_state := world.direct_space_state
-	if space_state == null:
-		return false
-	var query := PhysicsPointQueryParameters3D.new()
-	query.position = global_pos
-	query.collide_with_areas = true
-	var results := space_state.intersect_point(query)
-	for d in results:
-		if d.collider == self:
-			return true
-	return false
-
 func get_world_position() -> Vector3:
 	return global_position
 
@@ -69,6 +49,30 @@ func get_distance_to_position(pos: Vector3) -> float:
 
 func is_gap():
 	return gap
+
+func is_colliding_with_obstacle() -> bool:
+	var world := get_world_3d()
+	if world == null or not Engine.is_in_physics_frame():
+		return false
+
+	var space_state = world.direct_space_state
+	var collision_shape := _find_collision_shape()
+	if space_state == null or collision_shape == null or collision_shape.shape == null:
+		return false
+
+	var shape := collision_shape.shape
+	var query = PhysicsShapeQueryParameters3D.new()
+	query.shape = shape
+	query.collide_with_areas = true
+	query.collide_with_bodies = true
+	query.transform = collision_shape.global_transform
+	var result = space_state.intersect_shape(query)
+	if result.is_empty():
+		return false
+	else:
+		return true
+
+#region Collision Shape
 
 func _find_collision_shape() -> CollisionShape3D:
 	if is_instance_valid(_cached_collision_shape) and _cached_collision_shape.get_parent() == self:
@@ -112,6 +116,9 @@ func _update_collision_box() -> void:
 		box_shape.size = target_size
 	collision_shape.shape = box_shape
 
+#endregion
+
+#region Debug Visualization
 
 func _get_or_create_debug_box() -> MeshInstance3D:
 	if is_instance_valid(_cached_debug_mesh) and _cached_debug_mesh.get_parent() == self:
@@ -135,7 +142,7 @@ func _get_fallback_debug_material() -> StandardMaterial3D:
 	_fallback_debug_material.albedo_color = debug_collision_box_color
 	return _fallback_debug_material
 
-
+'''Draw the navigation node's collision box for debugging purposes.'''
 func _update_debug_collision_box() -> void:
 	var debug_mesh := _get_or_create_debug_box()
 	if not debug_draw_collision_box:
@@ -185,3 +192,5 @@ func _sync_debug_collision_box_transform() -> void:
 		return
 	var debug_mesh := _get_or_create_debug_box()
 	debug_mesh.transform = collision_shape.transform
+
+#endregion
