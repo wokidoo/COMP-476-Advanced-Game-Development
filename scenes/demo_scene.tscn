@@ -9,6 +9,9 @@
 [ext_resource type="Script" uid="uid://7hemqvbdaskq" path="res://scripts/AI/AI_squad/AI_squad_flock.gd" id="8_6054u"]
 [ext_resource type="Script" uid="uid://bo2t4ik2smig8" path="res://scripts/navigation/navigation_node_3d.gd" id="9_5q064"]
 [ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="9_6054u"]
+[ext_resource type="PackedScene" uid="uid://tmgmbyjfdeie" path="res://user_interface/simple_instructions.tscn" id="10_nvxfb"]
+[ext_resource type="AudioStream" uid="uid://d3xul6n4drbtl" path="res://sounds/ambient/distantWar.mp3" id="10_ybsmm"]
+[ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
 [ext_resource type="AudioStream" uid="uid://dtjo3um42wlg8" path="res://sounds/music/13.SendMeACurl.mp3" id="14_2rf26"]
 [ext_resource type="AudioStream" uid="uid://cqbd1508yehth" path="res://sounds/music/14.WeDontWantTheBacon.mp3" id="15_dle54"]
 [ext_resource type="AudioStream" uid="uid://ci5t26qmk8tn0" path="res://sounds/music/19.LookWhatMyBoyGotInFrance.mp3" id="20_7n8oy"]
@@ -16,8 +19,6 @@
 [ext_resource type="AudioStream" uid="uid://dvchjgaehata7" path="res://sounds/music/07.WereAllGoingCallingOnTheKaiser.mp3" id="25_18x67"]
 [ext_resource type="AudioStream" uid="uid://gh8uh0s2vk83" path="res://sounds/music/10.WhatAreYouGoingToDoToHelpTheBoys.mp3" id="28_nbpb3"]
 [ext_resource type="Script" uid="uid://kph7lvyp8kq5" path="res://scenes/music_player.gd" id="29_ylixx"]
-[ext_resource type="PackedScene" uid="uid://tmgmbyjfdeie" path="res://user_interface/simple_instructions.tscn" id="10_nvxfb"]
-[ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
 resource_name = "pauser_input_node"
@@ -137,6 +138,7 @@ stream_2 = ExtResource("28_nbpb3")
 stream_3 = ExtResource("14_2rf26")
 stream_4 = ExtResource("15_dle54")
 stream_5 = ExtResource("20_7n8oy")
+
 [sub_resource type="GDScript" id="GDScript_5q064"]
 resource_name = "healthDebug"
 script/source = "extends Node3D
@@ -400,12 +402,20 @@ metadata/_custom_type_script = "uid://bo2t4ik2smig8"
 shape = SubResource("BoxShape3D_o70wo")
 debug_color = Color(0, 11.708403, 13.469126, 1)
 
+[node name="AmbientPlayer" type="AudioStreamPlayer3D" parent="." unique_id=64452096]
+stream = ExtResource("10_ybsmm")
+attenuation_model = 3
+volume_db = -6.0
+autoplay = true
+parameters/looping = true
+
 [node name="MusicPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1697847197]
 stream = SubResource("AudioStreamPlaylist_3e52g")
 attenuation_model = 3
 volume_db = -2.0
 autoplay = true
 script = ExtResource("29_ylixx")
+
 [node name="SimpleInstructions" parent="." unique_id=1464139731 instance=ExtResource("10_nvxfb")]
 
 [node name="Paused" parent="." unique_id=1685693337 instance=ExtResource("11_hhdwb")]
