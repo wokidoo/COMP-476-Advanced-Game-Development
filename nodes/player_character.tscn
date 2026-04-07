@@ -15,7 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://1nqnt32f2lpc" path="res://sounds/sfx/lightAttackHit.mp3" id="13_2aww7"]
 [ext_resource type="AudioStream" uid="uid://4xofwooktbgt" path="res://sounds/sfx/heavyAttackHit.mp3" id="14_l8cal"]
 [ext_resource type="AudioStream" uid="uid://bewy5sc6qis3x" path="res://sounds/sfx/parry.mp3" id="16_a3dap"]
-[ext_resource type="AudioStream" uid="uid://cwg2wtv8yq0al" path="res://sounds/sfx/swordMiss.mp3" id="16_l8cal"]
+[ext_resource type="AudioStream" uid="uid://33uptjf51p7v" path="res://sounds/sfx/swordMiss.mp3" id="16_l8cal"]
 
 [sub_resource type="GDScript" id="GDScript_60spa"]
 resource_name = "Grounded"
@@ -484,7 +484,7 @@ mesh = SubResource("SphereMesh_5l2xy")
 
 [node name="Player Model" parent="." unique_id=411427401 instance=ExtResource("4_1c71w")]
 
-[node name="Mesh_0" parent="Player Model/Skeleton3D" parent_id_path=PackedInt32Array(411427401, 2033174726) index="0" unique_id=2065865662]
+[node name="Mesh_0" parent="Player Model/Skeleton3D" parent_id_path=PackedInt32Array(411427401, 316824910) index="0" unique_id=2066881361]
 material_overlay = SubResource("StandardMaterial3D_l8cal")
 
 [node name="Hitbox3D" type="Area3D" parent="Player Model/Skeleton3D/BoneAttachment3D/Sabre" parent_id_path=PackedInt32Array(411427401, 225740513) index="1" unique_id=1476845763]
