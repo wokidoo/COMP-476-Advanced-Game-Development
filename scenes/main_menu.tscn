@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://cnlpjndqthboo"]
+
+[ext_resource type="Script" uid="uid://b36m0wm1cnahq" path="res://user_interface/main_menu_v_box.gd" id="1_l6cm7"]
+[ext_resource type="AudioStream" uid="uid://dqfm0j8sji2jh" path="res://sounds/music/03.RosesOfPicardy.mp3" id="2_oa1go"]
+[ext_resource type="AudioStream" uid="uid://dvchjgaehata7" path="res://sounds/music/07.WereAllGoingCallingOnTheKaiser.mp3" id="3_tbmy8"]
+[ext_resource type="AudioStream" uid="uid://gh8uh0s2vk83" path="res://sounds/music/10.WhatAreYouGoingToDoToHelpTheBoys.mp3" id="4_jk1qb"]
+[ext_resource type="AudioStream" uid="uid://dtjo3um42wlg8" path="res://sounds/music/13.SendMeACurl.mp3" id="5_5dd4i"]
+[ext_resource type="AudioStream" uid="uid://cqbd1508yehth" path="res://sounds/music/14.WeDontWantTheBacon.mp3" id="6_lgwnu"]
+[ext_resource type="AudioStream" uid="uid://ci5t26qmk8tn0" path="res://sounds/music/19.LookWhatMyBoyGotInFrance.mp3" id="7_flqon"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fjv3s"]
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_rcqid"]
+shuffle = true
+stream_count = 6
+stream_0 = ExtResource("2_oa1go")
+stream_1 = ExtResource("3_tbmy8")
+stream_2 = ExtResource("4_jk1qb")
+stream_3 = ExtResource("5_5dd4i")
+stream_4 = ExtResource("6_lgwnu")
+stream_5 = ExtResource("7_flqon")
+
+[node name="MainMenu" type="Control" unique_id=569349809]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Background" type="Panel" parent="." unique_id=2119287059]
+material = SubResource("CanvasItemMaterial_fjv3s")
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="MainMenuVBox" type="VBoxContainer" parent="Background" unique_id=1540647683]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -375.0
+offset_top = -125.0
+offset_right = 375.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+script = ExtResource("1_l6cm7")
+
+[node name="GameLabel" type="Label" parent="Background/MainMenuVBox" unique_id=1579766717]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Cher Ami"
+horizontal_alignment = 1
+
+[node name="FirstPageVBox" type="VBoxContainer" parent="Background/MainMenuVBox" unique_id=420897203]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PlayButton" type="Button" parent="Background/MainMenuVBox/FirstPageVBox" unique_id=1228748712]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="Background/MainMenuVBox/FirstPageVBox" unique_id=382961134]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="Background/MainMenuVBox/FirstPageVBox" unique_id=1751728822]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Quit"
+
+[node name="SettingsPageVBox" type="VBoxContainer" parent="Background/MainMenuVBox" unique_id=924312297]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VolumeHBox" type="HBoxContainer" parent="Background/MainMenuVBox/SettingsPageVBox" unique_id=1288234279]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VolumeLabel" type="Label" parent="Background/MainMenuVBox/SettingsPageVBox/VolumeHBox" unique_id=1205730199]
+layout_mode = 2
+text = "Volume"
+
+[node name="VolumeHSlider" type="HSlider" parent="Background/MainMenuVBox/SettingsPageVBox/VolumeHBox" unique_id=1875009148]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 50.0
+
+[node name="BackButton" type="Button" parent="Background/MainMenuVBox/SettingsPageVBox" unique_id=190051476]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "Back"
+
+[node name="MusicPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1101660520]
+stream = SubResource("AudioStreamPlaylist_rcqid")
+attenuation_model = 3
+volume_db = -2.0
+autoplay = true
+
+[connection signal="pressed" from="Background/MainMenuVBox/FirstPageVBox/PlayButton" to="Background/MainMenuVBox" method="_on_play_button_pressed"]
+[connection signal="tree_entered" from="Background/MainMenuVBox/FirstPageVBox/PlayButton" to="Background/MainMenuVBox" method="_on_play_button_tree_entered"]
+[connection signal="pressed" from="Background/MainMenuVBox/FirstPageVBox/SettingsButton" to="Background/MainMenuVBox" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="Background/MainMenuVBox/FirstPageVBox/QuitButton" to="Background/MainMenuVBox" method="_on_quit_button_pressed"]
+[connection signal="value_changed" from="Background/MainMenuVBox/SettingsPageVBox/VolumeHBox/VolumeHSlider" to="Background/MainMenuVBox" method="_on_volume_h_slider_value_changed"]
+[connection signal="pressed" from="Background/MainMenuVBox/SettingsPageVBox/BackButton" to="Background/MainMenuVBox" method="_on_back_button_pressed"]
