@@ -29,6 +29,7 @@ func clear() -> void:
 		if is_instance_valid(node):
 			node.queue_free()
 	nav_nodes.clear()
+	node_grid.clear()
 
 func generate_grid(check_collisions: bool = false) -> void:
 	"""
@@ -65,9 +66,8 @@ func generate_grid(check_collisions: bool = false) -> void:
 			# Update spawned node's info
 			curr_node.name = "NavNode_%d" % nav_nodes.size()
 			curr_node.add_to_group("nav_node")
+			curr_node.debug_draw_collision_box = true
 			add_child(curr_node)
-			curr_node.monitoring = false
-			curr_node.monitorable = false
 			
 			# Set node position
 			if curr_node.is_inside_tree():
@@ -83,7 +83,7 @@ func generate_grid(check_collisions: bool = false) -> void:
 				curr_node.queue_free()
 				row.append(null)
 				continue
-				
+			
 			# Update nodes list
 			nav_nodes.append(curr_node)
 			row.append(curr_node)
@@ -96,12 +96,13 @@ func generate_grid(check_collisions: bool = false) -> void:
 		gen_position.z += generation_grid_cell_size
 	
 	# Second pass: create adjacency information (optional - store neighbors)
-	_create_adjacency_lists(node_grid)
+	_create_adjacency_lists()
+	print("Done generating nav_mesh")
 
 func _has_collision_at(check_node: NavigationNode3D) -> bool:
 	return check_node.is_colliding_with_obstacle()
 
-func _create_adjacency_lists(node_grid: Array) -> void:
+func _create_adjacency_lists() -> void:
 	"""
 	Create adjacency information between neighboring nodes.
 	Stores neighbors in each node for pathfinding.
@@ -136,9 +137,9 @@ func _create_adjacency_lists(node_grid: Array) -> void:
 	var root := Engine.get_main_loop() as SceneTree
 	if root == null:
 		return
-	var nav_nodes: Array = root.get_nodes_in_group("nav_node")
-	for n in nav_nodes:
+	# DEBUG
+	var test_nodes: Array = root.get_nodes_in_group("nav_node")
+	for n in test_nodes:
 		var nav_node := n as NavigationNode3D
 		if nav_node != null:
 			print("NavNode: %s, Connections: %d" % [nav_node.name, nav_node.connections.size()])
-	print("Done")

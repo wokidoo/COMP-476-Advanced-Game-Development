@@ -8,8 +8,7 @@ size = Vector3(5, 0.5, 5)
 
 [node name="NavigationNode3D" type="Area3D" unique_id=718945752 groups=["nav_node"]]
 collision_layer = 8
-collision_mask = 4
-monitoring = false
+collision_mask = 5
 monitorable = false
 script = ExtResource("1_4w5fe")
 size = 5.0
@@ -17,7 +16,7 @@ debug_draw_collision_box = true
 debug_collision_box_material = ExtResource("2_sdbta")
 metadata/_custom_type_script = "uid://bo2t4ik2smig8"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=881914580]
+[node name="CollisionShape" type="CollisionShape3D" parent="." unique_id=881914580]
 shape = SubResource("BoxShape3D_r10i8")
 debug_color = Color(0, 11.708403, 13.469126, 1)
 debug_fill = false

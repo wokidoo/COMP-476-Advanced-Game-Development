@@ -1,3 +1,4 @@
+@tool
 extends Area3D
 class_name NavigationNode3D
 
@@ -6,39 +7,33 @@ class_name NavigationNode3D
 @export var size:float = 1.0:
 	set(value):
 		size = max(value, 0.01)
-		_update_collision_box()
-		_update_debug_collision_box()
+		if Engine.is_editor_hint():
+			_update_collision_box()
+			_update_debug_collision_box()
+
 @export_group("Debug")
 @export var debug_draw_collision_box: bool = false:
 	set(value):
 		debug_draw_collision_box = value
-		_update_debug_collision_box()
+		if Engine.is_editor_hint():
+			_update_debug_collision_box()
 @export var debug_collision_box_color: Color = Color(1.0, 0.35, 0.2, 0.35):
 	set(value):
 		debug_collision_box_color = value
-		_update_debug_collision_box()
+		if Engine.is_editor_hint():
+			_update_debug_collision_box()
 @export var debug_collision_box_material: Material:
 	set(value):
 		debug_collision_box_material = value
-		_update_debug_collision_box()
+		if Engine.is_editor_hint():
+			_update_debug_collision_box()
 
-var _cached_collision_shape: CollisionShape3D
 var _cached_debug_mesh: MeshInstance3D
 var _fallback_debug_material: StandardMaterial3D
 
 func _ready() -> void:
-	if !is_in_group("nav_node"):
-		add_to_group("nav_node")
-	monitorable = true
-	_update_collision_box()
-	_update_debug_collision_box()
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_TRANSFORM_CHANGED:
-		_sync_debug_collision_box_transform()
-	elif what == NOTIFICATION_CHILD_ORDER_CHANGED:
-		_cached_collision_shape = null
-		_cached_debug_mesh = null
+	if not Engine.is_editor_hint():
+		_update_collision_box()
 		_update_debug_collision_box()
 
 func get_world_position() -> Vector3:
@@ -66,7 +61,8 @@ func is_colliding_with_obstacle() -> bool:
 	query.collide_with_areas = true
 	query.collide_with_bodies = true
 	query.transform = collision_shape.global_transform
-	var result = space_state.intersect_shape(query)
+	query.exclude = [self, collision_shape]
+	var result = space_state.intersect_shape(query, 20)
 	if result.is_empty():
 		return false
 	else:
@@ -75,18 +71,13 @@ func is_colliding_with_obstacle() -> bool:
 #region Collision Shape
 
 func _find_collision_shape() -> CollisionShape3D:
-	if is_instance_valid(_cached_collision_shape) and _cached_collision_shape.get_parent() == self:
-		return _cached_collision_shape
-
 	var named_collision_shape := get_node_or_null("CollisionShape3D") as CollisionShape3D
 	if named_collision_shape != null:
-		_cached_collision_shape = named_collision_shape
 		return named_collision_shape
 
 	for child in get_children():
 		var collision_shape := child as CollisionShape3D
 		if collision_shape != null:
-			_cached_collision_shape = collision_shape
 			return collision_shape
 	return null
 
@@ -97,7 +88,6 @@ func _get_or_create_collision_shape() -> CollisionShape3D:
 		collision_shape = CollisionShape3D.new()
 		collision_shape.name = "CollisionShape3D"
 		add_child(collision_shape)
-	_cached_collision_shape = collision_shape
 	return collision_shape
 
 

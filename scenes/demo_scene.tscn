@@ -11,10 +11,9 @@
 [ext_resource type="Script" uid="uid://dx06an6pgs3q7" path="res://scripts/navigation/nav_mesh.gd" id="9_hhdwb"]
 [ext_resource type="PackedScene" uid="uid://tmgmbyjfdeie" path="res://user_interface/simple_instructions.tscn" id="10_nvxfb"]
 [ext_resource type="PackedScene" uid="uid://cuk8tl4068kwq" path="res://nodes/navigation_node.tscn" id="10_o70wo"]
-[ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
-[ext_resource type="PackedScene" uid="uid://cro31pec5vago" path="res://nodes/environment/trench_type_1_0.tscn" id="13_o70wo"]
 [ext_resource type="AudioStream" uid="uid://d3xul6n4drbtl" path="res://sounds/ambient/distantWar.mp3" id="10_ybsmm"]
 [ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
+[ext_resource type="PackedScene" uid="uid://cro31pec5vago" path="res://nodes/environment/trench_type_1_0.tscn" id="13_o70wo"]
 [ext_resource type="AudioStream" uid="uid://dtjo3um42wlg8" path="res://sounds/music/13.SendMeACurl.mp3" id="14_2rf26"]
 [ext_resource type="AudioStream" uid="uid://cqbd1508yehth" path="res://sounds/music/14.WeDontWantTheBacon.mp3" id="15_dle54"]
 [ext_resource type="AudioStream" uid="uid://ci5t26qmk8tn0" path="res://sounds/music/19.LookWhatMyBoyGotInFrance.mp3" id="20_7n8oy"]
@@ -104,33 +103,6 @@ shader_parameter/transition_strength = 8.0
 shader_parameter/texture_x = SubResource("GradientTexture2D_tk8g1")
 shader_parameter/texture_y = SubResource("GradientTexture2D_21int")
 shader_parameter/texture_z = SubResource("GradientTexture2D_hhdwb")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_r10i8"]
-size = Vector3(7, 1, 5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_o70wo"]
-size = Vector3(4, 1, 5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_21int"]
-size = Vector3(7, 1, 6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_pbjje"]
-size = Vector3(11, 1, 6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_8iuhj"]
-size = Vector3(11, 1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6054u"]
-size = Vector3(14.991699, 1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_5q064"]
-size = Vector3(10, 1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_nvxfb"]
-size = Vector3(10, 1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_hhdwb"]
-size = Vector3(10, 1, 6)
 
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_3e52g"]
 shuffle = true
@@ -285,12 +257,12 @@ player = NodePath("../PlayerCharacter")
 [node name="NavMesh" type="Node3D" parent="." unique_id=1088466215]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -14)
 script = ExtResource("9_hhdwb")
-generation_grid_columns = 3
-generation_grid_rows = 3
+generation_grid_columns = 5
+generation_grid_rows = 5
 generation_grid_cell_size = 4.0
 node_prefab = ExtResource("10_o70wo")
 DEBUG_generate_grid = true
 DEBUG_check_collisions = true
 
 [node name="Military_Trenches_Wall_Extrusion_Metal_Corrugated_01_ydxlcils_Low" parent="." unique_id=1958750258 instance=ExtResource("13_o70wo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 3, -15)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -15)
