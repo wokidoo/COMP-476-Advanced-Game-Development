@@ -18,13 +18,13 @@ func _init(_damage_instance:DamageInstnace = DamageInstnace.new()) -> void:
 	area_exited.connect(_on_area_exited)
 
 func _on_area_entered(area:Area3D):
-	if enabled and area is Hitbox3D and not hits.has(area):
+	if enabled and area is Hurtbox3D and not hits.has(area):
 		hits.append(area)
 		area.tree_exiting.connect(_on_hurtbox_freeing.bind(area))
 		hit.emit(damage_instance,area)
 	
 func _on_area_exited(area:Area3D):
-	if area is Hitbox3D and hits.has(area):
+	if area is Hurtbox3D and hits.has(area):
 		area.tree_exiting.disconnect(_on_hurtbox_freeing)
 		hits.erase(area)
 
