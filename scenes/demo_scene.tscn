@@ -13,6 +13,15 @@
 [ext_resource type="PackedScene" uid="uid://cuk8tl4068kwq" path="res://nodes/navigation_node.tscn" id="10_o70wo"]
 [ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
 [ext_resource type="PackedScene" uid="uid://cro31pec5vago" path="res://nodes/environment/trench_type_1_0.tscn" id="13_o70wo"]
+[ext_resource type="AudioStream" uid="uid://d3xul6n4drbtl" path="res://sounds/ambient/distantWar.mp3" id="10_ybsmm"]
+[ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
+[ext_resource type="AudioStream" uid="uid://dtjo3um42wlg8" path="res://sounds/music/13.SendMeACurl.mp3" id="14_2rf26"]
+[ext_resource type="AudioStream" uid="uid://cqbd1508yehth" path="res://sounds/music/14.WeDontWantTheBacon.mp3" id="15_dle54"]
+[ext_resource type="AudioStream" uid="uid://ci5t26qmk8tn0" path="res://sounds/music/19.LookWhatMyBoyGotInFrance.mp3" id="20_7n8oy"]
+[ext_resource type="AudioStream" uid="uid://dqfm0j8sji2jh" path="res://sounds/music/03.RosesOfPicardy.mp3" id="21_pigdn"]
+[ext_resource type="AudioStream" uid="uid://dvchjgaehata7" path="res://sounds/music/07.WereAllGoingCallingOnTheKaiser.mp3" id="25_18x67"]
+[ext_resource type="AudioStream" uid="uid://gh8uh0s2vk83" path="res://sounds/music/10.WhatAreYouGoingToDoToHelpTheBoys.mp3" id="28_nbpb3"]
+[ext_resource type="Script" uid="uid://kph7lvyp8kq5" path="res://scenes/music_player.gd" id="29_ylixx"]
 
 [sub_resource type="GDScript" id="GDScript_7epem"]
 resource_name = "pauser_input_node"
@@ -95,6 +104,43 @@ shader_parameter/transition_strength = 8.0
 shader_parameter/texture_x = SubResource("GradientTexture2D_tk8g1")
 shader_parameter/texture_y = SubResource("GradientTexture2D_21int")
 shader_parameter/texture_z = SubResource("GradientTexture2D_hhdwb")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r10i8"]
+size = Vector3(7, 1, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o70wo"]
+size = Vector3(4, 1, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_21int"]
+size = Vector3(7, 1, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pbjje"]
+size = Vector3(11, 1, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8iuhj"]
+size = Vector3(11, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6054u"]
+size = Vector3(14.991699, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5q064"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nvxfb"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hhdwb"]
+size = Vector3(10, 1, 6)
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_3e52g"]
+shuffle = true
+stream_count = 6
+stream_0 = ExtResource("21_pigdn")
+stream_1 = ExtResource("25_18x67")
+stream_2 = ExtResource("28_nbpb3")
+stream_3 = ExtResource("14_2rf26")
+stream_4 = ExtResource("15_dle54")
+stream_5 = ExtResource("20_7n8oy")
 
 [sub_resource type="GDScript" id="GDScript_5q064"]
 resource_name = "healthDebug"
@@ -211,6 +257,20 @@ target = NodePath("../PlayerCharacter")
 [node name="AIAgent4" parent="." unique_id=1089065892 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.542887, 1.2637115, -16.783829)
 target = NodePath("../PlayerCharacter")
+
+[node name="AmbientPlayer" type="AudioStreamPlayer3D" parent="." unique_id=64452096]
+stream = ExtResource("10_ybsmm")
+attenuation_model = 3
+volume_db = -6.0
+autoplay = true
+parameters/looping = true
+
+[node name="MusicPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1697847197]
+stream = SubResource("AudioStreamPlaylist_3e52g")
+attenuation_model = 3
+volume_db = -2.0
+autoplay = true
+script = ExtResource("29_ylixx")
 
 [node name="SimpleInstructions" parent="." unique_id=1464139731 instance=ExtResource("10_nvxfb")]
 
