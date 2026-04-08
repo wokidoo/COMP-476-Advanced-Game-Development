@@ -33,8 +33,9 @@ var _fallback_debug_material: StandardMaterial3D
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
-		_update_collision_box()
-		_update_debug_collision_box()
+		if debug_draw_collision_box:
+			_update_collision_box()
+			_update_debug_collision_box()
 
 func get_world_position() -> Vector3:
 	return global_position

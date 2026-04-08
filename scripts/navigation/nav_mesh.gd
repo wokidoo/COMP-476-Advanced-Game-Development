@@ -1,3 +1,4 @@
+@tool
 extends Node3D
 class_name NavMesh
 
@@ -9,11 +10,19 @@ class_name NavMesh
 @export var generation_grid_rows: int = 10
 @export var generation_grid_cell_size: float = 1.0
 @export var node_prefab: PackedScene
-@export_group("Debug")
 @export var DEBUG_generate_grid: bool = false
 @export var DEBUG_check_collisions: bool = false
+@export_group("Visualize")
+@export var DEBUG_draw_boundaries: bool = false:
+	set(value):
+		DEBUG_draw_boundaries = value
+		if Engine.is_editor_hint():
+			if (DEBUG_draw_boundaries):
+				draw_nav_boundaries()
+			else:
+				clear()
 
-var node_grid: Array = []
+var node_grid: Array = [NavigationNode3D]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,6 +32,11 @@ func _ready() -> void:
 		else:
 			generate_grid(false)
 
+func draw_nav_boundaries() -> void:
+	"""Draw boundaries around the generated navigation nodes for visualization."""
+	generate_grid(false)
+	return
+
 func clear() -> void:
 	"""Clear all generated navigation nodes"""
 	for node in nav_nodes:
@@ -30,13 +44,22 @@ func clear() -> void:
 			node.queue_free()
 	nav_nodes.clear()
 	node_grid.clear()
+	# var root := Engine.get_main_loop() as SceneTree
+	# if root == null:
+	# 	return
+	# var test_nodes: Array = root.get_nodes_in_group("nav_node")
+	# for n in test_nodes:
+	# 	var nav_node := n as NavigationNode3D
+	# 	if nav_node != null:
+	# 		nav_node.queue_free()
 
 func generate_grid(check_collisions: bool = false) -> void:
 	"""
 	Generate a grid of navigation nodes, avoiding obstacles.
 	Similar to GridGraph.GenerateGrid in the C# reference.
 	"""
-	await get_tree().physics_frame
+	if !Engine.is_editor_hint():
+		await get_tree().physics_frame
 	
 	clear()
 	
@@ -66,8 +89,9 @@ func generate_grid(check_collisions: bool = false) -> void:
 			# Update spawned node's info
 			curr_node.name = "NavNode_%d" % nav_nodes.size()
 			curr_node.add_to_group("nav_node")
-			curr_node.debug_draw_collision_box = true
 			add_child(curr_node)
+			if Engine.is_editor_hint():
+				curr_node.owner = get_tree().edited_scene_root
 			
 			# Set node position
 			if curr_node.is_inside_tree():
@@ -107,6 +131,7 @@ func _create_adjacency_lists() -> void:
 	Create adjacency information between neighboring nodes.
 	Stores neighbors in each node for pathfinding.
 	"""
+	print("Generating nav_nodes neighbors:")
 	# Directions: right, left, down, up, diagonals
 	var operations = [
 		[0, 1], [0, -1], [1, 0], [-1, 0],
@@ -134,12 +159,12 @@ func _create_adjacency_lists() -> void:
 					continue
 
 				current_node.connections.append(neighbor_node)
+	# DEBUG
 	var root := Engine.get_main_loop() as SceneTree
 	if root == null:
 		return
-	# DEBUG
 	var test_nodes: Array = root.get_nodes_in_group("nav_node")
 	for n in test_nodes:
 		var nav_node := n as NavigationNode3D
 		if nav_node != null:
-			print("NavNode: %s, Connections: %d" % [nav_node.name, nav_node.connections.size()])
+			print("\tNavNode: %s, Connections: %d" % [nav_node.name, nav_node.connections.size()])

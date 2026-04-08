@@ -15,7 +15,7 @@ class_name AIAgent
 @onready var state_machine:StateMachine = %StateMachine
 @onready var hit_ray_3d: HitRay3D = %HitRay3D
 
-signal starting_attack
+@onready var should_activate: bool = false
 
 var jump_target:Vector3 = Vector3.ZERO
 var _jumping:bool = false
@@ -25,6 +25,9 @@ func _ready() -> void:
 	health_component.health_depleted.connect(_on_health_depeleted)
 
 func _physics_process(delta: float) -> void:
+	if not should_activate:
+		return
+	
 	if _jumping:
 		return
 	
@@ -63,6 +66,8 @@ func receive_damage(dmg:DamageInstnace,_hurtbox:Hurtbox3D):
 	health_component.health -= dmg.damage
 	state_machine.execute_event('hurt')
 
+func _on_agent_activated():
+	should_activate = true
 
 func _on_health_depeleted():
 	self.queue_free()
