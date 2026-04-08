@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://cc17lerdkpc6e"]
+
+[ext_resource type="Script" uid="uid://b36m0wm1cnahq" path="res://user_interface/main_menu_v_box.gd" id="1_wbyn4"]
+[ext_resource type="AudioStream" uid="uid://dqfm0j8sji2jh" path="res://sounds/music/03.RosesOfPicardy.mp3" id="2_8fdqi"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ahc2o"]
+
+[node name="MainMenuScene" type="Control" unique_id=163688408]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="." unique_id=1857669894]
+stream = ExtResource("2_8fdqi")
+volume_db = -2.0
+autoplay = true
+parameters/looping = true
+
+[node name="Background" type="Panel" parent="." unique_id=88184361]
+material = SubResource("CanvasItemMaterial_ahc2o")
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="MainMenuVBox" type="VBoxContainer" parent="Background" unique_id=435998026]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -375.0
+offset_top = -125.0
+offset_right = 375.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+script = ExtResource("1_wbyn4")
+
+[node name="GameLabel" type="Label" parent="Background/MainMenuVBox" unique_id=43141779]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Cher Ami"
+horizontal_alignment = 1
+
+[node name="FirstPageVBox" type="VBoxContainer" parent="Background/MainMenuVBox" unique_id=923725940]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PlayButton" type="Button" parent="Background/MainMenuVBox/FirstPageVBox" unique_id=1006415225]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="Background/MainMenuVBox/FirstPageVBox" unique_id=1114799132]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="Background/MainMenuVBox/FirstPageVBox" unique_id=1563021369]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Quit"
+
+[node name="SettingsPageVBox" type="VBoxContainer" parent="Background/MainMenuVBox" unique_id=1159638331]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VolumeHBox" type="HBoxContainer" parent="Background/MainMenuVBox/SettingsPageVBox" unique_id=1438042287]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VolumeLabel" type="Label" parent="Background/MainMenuVBox/SettingsPageVBox/VolumeHBox" unique_id=2061710891]
+layout_mode = 2
+text = "Volume"
+
+[node name="VolumeHSlider" type="HSlider" parent="Background/MainMenuVBox/SettingsPageVBox/VolumeHBox" unique_id=587779950]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 50.0
+
+[node name="BackButton" type="Button" parent="Background/MainMenuVBox/SettingsPageVBox" unique_id=927107145]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "Back"
+
+[connection signal="pressed" from="Background/MainMenuVBox/FirstPageVBox/PlayButton" to="Background/MainMenuVBox" method="_on_play_button_pressed"]
+[connection signal="tree_entered" from="Background/MainMenuVBox/FirstPageVBox/PlayButton" to="Background/MainMenuVBox" method="_on_play_button_tree_entered"]
+[connection signal="pressed" from="Background/MainMenuVBox/FirstPageVBox/SettingsButton" to="Background/MainMenuVBox" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="Background/MainMenuVBox/FirstPageVBox/QuitButton" to="Background/MainMenuVBox" method="_on_quit_button_pressed"]
+[connection signal="value_changed" from="Background/MainMenuVBox/SettingsPageVBox/VolumeHBox/VolumeHSlider" to="Background/MainMenuVBox" method="_on_volume_h_slider_value_changed"]
+[connection signal="pressed" from="Background/MainMenuVBox/SettingsPageVBox/BackButton" to="Background/MainMenuVBox" method="_on_back_button_pressed"]

@@ -8,6 +8,15 @@
 [ext_resource type="AudioStream" uid="uid://cqbd1508yehth" path="res://sounds/music/14.WeDontWantTheBacon.mp3" id="6_lgwnu"]
 [ext_resource type="AudioStream" uid="uid://ci5t26qmk8tn0" path="res://sounds/music/19.LookWhatMyBoyGotInFrance.mp3" id="7_flqon"]
 
+[sub_resource type="GDScript" id="GDScript_oa1go"]
+resource_name = "MainMenuUnpauser"
+script/source = "extends Control
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	get_tree().paused = false
+"
+
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fjv3s"]
 
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_rcqid"]
@@ -20,10 +29,11 @@ stream_3 = ExtResource("5_5dd4i")
 stream_4 = ExtResource("6_lgwnu")
 stream_5 = ExtResource("7_flqon")
 
-[node name="MainMenu" type="Control" unique_id=569349809]
+[node name="MainMenu" type="Control" unique_id=627784155]
 process_mode = 2
 layout_mode = 3
 anchors_preset = 0
+script = SubResource("GDScript_oa1go")
 
 [node name="Background" type="Panel" parent="." unique_id=2119287059]
 material = SubResource("CanvasItemMaterial_fjv3s")
