@@ -12,7 +12,6 @@ collision_mask = 5
 monitorable = false
 script = ExtResource("1_4w5fe")
 size = 3.0
-debug_draw_collision_box = true
 debug_collision_box_material = ExtResource("2_sdbta")
 metadata/_custom_type_script = "uid://bo2t4ik2smig8"
 
