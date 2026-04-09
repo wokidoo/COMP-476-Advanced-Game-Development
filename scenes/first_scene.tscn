@@ -611,25 +611,19 @@ activation_distance = 20.0
 [node name="-Area2-" type="Node3D" parent="Level" unique_id=602546799]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73, 1, -64)
 
-[node name="AIAgent" parent="Level/-Area2-" unique_id=1657396361 node_paths=PackedStringArray("target") instance=ExtResource("22_6vkic")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.2637105, 4)
+[node name="AIAgent" parent="Level/-Area2-" unique_id=1657396361 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("22_6vkic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2.2637105, -5)
 target = NodePath("../../../PlayerCharacter")
 activate_on_distance = true
 activation_distance = 20.0
 
-[node name="AIAgent2" parent="Level/-Area2-" unique_id=457149904 node_paths=PackedStringArray("target") instance=ExtResource("22_6vkic")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29, 3.2637105, 15)
-target = NodePath("../../../PlayerCharacter")
-activate_on_distance = true
-activation_distance = 15.0
-
-[node name="AIAgent3" parent="Level/-Area2-" unique_id=156374829 node_paths=PackedStringArray("target") instance=ExtResource("22_6vkic")]
+[node name="AIAgent3" parent="Level/-Area2-" unique_id=156374829 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("22_6vkic")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 2.2637105, -2)
 target = NodePath("../../../PlayerCharacter")
 activate_on_distance = true
 activation_distance = 15.0
 
-[node name="AIAgent4" parent="Level/-Area2-" unique_id=1927645441 node_paths=PackedStringArray("target") instance=ExtResource("22_6vkic")]
+[node name="AIAgent4" parent="Level/-Area2-" unique_id=1927645441 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("22_6vkic")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 63, 2.2637105, -19)
 target = NodePath("../../../PlayerCharacter")
 activate_on_distance = true
