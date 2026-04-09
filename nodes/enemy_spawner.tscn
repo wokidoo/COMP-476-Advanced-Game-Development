@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://ggjb7dur51tg"]
+
+[ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="1_lnv8y"]
+
+[sub_resource type="GDScript" id="GDScript_1uc5m"]
+resource_name = "enemy_spawner"
+script/source = "extends Node3D
+
+@export var scene:PackedScene
+@export var time: float = 30.0:
+	set(value):
+		time = value
+		if timer:
+			timer.wait_time = time
+
+@export var max_enemies_spawned:int = 5
+
+var enemies_spawned:int = 0
+
+@onready var timer: Timer = $Timer
+
+func _ready() -> void:
+	timer.wait_time = time
+	timer.timeout.connect(spawn_enemy)
+	
+
+func spawn_enemy():
+	if enemies_spawned < max_enemies_spawned:
+		var enemy :AIAgent= scene.instantiate()
+		enemy.tree_exiting.connect(reduce_enemy_count)
+		if enemy.target == null:
+			enemy.target = get_tree().root.find_children(\"PlayerCharacter\",\"CharacterBody3D\",true,false)[0]
+		enemy.global_position = self.global_position
+		get_tree().root.add_child(enemy)
+		enemies_spawned += 1
+
+func reduce_enemy_count():
+	print(\"reduce spwan count\")
+	enemies_spawned -= 1
+"
+
+[node name="EnemySpawner" type="Node3D" unique_id=63290959]
+script = SubResource("GDScript_1uc5m")
+scene = ExtResource("1_lnv8y")
+
+[node name="Timer" type="Timer" parent="." unique_id=1783283634]
+autostart = true
