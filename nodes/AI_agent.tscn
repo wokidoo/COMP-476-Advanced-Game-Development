@@ -66,7 +66,7 @@ extends State
 @export var avoider_component:AvoiderComponent
 @export var animation_tree:AnimationTree
 
-@export var cutoff_distance:float = 2.0
+@export var cutoff_distance:float = .2
 
 var distance_to_target:float = 0.0
 var facing_target:float = 0.0
@@ -84,6 +84,9 @@ func state_exit() -> void:
 		c.process_mode = Node.PROCESS_MODE_DISABLED
 
 func state_physics_process(_delta: float) -> void:
+	if agent.activate_on_distance and not agent.is_activated:
+		return 
+	
 	if not agent.target or agent.target.global_position.distance_to(agent.global_position) < 2:
 		state_machine.execute_event('idle')
 		return
@@ -101,6 +104,7 @@ func state_physics_process(_delta: float) -> void:
 		target_direction = (agent.target.global_position - agent.global_position)
 		
 	distance_to_target = target_direction.length()
+	distance_to_target = max(distance_to_target, 5)
 	target_direction = target_direction.slide(Vector3.UP).normalized()
 	facing_target = agent.get_facing_target_factor(target_direction)
 	
@@ -121,9 +125,11 @@ func state_physics_process(_delta: float) -> void:
 
 func update_path():
 	path = NavigationUtil.find_path(agent.global_position,agent.target.global_position)
-	while path.is_empty():
+	var count = 0
+	while path.is_empty() && count < 100:
 		await get_tree().physics_frame
 		path = NavigationUtil.find_path(agent.global_position,agent.target.global_position)
+		count += 1
 "
 
 [sub_resource type="GDScript" id="GDScript_jbp7b"]
@@ -169,6 +175,7 @@ var h_pos:Vector3
 var v_pos:Vector3
 var h_target:Vector3
 var v_target:Vector3
+var distance_threshold:float = 5.0
 
 func state_enter() -> void:
 	animation_tree['parameters/playback'].travel('jump')
@@ -191,7 +198,7 @@ func state_exit() -> void:
 	agent._jumping = false
 
 func state_physics_process(_delta: float) -> void:
-	if agent.global_position.distance_to(agent.jump_target) < 2.0 or is_zero_approx(agent.velocity.length_squared()):
+	if agent.global_position.distance_to(agent.jump_target) < distance_threshold or is_zero_approx(agent.velocity.length_squared()):
 		state_machine.execute_event('idle')
 	var dir := agent.global_position.direction_to(agent.jump_target)
 	agent.velocity.y -= agent.gravity*_delta

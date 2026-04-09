@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="9_6054u"]
 [ext_resource type="Script" uid="uid://dx06an6pgs3q7" path="res://scripts/navigation/nav_mesh.gd" id="9_hhdwb"]
 [ext_resource type="PackedScene" uid="uid://tmgmbyjfdeie" path="res://user_interface/simple_instructions.tscn" id="10_nvxfb"]
-[ext_resource type="PackedScene" uid="uid://cuk8tl4068kwq" path="res://nodes/navigation_node.tscn" id="10_o70wo"]
+[ext_resource type="PackedScene" uid="uid://x6po5d0oodw5" path="res://nodes/navigation_node.tscn" id="10_o70wo"]
 [ext_resource type="AudioStream" uid="uid://d3xul6n4drbtl" path="res://sounds/ambient/distantWar.mp3" id="10_ybsmm"]
 [ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
 [ext_resource type="PackedScene" uid="uid://cro31pec5vago" path="res://nodes/environment/trench_type_1_0.tscn" id="13_o70wo"]
@@ -208,26 +208,28 @@ radial_segments = 24
 material = SubResource("ShaderMaterial_b3yjl")
 
 [node name="AISquadFlock" type="Node3D" parent="." unique_id=1430788997]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, -18)
 script = ExtResource("8_6054u")
 flock_force = 3.0
 radius = 5.0
+enabled = true
 group = "squad_1"
 metadata/_custom_type_script = "uid://7hemqvbdaskq"
 
 [node name="AIAgent" parent="." unique_id=17692775 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.895798, 1.2637105, 10.949715)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1042023, 1.2637105, -7.0502853)
 target = NodePath("../PlayerCharacter")
 
 [node name="AIAgent2" parent="." unique_id=985863439 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.02366, 1.2637095, 2.0635595)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0236607, 1.2637095, -15.9364395)
 target = NodePath("../PlayerCharacter")
 
 [node name="AIAgent3" parent="." unique_id=385043741 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.704155, 1.2637105, -7.0964613)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.704155, 1.2637105, -25.096462)
 target = NodePath("../PlayerCharacter")
 
 [node name="AIAgent4" parent="." unique_id=1089065892 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.542887, 1.2637115, -16.783829)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.542887, 1.2637115, -34.78383)
 target = NodePath("../PlayerCharacter")
 
 [node name="AmbientPlayer" type="AudioStreamPlayer3D" parent="." unique_id=64452096]

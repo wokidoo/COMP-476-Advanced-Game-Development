@@ -45,7 +45,9 @@ static func find_path(starting_pos: Vector3, target_pos: Vector3) -> NavPath:
 
 	open_set[start] = { "g": 0.0, "f": _heuristic(start, goal), "parent": null }
 
-	while not open_set.is_empty():
+	var count = 0
+	while not open_set.is_empty() && count < 5000:
+		count+=0
 		var current: NavigationNode3D = _lowest_f(open_set)
 
 		if current == goal:
