@@ -26,6 +26,8 @@ var node_grid: Array = [NavigationNode3D]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
 	if DEBUG_generate_grid:
 		if DEBUG_check_collisions:
 			generate_grid(true)
@@ -44,14 +46,6 @@ func clear() -> void:
 			node.queue_free()
 	nav_nodes.clear()
 	node_grid.clear()
-	# var root := Engine.get_main_loop() as SceneTree
-	# if root == null:
-	# 	return
-	# var test_nodes: Array = root.get_nodes_in_group("nav_node")
-	# for n in test_nodes:
-	# 	var nav_node := n as NavigationNode3D
-	# 	if nav_node != null:
-	# 		nav_node.queue_free()
 
 func generate_grid(check_collisions: bool = false) -> void:
 	"""
@@ -131,7 +125,7 @@ func _create_adjacency_lists() -> void:
 	Create adjacency information between neighboring nodes.
 	Stores neighbors in each node for pathfinding.
 	"""
-	print("Generating nav_nodes neighbors:")
+	#print("Generating nav_nodes neighbors:")
 	# Directions: right, left, down, up, diagonals
 	var operations = [
 		[0, 1], [0, -1], [1, 0], [-1, 0],
@@ -159,12 +153,12 @@ func _create_adjacency_lists() -> void:
 					continue
 
 				current_node.connections.append(neighbor_node)
-	# DEBUG
-	var root := Engine.get_main_loop() as SceneTree
-	if root == null:
-		return
-	var test_nodes: Array = root.get_nodes_in_group("nav_node")
-	for n in test_nodes:
-		var nav_node := n as NavigationNode3D
-		if nav_node != null:
-			print("\tNavNode: %s, Connections: %d" % [nav_node.name, nav_node.connections.size()])
+	## DEBUG
+	#var root := Engine.get_main_loop() as SceneTree
+	#if root == null:
+		#return
+	#var test_nodes: Array = root.get_nodes_in_group("nav_node")
+	#for n in test_nodes:
+		#var nav_node := n as NavigationNode3D
+		#if nav_node != null:
+			#print("\tNavNode: %s, Connections: %d" % [nav_node.name, nav_node.connections.size()])
