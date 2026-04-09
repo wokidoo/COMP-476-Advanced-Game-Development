@@ -1,13 +1,17 @@
 [gd_scene format=3 uid="uid://cc17lerdkpc6e"]
 
+[ext_resource type="Theme" uid="uid://cj5c1dk824wyb" path="res://user_interface/mainTheme.tres" id="1_7hcs8"]
 [ext_resource type="Script" uid="uid://b36m0wm1cnahq" path="res://user_interface/main_menu_v_box.gd" id="1_wbyn4"]
 [ext_resource type="AudioStream" uid="uid://dqfm0j8sji2jh" path="res://sounds/music/03.RosesOfPicardy.mp3" id="2_8fdqi"]
+[ext_resource type="Texture2D" uid="uid://crlovki8eh0pk" path="res://user_interface/distraction.png" id="4_yj20m"]
+[ext_resource type="Texture2D" uid="uid://ygy8dmrt0fdy" path="res://user_interface/finch.png" id="5_6ad1t"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ahc2o"]
 
 [node name="MainMenuScene" type="Control" unique_id=163688408]
 layout_mode = 3
 anchors_preset = 0
+theme = ExtResource("1_7hcs8")
 
 [node name="MenuMusic" type="AudioStreamPlayer" parent="." unique_id=1857669894]
 stream = ExtResource("2_8fdqi")
@@ -34,14 +38,30 @@ offset_right = 375.0
 offset_bottom = 125.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 30
 script = ExtResource("1_wbyn4")
 
-[node name="GameLabel" type="Label" parent="Background/MainMenuVBox" unique_id=43141779]
+[node name="TitleHBox" type="HBoxContainer" parent="Background/MainMenuVBox" unique_id=1912426106]
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
+alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Background/MainMenuVBox/TitleHBox" unique_id=1288181122]
+layout_mode = 2
+size_flags_horizontal = 8
+texture = ExtResource("4_yj20m")
+expand_mode = 3
+
+[node name="GameLabel" type="Label" parent="Background/MainMenuVBox/TitleHBox" unique_id=43141779]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 100
 text = "Cher Ami"
 horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Background/MainMenuVBox/TitleHBox" unique_id=1872251512]
+layout_mode = 2
+size_flags_horizontal = 8
+texture = ExtResource("5_6ad1t")
+expand_mode = 3
 
 [node name="FirstPageVBox" type="VBoxContainer" parent="Background/MainMenuVBox" unique_id=923725940]
 layout_mode = 2
@@ -49,17 +69,14 @@ theme_override_constants/separation = 10
 
 [node name="PlayButton" type="Button" parent="Background/MainMenuVBox/FirstPageVBox" unique_id=1006415225]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
 text = "Play"
 
 [node name="SettingsButton" type="Button" parent="Background/MainMenuVBox/FirstPageVBox" unique_id=1114799132]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
 text = "Settings"
 
 [node name="QuitButton" type="Button" parent="Background/MainMenuVBox/FirstPageVBox" unique_id=1563021369]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
 text = "Quit"
 
 [node name="SettingsPageVBox" type="VBoxContainer" parent="Background/MainMenuVBox" unique_id=1159638331]
