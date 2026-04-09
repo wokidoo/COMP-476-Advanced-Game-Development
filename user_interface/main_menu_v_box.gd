@@ -3,9 +3,10 @@ extends VBoxContainer
 @export var maxVolumeConstant = 20
 @export var startingVolumePercentage = 50
 @export var busIndex = 0
+var firstScene = load("res://scenes/first_scene.tscn")
 
-func _on_play_button_tree_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/first_scene.tscn")
+func _on_play_button_pressed() -> void:
+	get_tree().change_scene_to_packed(firstScene)
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
@@ -32,6 +33,3 @@ func _on_volume_h_slider_value_changed(value: float) -> void:
 func _on_back_button_pressed() -> void:
 	get_child(1).visible = true
 	get_child(2).visible = false
-
-func _on_play_button_pressed() -> void:
-	pass # Replace with function body.
