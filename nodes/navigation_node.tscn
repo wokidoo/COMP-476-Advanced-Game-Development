@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://x6po5d0oodw5"]
+
+[ext_resource type="Script" uid="uid://bo2t4ik2smig8" path="res://scripts/navigation/navigation_node_3d.gd" id="1_4w5fe"]
+[ext_resource type="Material" uid="uid://du6cknqxsiyj3" path="res://scripts/navigation/navigation_node_debug_mesh_mat.tres" id="2_sdbta"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r10i8"]
+size = Vector3(3, 0.5, 3)
+
+[node name="NavigationNode3D" type="Area3D" unique_id=718945752 groups=["nav_node"]]
+collision_layer = 8
+collision_mask = 5
+monitorable = false
+script = ExtResource("1_4w5fe")
+size = 3.0
+debug_collision_box_material = ExtResource("2_sdbta")
+metadata/_custom_type_script = "uid://bo2t4ik2smig8"
+
+[node name="CollisionShape" type="CollisionShape3D" parent="." unique_id=881914580]
+shape = SubResource("BoxShape3D_r10i8")
+debug_color = Color(0, 11.708403, 13.469126, 1)
+debug_fill = false

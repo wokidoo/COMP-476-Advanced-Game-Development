@@ -7,11 +7,13 @@
 [ext_resource type="CompositorEffect" uid="uid://b3vjjxwtr8a5d" path="res://post_processing_compositor/compositor_effects/film_grain_compositor_effect.tres" id="4_au7hc"]
 [ext_resource type="CompositorEffect" uid="uid://mfojdyb6rqbu" path="res://post_processing_compositor/compositor_effects/vignette_compositor_effect.tres" id="5_siv4a"]
 [ext_resource type="Script" uid="uid://7hemqvbdaskq" path="res://scripts/AI/AI_squad/AI_squad_flock.gd" id="8_6054u"]
-[ext_resource type="Script" uid="uid://bo2t4ik2smig8" path="res://scripts/navigation/navigation_node_3d.gd" id="9_5q064"]
 [ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="9_6054u"]
+[ext_resource type="Script" uid="uid://dx06an6pgs3q7" path="res://scripts/navigation/nav_mesh.gd" id="9_hhdwb"]
 [ext_resource type="PackedScene" uid="uid://tmgmbyjfdeie" path="res://user_interface/simple_instructions.tscn" id="10_nvxfb"]
+[ext_resource type="PackedScene" uid="uid://x6po5d0oodw5" path="res://nodes/navigation_node.tscn" id="10_o70wo"]
 [ext_resource type="AudioStream" uid="uid://d3xul6n4drbtl" path="res://sounds/ambient/distantWar.mp3" id="10_ybsmm"]
 [ext_resource type="PackedScene" uid="uid://b5p1r7adjlcb2" path="res://user_interface/pause_menu.tscn" id="11_hhdwb"]
+[ext_resource type="PackedScene" uid="uid://cro31pec5vago" path="res://nodes/environment/trench_type_1_0.tscn" id="13_o70wo"]
 [ext_resource type="AudioStream" uid="uid://dtjo3um42wlg8" path="res://sounds/music/13.SendMeACurl.mp3" id="14_2rf26"]
 [ext_resource type="AudioStream" uid="uid://cqbd1508yehth" path="res://sounds/music/14.WeDontWantTheBacon.mp3" id="15_dle54"]
 [ext_resource type="AudioStream" uid="uid://ci5t26qmk8tn0" path="res://sounds/music/19.LookWhatMyBoyGotInFrance.mp3" id="20_7n8oy"]
@@ -100,33 +102,6 @@ shader_parameter/transition_strength = 8.0
 shader_parameter/texture_x = SubResource("GradientTexture2D_tk8g1")
 shader_parameter/texture_y = SubResource("GradientTexture2D_21int")
 shader_parameter/texture_z = SubResource("GradientTexture2D_hhdwb")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_r10i8"]
-size = Vector3(7, 1, 5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_o70wo"]
-size = Vector3(4, 1, 5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_21int"]
-size = Vector3(7, 1, 6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_pbjje"]
-size = Vector3(11, 1, 6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_8iuhj"]
-size = Vector3(11, 1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6054u"]
-size = Vector3(14.991699, 1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_5q064"]
-size = Vector3(10, 1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_nvxfb"]
-size = Vector3(10, 1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_hhdwb"]
-size = Vector3(10, 1, 6)
 
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_3e52g"]
 shuffle = true
@@ -226,180 +201,35 @@ size = Vector3(200, 40, 200)
 [node name="Ball" type="CSGSphere3D" parent="Structures" unique_id=989441350]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9421597, 0, 21.808403)
 use_collision = true
+collision_layer = 5
 radius = 3.0
 radial_segments = 24
 material = SubResource("ShaderMaterial_b3yjl")
 
 [node name="AISquadFlock" type="Node3D" parent="." unique_id=1430788997]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, -18)
 script = ExtResource("8_6054u")
 flock_force = 3.0
 radius = 5.0
+enabled = true
 group = "squad_1"
 metadata/_custom_type_script = "uid://7hemqvbdaskq"
 
-[node name="AIAgent" parent="." unique_id=17692775 node_paths=PackedStringArray("target", "navigation_root") groups=["squad_1"] instance=ExtResource("9_6054u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.895798, 1.2637105, 10.949715)
+[node name="AIAgent" parent="." unique_id=17692775 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1042023, 1.2637105, -7.0502853)
 target = NodePath("../PlayerCharacter")
-navigation_root = NodePath("../NavMesh/NavigationNode3D")
 
-[node name="AIAgent2" parent="." unique_id=985863439 node_paths=PackedStringArray("target", "navigation_root") groups=["squad_1"] instance=ExtResource("9_6054u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.02366, 1.2637095, 2.0635595)
+[node name="AIAgent2" parent="." unique_id=985863439 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0236607, 1.2637095, -15.9364395)
 target = NodePath("../PlayerCharacter")
-navigation_root = NodePath("../NavMesh/NavigationNode3D")
 
-[node name="AIAgent3" parent="." unique_id=385043741 node_paths=PackedStringArray("target", "navigation_root") groups=["squad_1"] instance=ExtResource("9_6054u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.704155, 1.2637105, -7.0964613)
+[node name="AIAgent3" parent="." unique_id=385043741 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.704155, 1.2637105, -25.096462)
 target = NodePath("../PlayerCharacter")
-navigation_root = NodePath("../NavMesh/NavigationNode3D")
 
-[node name="AIAgent4" parent="." unique_id=1089065892 node_paths=PackedStringArray("target", "navigation_root") groups=["squad_1"] instance=ExtResource("9_6054u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.542887, 1.2637115, -16.783829)
+[node name="AIAgent4" parent="." unique_id=1089065892 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("9_6054u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.542887, 1.2637115, -34.78383)
 target = NodePath("../PlayerCharacter")
-navigation_root = NodePath("../NavMesh/NavigationNode3D")
-
-[node name="NavMesh" type="Node3D" parent="." unique_id=733489138]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.410046, 0, -8.224006)
-
-[node name="NavigationNode3D12" type="Area3D" parent="NavMesh" unique_id=1062597491 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.016428, 3, 8.131119)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D11"), NodePath("../NavigationNode3D6")]
-gap = true
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D12" unique_id=355704773]
-shape = SubResource("BoxShape3D_r10i8")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D11" type="Area3D" parent="NavMesh" unique_id=1675380181 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.90781, 3, 8.131119)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D13"), NodePath("../NavigationNode3D12")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D11" unique_id=937655263]
-shape = SubResource("BoxShape3D_o70wo")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D13" type="Area3D" parent="NavMesh" unique_id=212270893 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.761078, 3, 8.131119)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D11"), NodePath("../NavigationNode3D10")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D13" unique_id=1284317613]
-shape = SubResource("BoxShape3D_o70wo")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D10" type="Area3D" parent="NavMesh" unique_id=817773938 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(-0.8093655, -0.587305, -8.694927e-08, -0.587305, 0.8093655, -9.0865715e-09, 7.571035e-08, 4.3711395e-08, -1, -19.313808, 1.3911119, 8.026493)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D7"), NodePath("../NavigationNode3D13")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D10" unique_id=2107420148]
-shape = SubResource("BoxShape3D_21int")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D7" type="Area3D" parent="NavMesh" unique_id=2103930080 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.39511, 1.9073486e-06, 8.298482)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D8"), NodePath("../NavigationNode3D10")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D7" unique_id=795183047]
-shape = SubResource("BoxShape3D_pbjje")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D8" type="Area3D" parent="NavMesh" unique_id=1254328784 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.676182, 1.9073486e-06, -0.18280888)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D"), NodePath("../NavigationNode3D7")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D8" unique_id=275664591]
-shape = SubResource("BoxShape3D_8iuhj")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D" type="Area3D" parent="NavMesh" unique_id=254638246 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.102327, 0, -0.09009647)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D2"), NodePath("../NavigationNode3D8")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D" unique_id=1627574285]
-shape = SubResource("BoxShape3D_6054u")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D2" type="Area3D" parent="NavMesh" unique_id=1371180580 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D"), NodePath("../NavigationNode3D3")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D2" unique_id=1441230069]
-shape = SubResource("BoxShape3D_5q064")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D3" type="Area3D" parent="NavMesh" unique_id=737204534 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.445599, -2.861023e-06, -0.099900246)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D2"), NodePath("../NavigationNode3D4")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D3" unique_id=266207557]
-shape = SubResource("BoxShape3D_nvxfb")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D4" type="Area3D" parent="NavMesh" unique_id=119371975 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.770699, -9.536743e-07, -0.31986332)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D3"), NodePath("../NavigationNode3D5")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D4" unique_id=174198797]
-shape = SubResource("BoxShape3D_nvxfb")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D5" type="Area3D" parent="NavMesh" unique_id=426645920 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.440022, 0, 8.026493)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D4"), NodePath("../NavigationNode3D9")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D5" unique_id=350334400]
-shape = SubResource("BoxShape3D_hhdwb")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D9" type="Area3D" parent="NavMesh" unique_id=572783551 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(0.8660253, 0.49999997, 0, -0.49999997, 0.8660253, 0, 0, 0, 1, 13.347897, 1.3911119, 8.026493)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D5"), NodePath("../NavigationNode3D14")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D9" unique_id=1666827571]
-transform = Transform3D(1, 5.9604645e-08, 0, -5.9604645e-08, 1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("BoxShape3D_21int")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D6" type="Area3D" parent="NavMesh" unique_id=238728364 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9608192, 3, 8.131119)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D12"), NodePath("../NavigationNode3D14")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D6" unique_id=1946689381]
-shape = SubResource("BoxShape3D_o70wo")
-debug_color = Color(0, 11.708403, 13.469126, 1)
-
-[node name="NavigationNode3D14" type="Area3D" parent="NavMesh" unique_id=1521130482 node_paths=PackedStringArray("connections") groups=["nav_node"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.6318207, 3, 8.131119)
-script = ExtResource("9_5q064")
-connections = [NodePath("../NavigationNode3D6"), NodePath("../NavigationNode3D9")]
-metadata/_custom_type_script = "uid://bo2t4ik2smig8"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavMesh/NavigationNode3D14" unique_id=1458549723]
-shape = SubResource("BoxShape3D_o70wo")
-debug_color = Color(0, 11.708403, 13.469126, 1)
 
 [node name="AmbientPlayer" type="AudioStreamPlayer3D" parent="." unique_id=64452096]
 stream = ExtResource("10_ybsmm")
@@ -423,3 +253,16 @@ visible = false
 script = SubResource("GDScript_5q064")
 agents = [NodePath("../AIAgent"), NodePath("../AIAgent2"), NodePath("../AIAgent3"), NodePath("../AIAgent4")]
 player = NodePath("../PlayerCharacter")
+
+[node name="NavMesh" type="Node3D" parent="." unique_id=1088466215]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -14)
+script = ExtResource("9_hhdwb")
+generation_grid_columns = 5
+generation_grid_rows = 5
+generation_grid_cell_size = 3.0
+node_prefab = ExtResource("10_o70wo")
+DEBUG_generate_grid = true
+DEBUG_check_collisions = true
+
+[node name="Military_Trenches_Wall_Extrusion_Metal_Corrugated_01_ydxlcils_Low" parent="." unique_id=1958750258 instance=ExtResource("13_o70wo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -15)

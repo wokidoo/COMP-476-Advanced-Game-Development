@@ -9,13 +9,16 @@ class_name AIAgent
 
 @export var navigation_root:NavigationNode3D
 
+@export_group("Distance activation")
+@export var activate_on_distance: bool = false
+@export_range(0.0, 1000.0, 0.1) var activation_distance: float = 10.0
+@export var is_activated: bool = false
+
 @onready var health_component: HealthComponent = %HealthComponent
 @onready var steering_component: SteeringComponent = %SteeringComponent
 @onready var avoider_component: AvoiderComponent = %AvoiderComponent
 @onready var state_machine:StateMachine = %StateMachine
 @onready var hit_ray_3d: HitRay3D = %HitRay3D
-
-signal starting_attack
 
 var jump_target:Vector3 = Vector3.ZERO
 var _jumping:bool = false
@@ -25,6 +28,11 @@ func _ready() -> void:
 	health_component.health_depleted.connect(_on_health_depeleted)
 
 func _physics_process(delta: float) -> void:
+	if activate_on_distance and not is_activated:
+		velocity.y -= gravity * delta
+		move_and_slide()
+		return
+	
 	if _jumping:
 		return
 	
@@ -63,6 +71,8 @@ func receive_damage(dmg:DamageInstnace,_hurtbox:Hurtbox3D):
 	health_component.health -= dmg.damage
 	state_machine.execute_event('hurt')
 
-
 func _on_health_depeleted():
 	self.queue_free()
+
+func _on_radius_activation_component_target_entered_radius(activating_target: Node3D) -> void:
+	is_activated = true

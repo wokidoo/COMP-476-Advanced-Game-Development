@@ -66,7 +66,7 @@ extends State
 @export var avoider_component:AvoiderComponent
 @export var animation_tree:AnimationTree
 
-@export var cutoff_distance:float = 2.5
+@export var cutoff_distance:float = .2
 
 var distance_to_target:float = 0.0
 var facing_target:float = 0.0
@@ -84,12 +84,15 @@ func state_exit() -> void:
 		c.process_mode = Node.PROCESS_MODE_DISABLED
 
 func state_physics_process(_delta: float) -> void:
+	if agent.activate_on_distance and not agent.is_activated:
+		return 
+	
 	if not agent.target or agent.target.global_position.distance_to(agent.global_position) < 2:
 		state_machine.execute_event('idle')
 		return
 	if Engine.get_physics_frames() % 60 == 0:
 		update_path()
-	if path.get_current_node().overlaps_body(agent):
+	if !path.is_empty() and path.get_current_node().overlaps_body(agent):
 		path.get_next_node()
 		if path.get_current_node().is_gap():
 			agent.jump_to(path.get_next_node().get_world_position())
@@ -101,6 +104,7 @@ func state_physics_process(_delta: float) -> void:
 		target_direction = (agent.target.global_position - agent.global_position)
 		
 	distance_to_target = target_direction.length()
+	distance_to_target = max(distance_to_target, 5)
 	target_direction = target_direction.slide(Vector3.UP).normalized()
 	facing_target = agent.get_facing_target_factor(target_direction)
 	
@@ -121,9 +125,11 @@ func state_physics_process(_delta: float) -> void:
 
 func update_path():
 	path = NavigationUtil.find_path(agent.global_position,agent.target.global_position)
-	while path.is_empty():
+	var count = 0
+	while path.is_empty() && count < 100:
 		await get_tree().physics_frame
 		path = NavigationUtil.find_path(agent.global_position,agent.target.global_position)
+		count += 1
 "
 
 [sub_resource type="GDScript" id="GDScript_jbp7b"]
@@ -169,6 +175,7 @@ var h_pos:Vector3
 var v_pos:Vector3
 var h_target:Vector3
 var v_target:Vector3
+var distance_threshold:float = 5.0
 
 func state_enter() -> void:
 	animation_tree['parameters/playback'].travel('jump')
@@ -191,7 +198,7 @@ func state_exit() -> void:
 	agent._jumping = false
 
 func state_physics_process(_delta: float) -> void:
-	if agent.global_position.distance_to(agent.jump_target) < 2.0 or is_zero_approx(agent.velocity.length_squared()):
+	if agent.global_position.distance_to(agent.jump_target) < distance_threshold or is_zero_approx(agent.velocity.length_squared()):
 		state_machine.execute_event('idle')
 	var dir := agent.global_position.direction_to(agent.jump_target)
 	agent.velocity.y -= agent.gravity*_delta
@@ -247,7 +254,7 @@ mesh = SubResource("SphereMesh_y06na")
 [node name="StateMachine" type="Node" parent="." unique_id=26237221 node_paths=PackedStringArray("initial_state")]
 unique_name_in_owner = true
 script = ExtResource("5_flffr")
-initial_state = NodePath("Seek")
+initial_state = NodePath("Idle")
 metadata/_custom_type_script = "uid://bx384iuwj3u8u"
 
 [node name="Idle" type="Node" parent="StateMachine" unique_id=1970834143 node_paths=PackedStringArray("agent", "transitions")]
@@ -268,16 +275,11 @@ transitions = {
 }
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
-[node name="Seek" type="Node" parent="StateMachine" unique_id=1129825890 node_paths=PackedStringArray("agent", "avoider_component", "transitions")]
+[node name="Seek" type="Node" parent="StateMachine" unique_id=1129825890 node_paths=PackedStringArray("agent", "avoider_component")]
 script = SubResource("GDScript_y06na")
 agent = NodePath("../..")
 avoider_component = NodePath("../../AvoiderComponent")
-transitions = {
-&"attack": NodePath("../Attack"),
-&"hurt": NodePath("../Hurt"),
-&"idle": NodePath("../Idle"),
-&"jump": NodePath("../Jump")
-}
+cutoff_distance = 2.5
 metadata/_custom_type_script = "uid://b42om5mouo7ee"
 
 [node name="Attack" type="Node" parent="StateMachine" unique_id=1086589799 node_paths=PackedStringArray("agent", "transitions")]

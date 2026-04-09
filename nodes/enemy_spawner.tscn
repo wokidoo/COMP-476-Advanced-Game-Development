@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ggjb7dur51tg"]
 
 [ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="1_lnv8y"]
+[ext_resource type="Script" uid="uid://bq5ldkiqyl642" path="res://scripts/components/radius_activation_component.gd" id="2_eqfqa"]
 
 [sub_resource type="GDScript" id="GDScript_1uc5m"]
 resource_name = "enemy_spawner"
@@ -19,13 +20,25 @@ var enemies_spawned:int = 0
 
 @onready var timer: Timer = $Timer
 
+@export var is_activated:bool = false:
+	set(value):
+		is_activated = value
+		if is_activated:
+			timer.start()
+		else:
+			timer.stop()
+
 func _ready() -> void:
 	timer.wait_time = time
 	timer.timeout.connect(spawn_enemy)
+	if is_activated:
+		timer.start()
+	else:
+		timer.stop()
 	
 
 func spawn_enemy():
-	if enemies_spawned < max_enemies_spawned:
+	if enemies_spawned < max_enemies_spawned and self.is_inside_tree():
 		var enemy :AIAgent= scene.instantiate()
 		enemy.tree_exiting.connect(reduce_enemy_count)
 		if enemy.target == null:
@@ -37,6 +50,11 @@ func spawn_enemy():
 func reduce_enemy_count():
 	print(\"reduce spwan count\")
 	enemies_spawned -= 1
+
+
+func _on_radius_activation_target_entered_radius(target: Node3D) -> void:
+	print(\"spanwer on\")
+	is_activated = true
 "
 
 [node name="EnemySpawner" type="Node3D" unique_id=63290959]
@@ -45,3 +63,8 @@ scene = ExtResource("1_lnv8y")
 
 [node name="Timer" type="Timer" parent="." unique_id=1783283634]
 autostart = true
+
+[node name="radius_activation" type="Node3D" parent="." unique_id=1877203475]
+script = ExtResource("2_eqfqa")
+
+[connection signal="target_entered_radius" from="radius_activation" to="." method="_on_radius_activation_target_entered_radius"]
