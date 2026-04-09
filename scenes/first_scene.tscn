@@ -18,7 +18,9 @@
 [ext_resource type="PackedScene" uid="uid://tmgmbyjfdeie" path="res://user_interface/simple_instructions.tscn" id="16_wi3mw"]
 [ext_resource type="Script" uid="uid://dx06an6pgs3q7" path="res://scripts/navigation/nav_mesh.gd" id="17_1plfn"]
 [ext_resource type="PackedScene" uid="uid://x6po5d0oodw5" path="res://nodes/navigation_node.tscn" id="18_moemk"]
+[ext_resource type="PackedScene" uid="uid://ggjb7dur51tg" path="res://nodes/enemy_spawner.tscn" id="19_nfeft"]
 [ext_resource type="PackedScene" uid="uid://c4uci4ccfe64b" path="res://nodes/trench_node.tscn" id="20_pkp6l"]
+[ext_resource type="Script" uid="uid://7hemqvbdaskq" path="res://scripts/AI/AI_squad/AI_squad_flock.gd" id="21_nfeft"]
 [ext_resource type="PackedScene" uid="uid://dvi0x2t03eq6y" path="res://nodes/base_enemy.tscn" id="22_6vkic"]
 
 [sub_resource type="Gradient" id="Gradient_laijt"]
@@ -600,7 +602,7 @@ visible = false
 [node name="-Area1-" type="Node3D" parent="Level" unique_id=1653132524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, -60)
 
-[node name="AIAgent" parent="Level/-Area1-" unique_id=17692775 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("22_6vkic")]
+[node name="AIAgent" parent="Level/-Area1-" unique_id=17692775 node_paths=PackedStringArray("target") instance=ExtResource("22_6vkic")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3.2637105, -2)
 target = NodePath("../../../PlayerCharacter")
 activate_on_distance = true
@@ -609,29 +611,50 @@ activation_distance = 20.0
 [node name="-Area2-" type="Node3D" parent="Level" unique_id=602546799]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73, 1, -64)
 
-[node name="AIAgent" parent="Level/-Area2-" unique_id=1657396361 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("22_6vkic")]
+[node name="AIAgent" parent="Level/-Area2-" unique_id=1657396361 node_paths=PackedStringArray("target") instance=ExtResource("22_6vkic")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.2637105, 4)
 target = NodePath("../../../PlayerCharacter")
 activate_on_distance = true
 activation_distance = 20.0
 
-[node name="AIAgent2" parent="Level/-Area2-" unique_id=457149904 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("22_6vkic")]
+[node name="AIAgent2" parent="Level/-Area2-" unique_id=457149904 node_paths=PackedStringArray("target") instance=ExtResource("22_6vkic")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29, 3.2637105, 15)
 target = NodePath("../../../PlayerCharacter")
 activate_on_distance = true
 activation_distance = 15.0
 
-[node name="AIAgent3" parent="Level/-Area2-" unique_id=156374829 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("22_6vkic")]
+[node name="AIAgent3" parent="Level/-Area2-" unique_id=156374829 node_paths=PackedStringArray("target") instance=ExtResource("22_6vkic")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 2.2637105, -2)
 target = NodePath("../../../PlayerCharacter")
 activate_on_distance = true
 activation_distance = 15.0
 
-[node name="AIAgent4" parent="Level/-Area2-" unique_id=1927645441 node_paths=PackedStringArray("target") groups=["squad_1"] instance=ExtResource("22_6vkic")]
+[node name="AIAgent4" parent="Level/-Area2-" unique_id=1927645441 node_paths=PackedStringArray("target") instance=ExtResource("22_6vkic")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 63, 2.2637105, -19)
 target = NodePath("../../../PlayerCharacter")
 activate_on_distance = true
 activation_distance = 15.0
+
+[node name="-Area3-" type="Node3D" parent="Level" unique_id=151325688]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106, 0, -114)
+
+[node name="AISquadFlock" type="Node3D" parent="Level/-Area3-" unique_id=1937837783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+script = ExtResource("21_nfeft")
+flock_force = 3.0
+radius = 3.0
+enabled = true
+group = "squad_1"
+metadata/_custom_type_script = "uid://7hemqvbdaskq"
+
+[node name="EnemySpawner" parent="Level/-Area3-" unique_id=63290959 instance=ExtResource("19_nfeft")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+time = 5.0
+
+[node name="radius_activation" parent="Level/-Area3-/EnemySpawner" index="1" unique_id=1877203475 node_paths=PackedStringArray("_tracked_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 7)
+activation_distance = 20.0
+_tracked_target = NodePath("../../../../PlayerCharacter")
 
 [node name="NavMeshStart" type="Node3D" parent="Level" unique_id=172319659]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49, 0.75, -62)
@@ -683,3 +706,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, -60)
 visible = false
 connections = [NodePath("../gap")]
 size = 5.0
+
+[editable path="Level/-Area3-/EnemySpawner"]
