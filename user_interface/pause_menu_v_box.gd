@@ -29,3 +29,7 @@ func _on_volume_h_slider_value_changed(value: float) -> void:
 func _on_back_button_pressed() -> void:
 	get_child(1).visible = true
 	get_child(2).visible = false
+
+func _on_main_back_button_pressed() -> void:
+	get_tree().paused = false
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

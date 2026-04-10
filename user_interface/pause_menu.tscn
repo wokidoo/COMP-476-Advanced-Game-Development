@@ -64,6 +64,10 @@ theme_override_constants/separation = 10
 layout_mode = 2
 text = "Settings"
 
+[node name="MainBackButton" type="Button" parent="Background/PauseMenuVBox/FirstPageVBox" unique_id=1986612864]
+layout_mode = 2
+text = "Back"
+
 [node name="QuitButton" type="Button" parent="Background/PauseMenuVBox/FirstPageVBox" unique_id=1751728822]
 layout_mode = 2
 text = "Quit"
@@ -94,6 +98,7 @@ size_flags_horizontal = 4
 text = "Back"
 
 [connection signal="pressed" from="Background/PauseMenuVBox/FirstPageVBox/SettingsButton" to="Background/PauseMenuVBox" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="Background/PauseMenuVBox/FirstPageVBox/MainBackButton" to="Background/PauseMenuVBox" method="_on_main_back_button_pressed"]
 [connection signal="pressed" from="Background/PauseMenuVBox/FirstPageVBox/QuitButton" to="Background/PauseMenuVBox" method="_on_quit_button_pressed"]
 [connection signal="value_changed" from="Background/PauseMenuVBox/SettingsPageVBox/VolumeHBox/VolumeHSlider" to="Background/PauseMenuVBox" method="_on_volume_h_slider_value_changed"]
 [connection signal="pressed" from="Background/PauseMenuVBox/SettingsPageVBox/BackButton" to="Background/PauseMenuVBox" method="_on_back_button_pressed"]
